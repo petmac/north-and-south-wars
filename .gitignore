@@ -8,3 +8,6 @@
 /out/a.exe
 /out/a.map
 /out/a.s
+
+# CMake
+/build/
