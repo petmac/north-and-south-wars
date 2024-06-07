@@ -5,7 +5,7 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/external/AmigaCMakeCr
 enable_language(ASM_VASM)
 
 add_executable(
-    game.elf
+    a.elf
     hacks.c
     main.cpp
     support/depacker_doynax_vasm.asm
@@ -16,6 +16,6 @@ add_executable(
     )
 
 add_custom_command(
-    TARGET game.elf POST_BUILD
-    COMMAND ${ELF2HUNK} game.elf game.exe
+    TARGET a.elf POST_BUILD
+    COMMAND ${ELF2HUNK} a.elf a.exe
     )
