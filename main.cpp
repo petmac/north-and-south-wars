@@ -152,11 +152,11 @@ __attribute__((always_inline)) inline short MouseRight() {
 
 // DEMO - INCBIN
 volatile short frameCounter = 0;
-INCBIN(colors, "image.pal")
+INCBIN(colors, "../image.pal")
 INCBIN_CHIP(
     image,
-    "image.bpl") // load image into chipmem so we can use it without copying
-INCBIN_CHIP(bob, "bob.bpl")
+    "../image.bpl") // load image into chipmem so we can use it without copying
+INCBIN_CHIP(bob, "../bob.bpl")
 
 // put copperlist into chip mem so we can use it without copying
 const UWORD copper2[] __attribute__((section(".MEMF_CHIP"))) = {
@@ -244,8 +244,8 @@ void *doynaxdepack(const void *input,
 // Demo - Module Player - ThePlayer 6.1a:
 // https://www.pouet.net/prod.php?which=19922 The Player® 6.1A: Copyright ©
 // 1992-95 Jarno Paananen P61.testmod - Module by Skylord/Sector 7
-INCBIN(player, "player610.6.no_cia.bin")
-INCBIN_CHIP(module, "testmod.p61")
+INCBIN(player, "../player610.6.no_cia.bin")
+INCBIN_CHIP(module, "../testmod.p61")
 
 int p61Init(const void *module) { // returns 0 if success, non-zero otherwise
   register volatile const void *_a0 ASM("a0") = module;
