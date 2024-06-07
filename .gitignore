@@ -4,13 +4,5 @@
 # VS Code
 /.vscode/settings.json
 
-# Bartman VS Code extension
-/obj/*.d
-/obj/*.o
-/out/a.elf
-/out/a.exe
-/out/a.map
-/out/a.s
-
 # CMake
 /build/
