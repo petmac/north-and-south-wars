@@ -1,2 +1,10 @@
 # macOS
 .DS_Store
+
+# Bartman VS Code extension
+/obj/*.d
+/obj/*.o
+/out/a.elf
+/out/a.exe
+/out/a.map
+/out/a.s
