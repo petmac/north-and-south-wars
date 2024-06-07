@@ -4,7 +4,7 @@ all: build/build.ninja
 
 .PHONY: clean
 clean:
-	rm -rf build/
+	rm -rf out/
 
 build/build.ninja: CMakeLists.txt CMakePresets.json
 	cmake --preset amiga
