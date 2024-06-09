@@ -6,3 +6,6 @@
 
 # CMake
 /out/
+
+# Obsidian
+/obsidian/.obsidian/
