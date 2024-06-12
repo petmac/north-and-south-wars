@@ -3,6 +3,9 @@
     "bartmanabyss.amiga-debug",
     "xaver.clang-format",
     "ms-vscode.cpptools",
-    "esbenp.prettier-vscode"
+    "esbenp.prettier-vscode",
+    "vadimcn.vscode-lldb",
+    "tamasfe.even-better-toml",
+    "rust-lang.rust-analyzer"
   ]
 }
