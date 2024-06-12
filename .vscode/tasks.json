@@ -4,7 +4,7 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "compile",
+      "label": "Amiga",
       "type": "shell",
       "windows": {
         "command": "${command:amiga.bin-path}\\gnumake.exe",
@@ -32,11 +32,6 @@
         }
       ],
       "presentation": {
-        "echo": true,
-        "reveal": "silent",
-        "focus": false,
-        "panel": "shared",
-        "showReuseMessage": false,
         "clear": true
       },
       "group": {
@@ -45,7 +40,7 @@
       }
     },
     {
-      "label": "clean",
+      "label": "Clean",
       "type": "shell",
       "windows": {
         "command": "${command:amiga.bin-path}\\gnumake.exe"
@@ -55,7 +50,10 @@
         "cwd": "${workspaceRoot}"
       },
       "args": ["clean"],
-      "problemMatcher": []
+      "problemMatcher": [],
+      "presentation": {
+        "clear": true
+      }
     },
     {
       "label": "Tools (Debug)",

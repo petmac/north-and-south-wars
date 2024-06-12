@@ -12,7 +12,7 @@
     {
       "type": "amiga",
       "request": "launch",
-      "preLaunchTask": "compile",
+      "preLaunchTask": "Amiga",
       "name": "Amiga 1200",
       "config": "A1200",
       "program": "${workspaceFolder}/${config:amiga.program}",
