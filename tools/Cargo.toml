@@ -1,0 +1,3 @@
+[workspace]
+members = ["tmx2map"]
+resolver = "2"

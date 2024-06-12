@@ -12,3 +12,7 @@
 
 # Tiled
 *.tiled-session
+
+# Rust
+/tools/target/
+/tools/Cargo.lock
