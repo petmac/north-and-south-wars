@@ -9,3 +9,6 @@
 
 # Obsidian
 /obsidian/.obsidian/
+
+# Tiled
+*.tiled-session
