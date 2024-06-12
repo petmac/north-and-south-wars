@@ -2,6 +2,14 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "type": "lldb",
+      "request": "launch",
+      "name": "tmx2map",
+      "program": "${workspaceFolder}/tools/target/debug/tmx2map",
+      "args": ["assets/map.tmx", "out/data/map"],
+      "preLaunchTask": "Tools (Debug)"
+    },
+    {
       "type": "amiga",
       "request": "launch",
       "preLaunchTask": "compile",

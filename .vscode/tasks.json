@@ -56,6 +56,19 @@
       },
       "args": ["clean"],
       "problemMatcher": []
+    },
+    {
+      "label": "Tools (Debug)",
+      "type": "shell",
+      "command": "cargo",
+      "options": {
+        "cwd": "${workspaceRoot}/tools"
+      },
+      "args": ["build"],
+      "problemMatcher": [],
+      "presentation": {
+        "clear": true
+      }
     }
   ]
 }
