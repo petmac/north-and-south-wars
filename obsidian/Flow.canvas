@@ -1,0 +1,24 @@
+{
+	"nodes":[
+		{"id":"0392af631b1bfd2b","type":"group","x":-265,"y":-60,"width":290,"height":240,"label":"Front end"},
+		{"id":"17256f11424b3a53","type":"text","text":"Loading intro","x":-245,"y":-480,"width":250,"height":60},
+		{"id":"9cdc19e3b1b7bc7b","type":"text","text":"Title screen","x":-245,"y":-40,"width":250,"height":60},
+		{"id":"66d232e4e0a63895","type":"text","text":"Main menu","x":-245,"y":100,"width":250,"height":60},
+		{"id":"524d627619316ec6","type":"text","text":"Intro, loading front end","x":-245,"y":-300,"width":250,"height":60},
+		{"id":"7ec00ebf836d1bbb","type":"text","text":"Loading font, palette","x":-245,"y":-680,"width":250,"height":60},
+		{"id":"a5e0bf377b04731f","type":"file","file":"Campaign map.md","x":-320,"y":280,"width":400,"height":400},
+		{"id":"0e3ba324af5d1280","x":-320,"y":780,"width":400,"height":400,"type":"file","file":"Battle.canvas"},
+		{"id":"ea536e7b8d07348c","x":360,"y":450,"width":250,"height":60,"type":"text","text":"Campaign completed"}
+	],
+	"edges":[
+		{"id":"92c016079ce5f84e","fromNode":"17256f11424b3a53","fromSide":"bottom","toNode":"524d627619316ec6","toSide":"top","label":"Intro loaded"},
+		{"id":"d35612094524eebd","fromNode":"524d627619316ec6","fromSide":"bottom","toNode":"9cdc19e3b1b7bc7b","toSide":"top","label":"Front end loaded"},
+		{"id":"bceee47a139908c2","fromNode":"9cdc19e3b1b7bc7b","fromSide":"bottom","toNode":"66d232e4e0a63895","toSide":"top","label":"Press mouse button"},
+		{"id":"85686fae19555d9d","fromNode":"7ec00ebf836d1bbb","fromSide":"bottom","toNode":"17256f11424b3a53","toSide":"top","label":"Font and palette loaded"},
+		{"id":"ee88ca5ecf24fd4f","fromNode":"66d232e4e0a63895","fromSide":"bottom","toNode":"a5e0bf377b04731f","toSide":"top"},
+		{"id":"f6ba5e8850880891","fromNode":"a5e0bf377b04731f","fromSide":"bottom","toNode":"0e3ba324af5d1280","toSide":"top","label":"Start battle"},
+		{"id":"458a2b42afbc5473","fromNode":"0e3ba324af5d1280","fromSide":"left","toNode":"a5e0bf377b04731f","toSide":"left","label":"Win/lose battle"},
+		{"id":"61803abaf35d0142","fromNode":"a5e0bf377b04731f","fromSide":"right","toNode":"ea536e7b8d07348c","toSide":"left","label":"All battles won"},
+		{"id":"e80ee4ab87ec51dd","fromNode":"ea536e7b8d07348c","fromSide":"right","toNode":"17256f11424b3a53","toSide":"right","label":"Press mouse button"}
+	]
+}

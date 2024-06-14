@@ -1,0 +1,34 @@
+{
+	"nodes":[
+		{"id":"dabc940c184f0e83","type":"text","text":"Idle","x":-380,"y":-80,"width":250,"height":60},
+		{"id":"277a4a4f0c87fc16","type":"text","text":"Show menu","x":80,"y":-80,"width":250,"height":60},
+		{"id":"d7776d8ee435f639","type":"text","text":"Select next unit position","x":-380,"y":80,"width":250,"height":60},
+		{"id":"bb61df39d55234be","type":"text","text":"Moving unit","x":-380,"y":240,"width":250,"height":60},
+		{"id":"478aa74b52b939e0","type":"text","text":"Select unit action","x":-380,"y":400,"width":250,"height":60},
+		{"id":"ef283a2abeaa5719","type":"text","text":"Introduction","x":-381,"y":-580,"width":250,"height":60},
+		{"id":"51fb702548eae3e1","type":"text","text":"Start of day/turn","x":-381,"y":-420,"width":250,"height":60},
+		{"id":"56cba6bbe8c4530f","type":"text","text":"Resupply","x":-380,"y":-240,"width":250,"height":60},
+		{"id":"758e5cf30f0fcce6","type":"text","text":"Select target","x":-380,"y":560,"width":250,"height":60},
+		{"id":"f6f21a3c5f9c8a1a","type":"text","text":"Transitioning to close-up","x":-380,"y":720,"width":250,"height":60},
+		{"id":"b29785a43f63659f","x":-455,"y":900,"width":400,"height":400,"type":"file","file":"Close-up.canvas"}
+	],
+	"edges":[
+		{"id":"c99b62f9905ecfe1","fromNode":"dabc940c184f0e83","fromSide":"bottom","toNode":"d7776d8ee435f639","toSide":"top","label":"Unit selected"},
+		{"id":"03d7b729c7266611","fromNode":"d7776d8ee435f639","fromSide":"left","toNode":"dabc940c184f0e83","toSide":"left","label":"Unit deselected"},
+		{"id":"9993456d0453eaaf","fromNode":"dabc940c184f0e83","fromSide":"right","toNode":"277a4a4f0c87fc16","toSide":"left","label":"Terrain selected"},
+		{"id":"8fe4f41283d88edd","fromNode":"d7776d8ee435f639","fromSide":"bottom","toNode":"bb61df39d55234be","toSide":"top","label":"Valid position selected"},
+		{"id":"a96c9eeadd1c8f01","fromNode":"bb61df39d55234be","fromSide":"bottom","toNode":"478aa74b52b939e0","toSide":"top","label":"Unit arrived"},
+		{"id":"fff5af246d11610b","fromNode":"ef283a2abeaa5719","fromSide":"bottom","toNode":"51fb702548eae3e1","toSide":"top","label":"Introduction finished"},
+		{"id":"acdcb7ee5a32d797","fromNode":"51fb702548eae3e1","fromSide":"bottom","toNode":"56cba6bbe8c4530f","toSide":"top","label":"Finished\nUnits can be resupplied"},
+		{"id":"198bfa8ea85f42e9","fromNode":"478aa74b52b939e0","fromSide":"bottom","toNode":"758e5cf30f0fcce6","toSide":"top","label":"Attack selected"},
+		{"id":"06e6c59d19c2d79c","fromNode":"478aa74b52b939e0","fromSide":"left","toNode":"dabc940c184f0e83","toSide":"left","label":"Wait selected"},
+		{"id":"9917bd66a113ee66","fromNode":"bb61df39d55234be","fromSide":"left","toNode":"d7776d8ee435f639","toSide":"left","label":"Cancelled"},
+		{"id":"ba18504713b4245e","fromNode":"758e5cf30f0fcce6","fromSide":"left","toNode":"478aa74b52b939e0","toSide":"left","label":"Cancelled"},
+		{"id":"d453c542d410c7fb","fromNode":"478aa74b52b939e0","fromSide":"right","toNode":"d7776d8ee435f639","toSide":"right","label":"Cancelled\n(Does AW allow\ncancel here?)"},
+		{"id":"a808499d6f3552e6","fromNode":"277a4a4f0c87fc16","fromSide":"top","toNode":"51fb702548eae3e1","toSide":"right","label":"End day/turn"},
+		{"id":"a70f4e9100b86446","fromNode":"51fb702548eae3e1","fromSide":"left","toNode":"dabc940c184f0e83","toSide":"left","label":"Finished\nNo units to resupply"},
+		{"id":"fcbf80df32184f27","fromNode":"56cba6bbe8c4530f","fromSide":"bottom","toNode":"dabc940c184f0e83","toSide":"top","label":"Resupply finished"},
+		{"id":"f81912fbd4de1c46","fromNode":"758e5cf30f0fcce6","fromSide":"bottom","toNode":"f6f21a3c5f9c8a1a","toSide":"top","label":"Target selected"},
+		{"id":"79166c9efff4cdb0","fromNode":"f6f21a3c5f9c8a1a","fromSide":"bottom","toNode":"b29785a43f63659f","toSide":"top","label":"Transition finished"}
+	]
+}
