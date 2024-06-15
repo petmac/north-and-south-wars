@@ -65,18 +65,18 @@ void WaitLine(USHORT line) {
 }
 
 __attribute__((always_inline)) inline void WaitBlt() {
-  UWORD tst = *(volatile UWORD *)&custom->dmaconr; // for compatiblity a1000
+  UWORD tst = *(volatile UWORD *)&custom.dmaconr; // for compatiblity a1000
   (void)tst;
-  while (*(volatile UWORD *)&custom->dmaconr & (1 << 14)) {
+  while (*(volatile UWORD *)&custom.dmaconr & (1 << 14)) {
   } // blitter busy wait
 }
 
 void TakeSystem() {
   Forbid();
   // Save current interrupts and DMA settings so we can restore them upon exit.
-  SystemADKCON = custom->adkconr;
-  SystemInts = custom->intenar;
-  SystemDMA = custom->dmaconr;
+  SystemADKCON = custom.adkconr;
+  SystemInts = custom.intenar;
+  SystemDMA = custom.dmaconr;
   ActiView = GfxBase->ActiView; // store current view
 
   LoadView(0);
@@ -90,14 +90,14 @@ void TakeSystem() {
   WaitBlit();
   Disable();
 
-  custom->intena = 0x7fff; // disable all interrupts
-  custom->intreq = 0x7fff; // Clear any interrupts that were pending
+  custom.intena = 0x7fff; // disable all interrupts
+  custom.intreq = 0x7fff; // Clear any interrupts that were pending
 
-  custom->dmacon = 0x7fff; // Clear all DMA channels
+  custom.dmacon = 0x7fff; // Clear all DMA channels
 
   // set all colors black
   for (int a = 0; a < 32; a++)
-    custom->color[a] = 0;
+    custom.color[a] = 0;
 
   WaitVbl();
   WaitVbl();
@@ -109,22 +109,22 @@ void TakeSystem() {
 void FreeSystem() {
   WaitVbl();
   WaitBlit();
-  custom->intena = 0x7fff; // disable all interrupts
-  custom->intreq = 0x7fff; // Clear any interrupts that were pending
-  custom->dmacon = 0x7fff; // Clear all DMA channels
+  custom.intena = 0x7fff; // disable all interrupts
+  custom.intreq = 0x7fff; // Clear any interrupts that were pending
+  custom.dmacon = 0x7fff; // Clear all DMA channels
 
   // restore interrupts
   SetInterruptHandler(SystemIrq);
 
   /*Restore system copper list(s). */
-  custom->cop1lc = (ULONG)GfxBase->copinit;
-  custom->cop2lc = (ULONG)GfxBase->LOFlist;
-  custom->copjmp1 = 0x7fff; // start coppper
+  custom.cop1lc = (ULONG)GfxBase->copinit;
+  custom.cop2lc = (ULONG)GfxBase->LOFlist;
+  custom.copjmp1 = 0x7fff; // start coppper
 
   /*Restore all interrupts and DMA settings. */
-  custom->intena = SystemInts | 0x8000;
-  custom->dmacon = SystemDMA | 0x8000;
-  custom->adkcon = SystemADKCON | 0x8000;
+  custom.intena = SystemInts | 0x8000;
+  custom.dmacon = SystemDMA | 0x8000;
+  custom.adkcon = SystemADKCON | 0x8000;
 
   WaitBlit();
   DisownBlitter();
@@ -295,8 +295,8 @@ static const UBYTE sinus32[] = {
 };
 
 static __attribute__((interrupt)) void interruptHandler() {
-  custom->intreq = (1 << INTB_VERTB);
-  custom->intreq = (1 << INTB_VERTB); // reset vbl req. twice for a4000 bug.
+  custom.intreq = (1 << INTB_VERTB);
+  custom.intreq = (1 << INTB_VERTB); // reset vbl req. twice for a4000 bug.
 
   // modify scrolling in copper list
   if (scroll) {
@@ -378,17 +378,17 @@ int main() {
   *copPtr++ = offsetof(struct Custom, copjmp2);
   *copPtr++ = 0x7fff;
 
-  custom->cop1lc = (ULONG)copper1;
-  custom->cop2lc = (ULONG)copper2;
-  custom->dmacon = DMAF_BLITTER; // disable blitter dma for copjmp bug
-  custom->copjmp1 = 0x7fff;      // start coppper
-  custom->dmacon =
+  custom.cop1lc = (ULONG)copper1;
+  custom.cop2lc = (ULONG)copper2;
+  custom.dmacon = DMAF_BLITTER; // disable blitter dma for copjmp bug
+  custom.copjmp1 = 0x7fff;      // start coppper
+  custom.dmacon =
       DMAF_SETCLR | DMAF_MASTER | DMAF_RASTER | DMAF_COPPER | DMAF_BLITTER;
 
   // DEMO
   SetInterruptHandler((APTR)interruptHandler);
-  custom->intena = INTF_SETCLR | INTF_INTEN | INTF_VERTB;
-  custom->intreq = (1 << INTB_VERTB); // reset vbl req
+  custom.intena = INTF_SETCLR | INTF_INTEN | INTF_VERTB;
+  custom.intreq = (1 << INTB_VERTB); // reset vbl req
 
   while (!MouseLeft()) {
     Wait10();
@@ -396,13 +396,13 @@ int main() {
 
     // clear
     WaitBlit();
-    custom->bltcon0 = A_TO_D | DEST;
-    custom->bltcon1 = 0;
-    custom->bltadat = 0;
-    custom->bltdpt = (UBYTE *)image + 320 / 8 * 200 * 5;
-    custom->bltdmod = 0;
-    custom->bltafwm = custom->bltalwm = 0xffff;
-    custom->bltsize = ((56 * 5) << HSIZEBITS) | (320 / 16);
+    custom.bltcon0 = A_TO_D | DEST;
+    custom.bltcon1 = 0;
+    custom.bltadat = 0;
+    custom.bltdpt = (UBYTE *)image + 320 / 8 * 200 * 5;
+    custom.bltdmod = 0;
+    custom.bltafwm = custom.bltalwm = 0xffff;
+    custom.bltsize = ((56 * 5) << HSIZEBITS) | (320 / 16);
 
     // blit
     for (short i = 0; i < 16; i++) {
@@ -412,20 +412,19 @@ int main() {
       UBYTE *src = (UBYTE *)bob + 32 / 8 * 10 * 16 * (i % 6);
 
       WaitBlit();
-      custom->bltcon0 =
-          0xca | SRCA | SRCB | SRCC | DEST |
-          ((x & 15) << ASHIFTSHIFT); // A = source, B = mask, C = background, D
-                                     // = destination
-      custom->bltcon1 = ((x & 15) << BSHIFTSHIFT);
-      custom->bltapt = src;
-      custom->bltamod = 32 / 8;
-      custom->bltbpt = src + 32 / 8 * 1;
-      custom->bltbmod = 32 / 8;
-      custom->bltcpt = custom->bltdpt =
+      custom.bltcon0 = 0xca | SRCA | SRCB | SRCC | DEST |
+                       ((x & 15) << ASHIFTSHIFT); // A = source, B = mask, C =
+                                                  // background, D = destination
+      custom.bltcon1 = ((x & 15) << BSHIFTSHIFT);
+      custom.bltapt = src;
+      custom.bltamod = 32 / 8;
+      custom.bltbpt = src + 32 / 8 * 1;
+      custom.bltbmod = 32 / 8;
+      custom.bltcpt = custom.bltdpt =
           (UBYTE *)image + 320 / 8 * 5 * (200 + y) + x / 8;
-      custom->bltcmod = custom->bltdmod = (320 - 32) / 8;
-      custom->bltafwm = custom->bltalwm = 0xffff;
-      custom->bltsize = ((16 * 5) << HSIZEBITS) | (32 / 16);
+      custom.bltcmod = custom.bltdmod = (320 - 32) / 8;
+      custom.bltafwm = custom.bltalwm = 0xffff;
+      custom.bltsize = ((16 * 5) << HSIZEBITS) | (32 / 16);
     }
   }
 
