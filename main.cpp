@@ -143,9 +143,6 @@ void FreeSystem() {
 __attribute__((always_inline)) inline short MouseLeft() {
   return !((*(volatile UBYTE *)0xbfe001) & 64);
 }
-__attribute__((always_inline)) inline short MouseRight() {
-  return !((*(volatile UWORD *)0xdff016) & (1 << 10));
-}
 
 // DEMO - INCBIN
 volatile short frameCounter = 0;
@@ -314,21 +311,6 @@ static __attribute__((interrupt)) void interruptHandler() {
   frameCounter++;
 }
 
-#ifdef __cplusplus
-class TestClass {
-public:
-  TestClass(int y) {
-    static int x = 7;
-    i = y + x;
-  }
-  ~TestClass() { KPrintF("~TestClass()"); }
-
-  int i;
-};
-
-TestClass staticClass(4);
-#endif
-
 // set up a 320x256 lowres display
 __attribute__((always_inline)) inline USHORT *
 screenScanDefault(USHORT *copListEnd) {
@@ -353,9 +335,6 @@ screenScanDefault(USHORT *copListEnd) {
 }
 
 static void Wait10() { WaitLine(0x10); }
-static void Wait11() { WaitLine(0x11); }
-static void Wait12() { WaitLine(0x12); }
-static void Wait13() { WaitLine(0x13); }
 
 int main() {
   SysBase = *((struct ExecBase **)4UL);
@@ -372,38 +351,11 @@ int main() {
   if (!DOSBase)
     Exit(0);
 
-#ifdef __cplusplus
-  KPrintF("Hello debugger from Amiga: %ld!\n", staticClass.i);
-#else
-  KPrintF("Hello debugger from Amiga!\n");
-#endif
-  Write(Output(), (APTR) "Hello console!\n", 15);
-  Delay(50);
-
-  warpmode(1);
-  // TODO: precalc stuff here
-  warpmode(0);
-
   TakeSystem();
   WaitVbl();
 
-  char *test = (char *)AllocMem(2502, MEMF_ANY);
-  memset(test, 0xcd, 2502);
-  memclr(test + 2, 2502 - 4);
-  FreeMem(test, 2502);
-
   USHORT *copper1 = (USHORT *)AllocMem(1024, MEMF_CHIP);
   USHORT *copPtr = copper1;
-
-  // register graphics resources with WinUAE for nicer gfx debugger experience
-  debug_register_bitmap(image, "image.bpl", 320, 256, 5,
-                        debug_resource_bitmap_interleaved);
-  debug_register_bitmap(bob, "bob.bpl", 32, 96, 5,
-                        debug_resource_bitmap_interleaved |
-                            debug_resource_bitmap_masked);
-  debug_register_palette(colors, "image.pal", 32, 0);
-  debug_register_copperlist(copper1, "copper1", 1024, 0);
-  debug_register_copperlist(copper2, "copper2", sizeof(copper2), 0);
 
   copPtr = screenScanDefault(copPtr);
   // enable bitplanes
@@ -488,13 +440,6 @@ int main() {
       custom->bltafwm = custom->bltalwm = 0xffff;
       custom->bltsize = ((16 * 5) << HSIZEBITS) | (32 / 16);
     }
-
-    // WinUAE debug overlay test
-    debug_clear();
-    debug_filled_rect(f + 100, 200 * 2, f + 400, 220 * 2,
-                      0x0000ff00);                             // 0x00RRGGBB
-    debug_rect(f + 90, 190 * 2, f + 400, 220 * 2, 0x000000ff); // 0x00RRGGBB
-    debug_text(f + 130, 209 * 2, "This is a WinUAE debug overlay", 0x00ff00ff);
   }
 
   // END
