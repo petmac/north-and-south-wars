@@ -10,7 +10,7 @@
 #include <proto/exec.h>
 #include <proto/graphics.h>
 
-void WaitLine(USHORT line) {
+static void WaitLine(USHORT line) {
   while (1) {
     volatile ULONG vpos = *(volatile ULONG *)0xDFF004;
     if (((vpos >> 8) & 511) == line)
@@ -18,19 +18,10 @@ void WaitLine(USHORT line) {
   }
 }
 
-__attribute__((always_inline)) inline void WaitBlt() {
-  UWORD tst = *(volatile UWORD *)&custom.dmaconr; // for compatiblity a1000
-  (void)tst;
-  while (*(volatile UWORD *)&custom.dmaconr & (1 << 14)) {
-  } // blitter busy wait
-}
-
-__attribute__((always_inline)) inline short MouseLeft() {
-  return !((*(volatile UBYTE *)0xbfe001) & 64);
-}
+static bool MouseLeft() { return !((*(volatile UBYTE *)0xbfe001) & 64); }
 
 // DEMO - INCBIN
-volatile short frameCounter = 0;
+static volatile short frameCounter = 0;
 INCBIN(colors, "../game/image.pal")
 INCBIN_CHIP(image,
             "../game/image.bpl") // load image into chipmem so we can use it
@@ -38,7 +29,7 @@ INCBIN_CHIP(image,
 INCBIN_CHIP(bob, "../game/bob.bpl")
 
 // put copperlist into chip mem so we can use it without copying
-const UWORD copper2[] __attribute__((section(".MEMF_CHIP"))) = {
+static const UWORD copper2[] __attribute__((section(".MEMF_CHIP"))) = {
     offsetof(struct Custom, color[0]),
     0x0000,
     0x4101,
@@ -119,10 +110,8 @@ void *doynaxdepack(const void *input,
   return (void *)_a1;
 }
 
-__attribute__((always_inline)) inline USHORT *copSetPlanes(UBYTE bplPtrStart,
-                                                           USHORT *copListEnd,
-                                                           const UBYTE **planes,
-                                                           int numPlanes) {
+static USHORT *copSetPlanes(UBYTE bplPtrStart, USHORT *copListEnd,
+                            const UBYTE **planes, int numPlanes) {
   for (USHORT i = 0; i < numPlanes; i++) {
     ULONG addr = (ULONG)planes[i];
     *copListEnd++ =
@@ -135,8 +124,7 @@ __attribute__((always_inline)) inline USHORT *copSetPlanes(UBYTE bplPtrStart,
   return copListEnd;
 }
 
-__attribute__((always_inline)) inline USHORT *copWaitXY(USHORT *copListEnd,
-                                                        USHORT x, USHORT i) {
+static USHORT *copWaitXY(USHORT *copListEnd, USHORT x, USHORT i) {
   *copListEnd++ = (i << 8) | (x << 1) |
                   1; // bit 1 means wait. waits for vertical position x<<8,
                      // first raster stop position outside the left
@@ -144,8 +132,7 @@ __attribute__((always_inline)) inline USHORT *copWaitXY(USHORT *copListEnd,
   return copListEnd;
 }
 
-__attribute__((always_inline)) inline USHORT *copWaitY(USHORT *copListEnd,
-                                                       USHORT i) {
+static USHORT *copWaitY(USHORT *copListEnd, USHORT i) {
   *copListEnd++ =
       (i << 8) | 4 | 1; // bit 1 means wait. waits for vertical position x<<8,
                         // first raster stop position outside the left
@@ -153,14 +140,13 @@ __attribute__((always_inline)) inline USHORT *copWaitY(USHORT *copListEnd,
   return copListEnd;
 }
 
-__attribute__((always_inline)) inline USHORT *
-copSetColor(USHORT *copListCurrent, USHORT index, USHORT color) {
+static USHORT *copSetColor(USHORT *copListCurrent, USHORT index, USHORT color) {
   *copListCurrent++ = offsetof(struct Custom, color) + sizeof(UWORD) * index;
   *copListCurrent++ = color;
   return copListCurrent;
 }
 
-UWORD *scroll = NULL;
+static UWORD *scroll = NULL;
 
 static const UBYTE sinus15[] = {
     8,  8,  9,  10, 10, 11, 12, 12, 13, 13, 14, 14, 14, 15, 15, 15,
@@ -197,8 +183,7 @@ static __attribute__((interrupt)) void interruptHandler() {
 }
 
 // set up a 320x256 lowres display
-__attribute__((always_inline)) inline USHORT *
-screenScanDefault(USHORT *copListEnd) {
+static USHORT *screenScanDefault(USHORT *copListEnd) {
   const USHORT x = 129;
   const USHORT width = 320;
   const USHORT height = 256;
