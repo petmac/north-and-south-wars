@@ -4,9 +4,6 @@
 
 #include "gcc8_c_support.h"
 
-#include <exec/execbase.h>
-#include <graphics/gfxbase.h>
-#include <graphics/view.h>
 #include <hardware/dmabits.h>
 #include <hardware/intbits.h>
 #include <proto/dos.h>
