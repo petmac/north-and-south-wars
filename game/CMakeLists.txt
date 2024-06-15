@@ -1,5 +1,6 @@
 add_executable(
     a.elf
+    custom.h
     libs.cpp
     libs.h
     main.cpp

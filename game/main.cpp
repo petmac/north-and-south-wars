@@ -1,3 +1,4 @@
+#include "custom.h"
 #include "libs.h"
 
 #include "gcc8_c_support.h"
@@ -5,14 +6,11 @@
 #include <exec/execbase.h>
 #include <graphics/gfxbase.h>
 #include <graphics/view.h>
-#include <hardware/custom.h>
 #include <hardware/dmabits.h>
 #include <hardware/intbits.h>
 #include <proto/dos.h>
 #include <proto/exec.h>
 #include <proto/graphics.h>
-
-volatile struct Custom *custom;
 
 // backup
 static UWORD SystemInts;
@@ -339,8 +337,6 @@ int main() {
   if (!loadLibs()) {
     Exit(0);
   }
-
-  custom = (struct Custom *)0xdff000;
 
   TakeSystem();
   WaitVbl();
