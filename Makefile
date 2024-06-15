@@ -4,15 +4,18 @@ MAP := out/data/map
 TMX2MAP := tools/target/release/tmx2map
 
 .PHONY: all
-all: build/build.ninja $(MAP)
-	cmake --build --preset amiga
+all: cmake-build
 
 .PHONY: clean
 clean:
 	rm -rf out/
 	cd tools && cargo clean
 
-build/build.ninja: CMakeLists.txt CMakePresets.json
+.PHONY: cmake-build
+cmake-build: out/build.ninja
+	cmake --build --preset amiga
+
+out/build.ninja: CMakeLists.txt CMakePresets.json
 	cmake --preset amiga
 
 $(MAP): $(TMX2MAP) $(TMX) $(TSX)
