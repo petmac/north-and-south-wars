@@ -4,6 +4,8 @@ add_executable(
     libs.cpp
     libs.h
     main.cpp
+    system.cpp
+    system.h
     )
 
 target_link_libraries(a.elf PRIVATE support)
