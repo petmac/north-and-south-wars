@@ -8,7 +8,6 @@
 #include <hardware/dmabits.h>
 #include <hardware/intbits.h>
 #include <proto/dos.h>
-#include <proto/exec.h>
 #include <proto/graphics.h>
 
 static void WaitLine(USHORT line) {
@@ -38,42 +37,6 @@ void *doynaxdepack(const void *input,
                  :
                  : "cc", "memory");
   return (void *)_a1;
-}
-
-static USHORT *copSetPlanes(UBYTE bplPtrStart, USHORT *copListEnd,
-                            const UBYTE **planes, int numPlanes) {
-  for (USHORT i = 0; i < numPlanes; i++) {
-    ULONG addr = (ULONG)planes[i];
-    *copListEnd++ =
-        offsetof(Custom, bplpt[0]) + (i + bplPtrStart) * sizeof(APTR);
-    *copListEnd++ = (UWORD)(addr >> 16);
-    *copListEnd++ =
-        offsetof(Custom, bplpt[0]) + (i + bplPtrStart) * sizeof(APTR) + 2;
-    *copListEnd++ = (UWORD)addr;
-  }
-  return copListEnd;
-}
-
-static USHORT *copWaitXY(USHORT *copListEnd, USHORT x, USHORT i) {
-  *copListEnd++ = (i << 8) | (x << 1) |
-                  1; // bit 1 means wait. waits for vertical position x<<8,
-                     // first raster stop position outside the left
-  *copListEnd++ = 0xfffe;
-  return copListEnd;
-}
-
-static USHORT *copWaitY(USHORT *copListEnd, USHORT i) {
-  *copListEnd++ =
-      (i << 8) | 4 | 1; // bit 1 means wait. waits for vertical position x<<8,
-                        // first raster stop position outside the left
-  *copListEnd++ = 0xfffe;
-  return copListEnd;
-}
-
-static USHORT *copSetColor(USHORT *copListCurrent, USHORT index, USHORT color) {
-  *copListCurrent++ = offsetof(Custom, color) + sizeof(UWORD) * index;
-  *copListCurrent++ = color;
-  return copListCurrent;
 }
 
 static UWORD *scroll = NULL;
@@ -112,28 +75,6 @@ static __attribute__((interrupt)) void interruptHandler() {
   frameCounter++;
 }
 
-// set up a 320x256 lowres display
-static USHORT *screenScanDefault(USHORT *copListEnd) {
-  const USHORT x = 129;
-  const USHORT width = 320;
-  const USHORT height = 256;
-  const USHORT y = 44;
-  const USHORT RES = 8; // 8=lowres,4=hires
-  USHORT xstop = x + width;
-  USHORT ystop = y + height;
-  USHORT fw = (x >> 1) - RES;
-
-  *copListEnd++ = offsetof(Custom, ddfstrt);
-  *copListEnd++ = fw;
-  *copListEnd++ = offsetof(Custom, ddfstop);
-  *copListEnd++ = fw + (((width >> 4) - 1) << 3);
-  *copListEnd++ = offsetof(Custom, diwstrt);
-  *copListEnd++ = x + (y << 8);
-  *copListEnd++ = offsetof(Custom, diwstop);
-  *copListEnd++ = (xstop - 256) + ((ystop - 256) << 8);
-  return copListEnd;
-}
-
 static void Wait10() { WaitLine(0x10); }
 
 int main() {
@@ -143,7 +84,6 @@ int main() {
 
   TakeSystem();
 
-  USHORT *copper1 = (USHORT *)AllocMem(1024, MEMF_CHIP);
   USHORT *copPtr = copper1;
 
   copPtr = screenScanDefault(copPtr);

@@ -4,8 +4,10 @@
 
 #include "gcc8_c_support.h" // offsetof
 
+UWORD copper1[512] __attribute__((section(".MEMF_CHIP")));
+
 // put copperlist into chip mem so we can use it without copying
-const UWORD copper2[] __attribute__((section(".MEMF_CHIP"))) = {
+UWORD copper2[] __attribute__((section(".MEMF_CHIP"))) = {
     offsetof(Custom, color[0]),
     0x0000,
     0x4101,
@@ -71,3 +73,45 @@ const UWORD copper2[] __attribute__((section(".MEMF_CHIP"))) = {
     0xffff,
     0xfffe // end copper list
 };
+
+// set up a 320x256 lowres display
+USHORT *screenScanDefault(USHORT *copListEnd) {
+  const USHORT x = 129;
+  const USHORT width = 320;
+  const USHORT height = 256;
+  const USHORT y = 44;
+  const USHORT RES = 8; // 8=lowres,4=hires
+  USHORT xstop = x + width;
+  USHORT ystop = y + height;
+  USHORT fw = (x >> 1) - RES;
+
+  *copListEnd++ = offsetof(Custom, ddfstrt);
+  *copListEnd++ = fw;
+  *copListEnd++ = offsetof(Custom, ddfstop);
+  *copListEnd++ = fw + (((width >> 4) - 1) << 3);
+  *copListEnd++ = offsetof(Custom, diwstrt);
+  *copListEnd++ = x + (y << 8);
+  *copListEnd++ = offsetof(Custom, diwstop);
+  *copListEnd++ = (xstop - 256) + ((ystop - 256) << 8);
+  return copListEnd;
+}
+
+USHORT *copSetPlanes(UBYTE bplPtrStart, USHORT *copListEnd,
+                     const UBYTE **planes, int numPlanes) {
+  for (USHORT i = 0; i < numPlanes; i++) {
+    ULONG addr = (ULONG)planes[i];
+    *copListEnd++ =
+        offsetof(Custom, bplpt[0]) + (i + bplPtrStart) * sizeof(APTR);
+    *copListEnd++ = (UWORD)(addr >> 16);
+    *copListEnd++ =
+        offsetof(Custom, bplpt[0]) + (i + bplPtrStart) * sizeof(APTR) + 2;
+    *copListEnd++ = (UWORD)addr;
+  }
+  return copListEnd;
+}
+
+USHORT *copSetColor(USHORT *copListCurrent, USHORT index, USHORT color) {
+  *copListCurrent++ = offsetof(Custom, color) + sizeof(UWORD) * index;
+  *copListCurrent++ = color;
+  return copListCurrent;
+}
