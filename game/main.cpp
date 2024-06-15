@@ -27,67 +27,67 @@ INCBIN_CHIP(bob, "../game/bob.bpl")
 
 // put copperlist into chip mem so we can use it without copying
 static const UWORD copper2[] __attribute__((section(".MEMF_CHIP"))) = {
-    offsetof(struct Custom, color[0]),
+    offsetof(Custom, color[0]),
     0x0000,
     0x4101,
     0xff00,
-    offsetof(struct Custom, color[0]),
+    offsetof(Custom, color[0]),
     0x0111, // line 0x41
     0x4201,
     0xff00,
-    offsetof(struct Custom, color[0]),
+    offsetof(Custom, color[0]),
     0x0222, // line 0x42
     0x4301,
     0xff00,
-    offsetof(struct Custom, color[0]),
+    offsetof(Custom, color[0]),
     0x0333, // line 0x43
     0x4401,
     0xff00,
-    offsetof(struct Custom, color[0]),
+    offsetof(Custom, color[0]),
     0x0444, // line 0x44
     0x4501,
     0xff00,
-    offsetof(struct Custom, color[0]),
+    offsetof(Custom, color[0]),
     0x0555, // line 0x45
     0x4601,
     0xff00,
-    offsetof(struct Custom, color[0]),
+    offsetof(Custom, color[0]),
     0x0666, // line 0x46
     0x4701,
     0xff00,
-    offsetof(struct Custom, color[0]),
+    offsetof(Custom, color[0]),
     0x0777, // line 0x47
     0x4801,
     0xff00,
-    offsetof(struct Custom, color[0]),
+    offsetof(Custom, color[0]),
     0x0888, // line 0x48
     0x4901,
     0xff00,
-    offsetof(struct Custom, color[0]),
+    offsetof(Custom, color[0]),
     0x0999, // line 0x49
     0x4a01,
     0xff00,
-    offsetof(struct Custom, color[0]),
+    offsetof(Custom, color[0]),
     0x0aaa, // line 0x4a
     0x4b01,
     0xff00,
-    offsetof(struct Custom, color[0]),
+    offsetof(Custom, color[0]),
     0x0bbb, // line 0x4b
     0x4c01,
     0xff00,
-    offsetof(struct Custom, color[0]),
+    offsetof(Custom, color[0]),
     0x0ccc, // line 0x4c
     0x4d01,
     0xff00,
-    offsetof(struct Custom, color[0]),
+    offsetof(Custom, color[0]),
     0x0ddd, // line 0x4d
     0x4e01,
     0xff00,
-    offsetof(struct Custom, color[0]),
+    offsetof(Custom, color[0]),
     0x0eee, // line 0x4e
     0x4f01,
     0xff00,
-    offsetof(struct Custom, color[0]),
+    offsetof(Custom, color[0]),
     0x0fff, // line 0x4e
     0xffff,
     0xfffe // end copper list
@@ -112,10 +112,10 @@ static USHORT *copSetPlanes(UBYTE bplPtrStart, USHORT *copListEnd,
   for (USHORT i = 0; i < numPlanes; i++) {
     ULONG addr = (ULONG)planes[i];
     *copListEnd++ =
-        offsetof(struct Custom, bplpt[0]) + (i + bplPtrStart) * sizeof(APTR);
+        offsetof(Custom, bplpt[0]) + (i + bplPtrStart) * sizeof(APTR);
     *copListEnd++ = (UWORD)(addr >> 16);
-    *copListEnd++ = offsetof(struct Custom, bplpt[0]) +
-                    (i + bplPtrStart) * sizeof(APTR) + 2;
+    *copListEnd++ =
+        offsetof(Custom, bplpt[0]) + (i + bplPtrStart) * sizeof(APTR) + 2;
     *copListEnd++ = (UWORD)addr;
   }
   return copListEnd;
@@ -138,7 +138,7 @@ static USHORT *copWaitY(USHORT *copListEnd, USHORT i) {
 }
 
 static USHORT *copSetColor(USHORT *copListCurrent, USHORT index, USHORT color) {
-  *copListCurrent++ = offsetof(struct Custom, color) + sizeof(UWORD) * index;
+  *copListCurrent++ = offsetof(Custom, color) + sizeof(UWORD) * index;
   *copListCurrent++ = color;
   return copListCurrent;
 }
@@ -190,13 +190,13 @@ static USHORT *screenScanDefault(USHORT *copListEnd) {
   USHORT ystop = y + height;
   USHORT fw = (x >> 1) - RES;
 
-  *copListEnd++ = offsetof(struct Custom, ddfstrt);
+  *copListEnd++ = offsetof(Custom, ddfstrt);
   *copListEnd++ = fw;
-  *copListEnd++ = offsetof(struct Custom, ddfstop);
+  *copListEnd++ = offsetof(Custom, ddfstop);
   *copListEnd++ = fw + (((width >> 4) - 1) << 3);
-  *copListEnd++ = offsetof(struct Custom, diwstrt);
+  *copListEnd++ = offsetof(Custom, diwstrt);
   *copListEnd++ = x + (y << 8);
-  *copListEnd++ = offsetof(struct Custom, diwstop);
+  *copListEnd++ = offsetof(Custom, diwstop);
   *copListEnd++ = (xstop - 256) + ((ystop - 256) << 8);
   return copListEnd;
 }
@@ -215,22 +215,22 @@ int main() {
 
   copPtr = screenScanDefault(copPtr);
   // enable bitplanes
-  *copPtr++ = offsetof(struct Custom, bplcon0);
+  *copPtr++ = offsetof(Custom, bplcon0);
   *copPtr++ = (0 << 10) /*dual pf*/ | (1 << 9) /*color*/ |
               ((5) << 12) /*num bitplanes*/;
-  *copPtr++ = offsetof(struct Custom, bplcon1); // scrolling
+  *copPtr++ = offsetof(Custom, bplcon1); // scrolling
   scroll = copPtr;
   *copPtr++ = 0;
-  *copPtr++ = offsetof(struct Custom, bplcon2); // playfied priority
+  *copPtr++ = offsetof(Custom, bplcon2); // playfied priority
   *copPtr++ =
       1 << 6; // 0x24;			//Sprites have priority over playfields
 
   const USHORT lineSize = 320 / 8;
 
   // set bitplane modulo
-  *copPtr++ = offsetof(struct Custom, bpl1mod); // odd planes   1,3,5
+  *copPtr++ = offsetof(Custom, bpl1mod); // odd planes   1,3,5
   *copPtr++ = 4 * lineSize;
-  *copPtr++ = offsetof(struct Custom, bpl2mod); // even  planes 2,4
+  *copPtr++ = offsetof(Custom, bpl2mod); // even  planes 2,4
   *copPtr++ = 4 * lineSize;
 
   // set bitplane pointers
@@ -244,7 +244,7 @@ int main() {
     copPtr = copSetColor(copPtr, a, ((USHORT *)colors)[a]);
 
   // jump to copper2
-  *copPtr++ = offsetof(struct Custom, copjmp2);
+  *copPtr++ = offsetof(Custom, copjmp2);
   *copPtr++ = 0x7fff;
 
   custom.cop1lc = (ULONG)copper1;
