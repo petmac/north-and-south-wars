@@ -1,5 +1,7 @@
 add_executable(
     a.elf
+    copper.cpp
+    copper.h
     custom.h
     libs.cpp
     libs.h
