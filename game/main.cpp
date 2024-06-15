@@ -1,4 +1,4 @@
-#include "support/gcc8_c_support.h"
+#include "gcc8_c_support.h"
 #include <exec/execbase.h>
 #include <graphics/gfxbase.h>
 #include <graphics/gfxmacros.h>
@@ -146,11 +146,11 @@ __attribute__((always_inline)) inline short MouseLeft() {
 
 // DEMO - INCBIN
 volatile short frameCounter = 0;
-INCBIN(colors, "../image.pal")
-INCBIN_CHIP(
-    image,
-    "../image.bpl") // load image into chipmem so we can use it without copying
-INCBIN_CHIP(bob, "../bob.bpl")
+INCBIN(colors, "../game/image.pal")
+INCBIN_CHIP(image,
+            "../game/image.bpl") // load image into chipmem so we can use it
+                                 // without copying
+INCBIN_CHIP(bob, "../game/bob.bpl")
 
 // put copperlist into chip mem so we can use it without copying
 const UWORD copper2[] __attribute__((section(".MEMF_CHIP"))) = {
