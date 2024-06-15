@@ -1,6 +1,7 @@
 #include "copper.h"
 #include "custom.h"
 #include "libs.h"
+#include "mouse.h"
 #include "system.h"
 
 #include "gcc8_c_support.h"
@@ -14,8 +15,6 @@ static void WaitLine(USHORT line) {
   while (((custom.vpos32 >> 8) & 511) != line) {
   }
 }
-
-static bool MouseLeft() { return !((*(volatile UBYTE *)0xbfe001) & 64); }
 
 // DEMO - INCBIN
 static volatile short frameCounter = 0;

@@ -6,6 +6,8 @@ add_executable(
     libs.cpp
     libs.h
     main.cpp
+    mouse.cpp
+    mouse.h
     system.cpp
     system.h
     )
