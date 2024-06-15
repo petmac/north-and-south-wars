@@ -6,7 +6,6 @@ enable_language(ASM_VASM)
 
 add_executable(
     a.elf
-    hacks.c
     main.cpp
     support/depacker_doynax_vasm.asm
     support/depacker_doynax.s
