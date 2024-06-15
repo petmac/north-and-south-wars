@@ -11,10 +11,7 @@
 #include <proto/graphics.h>
 
 static void WaitLine(USHORT line) {
-  while (1) {
-    volatile ULONG vpos = *(volatile ULONG *)0xDFF004;
-    if (((vpos >> 8) & 511) == line)
-      break;
+  while (((custom.vpos32 >> 8) & 511) != line) {
   }
 }
 
