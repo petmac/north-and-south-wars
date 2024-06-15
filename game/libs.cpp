@@ -7,15 +7,16 @@ DosLibrary *DOSBase;
 struct GfxBase *GfxBase;
 
 bool loadLibs() {
-  SysBase = *((struct ExecBase **)4UL);
-  GfxBase = (struct GfxBase *)OpenLibrary((CONST_STRPTR) "graphics.library", 0);
-  if (!GfxBase) {
+  SysBase = *reinterpret_cast<ExecBase *const *const>(4UL);
+  GfxBase =
+      reinterpret_cast<struct GfxBase *>(OpenLibrary("graphics.library", 0));
+  if (GfxBase == nullptr) {
     return false;
   }
 
-  DOSBase = (struct DosLibrary *)OpenLibrary((CONST_STRPTR) "dos.library", 0);
-  if (!DOSBase) {
-    CloseLibrary((struct Library *)GfxBase);
+  DOSBase = reinterpret_cast<DosLibrary *>(OpenLibrary("dos.library", 0));
+  if (DOSBase == nullptr) {
+    CloseLibrary(reinterpret_cast<Library *>(GfxBase));
 
     return false;
   }
@@ -24,6 +25,6 @@ bool loadLibs() {
 }
 
 void unloadLibs() {
-  CloseLibrary((struct Library *)DOSBase);
-  CloseLibrary((struct Library *)GfxBase);
+  CloseLibrary(reinterpret_cast<Library *>(DOSBase));
+  CloseLibrary(reinterpret_cast<Library *>(GfxBase));
 }
