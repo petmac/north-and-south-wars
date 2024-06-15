@@ -3,6 +3,8 @@ add_executable(
     copper.cpp
     copper.h
     custom.h
+    doynax.cpp
+    doynax.h
     libs.cpp
     libs.h
     main.cpp
