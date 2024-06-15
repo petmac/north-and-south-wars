@@ -1,7 +1,9 @@
+#include "libs.h"
+
 #include "gcc8_c_support.h"
+
 #include <exec/execbase.h>
 #include <graphics/gfxbase.h>
-#include <graphics/gfxmacros.h>
 #include <graphics/view.h>
 #include <hardware/custom.h>
 #include <hardware/dmabits.h>
@@ -10,10 +12,7 @@
 #include <proto/exec.h>
 #include <proto/graphics.h>
 
-struct ExecBase *SysBase;
 volatile struct Custom *custom;
-struct DosLibrary *DOSBase;
-struct GfxBase *GfxBase;
 
 // backup
 static UWORD SystemInts;
@@ -337,19 +336,11 @@ screenScanDefault(USHORT *copListEnd) {
 static void Wait10() { WaitLine(0x10); }
 
 int main() {
-  SysBase = *((struct ExecBase **)4UL);
+  if (!loadLibs()) {
+    Exit(0);
+  }
+
   custom = (struct Custom *)0xdff000;
-
-  // We will use the graphics library only to locate and restore the system
-  // copper list once we are through.
-  GfxBase = (struct GfxBase *)OpenLibrary((CONST_STRPTR) "graphics.library", 0);
-  if (!GfxBase)
-    Exit(0);
-
-  // used for printing
-  DOSBase = (struct DosLibrary *)OpenLibrary((CONST_STRPTR) "dos.library", 0);
-  if (!DOSBase)
-    Exit(0);
 
   TakeSystem();
   WaitVbl();
@@ -445,6 +436,5 @@ int main() {
   // END
   FreeSystem();
 
-  CloseLibrary((struct Library *)DOSBase);
-  CloseLibrary((struct Library *)GfxBase);
+  unloadLibs();
 }
