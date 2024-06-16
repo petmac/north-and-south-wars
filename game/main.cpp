@@ -74,14 +74,13 @@ int main() {
   copPtr = screenScanDefault(copPtr);
   // enable bitplanes
   *copPtr++ = offsetof(Custom, bplcon0);
-  *copPtr++ = (0 << 10) /*dual pf*/ | (1 << 9) /*color*/ |
-              ((5) << 12) /*num bitplanes*/;
+  *copPtr++ = BPLCON0::COLOR | BPLCON0::BPU(5);
   *copPtr++ = offsetof(Custom, bplcon1); // scrolling
   scroll = copPtr;
   *copPtr++ = 0;
   *copPtr++ = offsetof(Custom, bplcon2); // playfied priority
-  *copPtr++ =
-      1 << 6; // 0x24;			//Sprites have priority over playfields
+  *copPtr++ = BPLCON2::PF2PRI;           // 0x24;			//Sprites have priority
+                                         // over playfields
 
   const u16 lineSize = 320 / 8;
 
