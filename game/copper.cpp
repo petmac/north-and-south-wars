@@ -1,78 +1,36 @@
 #include "copper.h"
 
-#include "custom.h"
+struct Copper2 {
+  struct Line {
+    CopperMove color;
+    CopperWait wait;
+  };
 
-#include "gcc8_c_support.h" // offsetof
+  Line lines[16];
+};
 
 Copper1 copper1 __attribute__((section(".MEMF_CHIP")));
 
 // put copperlist into chip mem so we can use it without copying
-u16 copper2[] __attribute__((section(".MEMF_CHIP"))) = {
-    offsetof(Custom, color[0]),
-    0x0000,
-    0x4101,
-    0xff00,
-    offsetof(Custom, color[0]),
-    0x0111, // line 0x41
-    0x4201,
-    0xff00,
-    offsetof(Custom, color[0]),
-    0x0222, // line 0x42
-    0x4301,
-    0xff00,
-    offsetof(Custom, color[0]),
-    0x0333, // line 0x43
-    0x4401,
-    0xff00,
-    offsetof(Custom, color[0]),
-    0x0444, // line 0x44
-    0x4501,
-    0xff00,
-    offsetof(Custom, color[0]),
-    0x0555, // line 0x45
-    0x4601,
-    0xff00,
-    offsetof(Custom, color[0]),
-    0x0666, // line 0x46
-    0x4701,
-    0xff00,
-    offsetof(Custom, color[0]),
-    0x0777, // line 0x47
-    0x4801,
-    0xff00,
-    offsetof(Custom, color[0]),
-    0x0888, // line 0x48
-    0x4901,
-    0xff00,
-    offsetof(Custom, color[0]),
-    0x0999, // line 0x49
-    0x4a01,
-    0xff00,
-    offsetof(Custom, color[0]),
-    0x0aaa, // line 0x4a
-    0x4b01,
-    0xff00,
-    offsetof(Custom, color[0]),
-    0x0bbb, // line 0x4b
-    0x4c01,
-    0xff00,
-    offsetof(Custom, color[0]),
-    0x0ccc, // line 0x4c
-    0x4d01,
-    0xff00,
-    offsetof(Custom, color[0]),
-    0x0ddd, // line 0x4d
-    0x4e01,
-    0xff00,
-    offsetof(Custom, color[0]),
-    0x0eee, // line 0x4e
-    0x4f01,
-    0xff00,
-    offsetof(Custom, color[0]),
-    0x0fff, // line 0x4e
-    0xffff,
-    0xfffe // end copper list
-};
+Copper2 copper2 __attribute__((section(".MEMF_CHIP"))) = {
+    .lines = {
+        {.color = copSetColor(0, 0x0000), .wait = copperWait(0x4101, 0xff00)},
+        {.color = copSetColor(0, 0x0111), .wait = copperWait(0x4201, 0xff00)},
+        {.color = copSetColor(0, 0x0222), .wait = copperWait(0x4301, 0xff00)},
+        {.color = copSetColor(0, 0x0333), .wait = copperWait(0x4401, 0xff00)},
+        {.color = copSetColor(0, 0x0444), .wait = copperWait(0x4501, 0xff00)},
+        {.color = copSetColor(0, 0x0555), .wait = copperWait(0x4601, 0xff00)},
+        {.color = copSetColor(0, 0x0666), .wait = copperWait(0x4701, 0xff00)},
+        {.color = copSetColor(0, 0x0777), .wait = copperWait(0x4801, 0xff00)},
+        {.color = copSetColor(0, 0x0888), .wait = copperWait(0x4901, 0xff00)},
+        {.color = copSetColor(0, 0x0999), .wait = copperWait(0x4a01, 0xff00)},
+        {.color = copSetColor(0, 0x0aaa), .wait = copperWait(0x4b01, 0xff00)},
+        {.color = copSetColor(0, 0x0bbb), .wait = copperWait(0x4c01, 0xff00)},
+        {.color = copSetColor(0, 0x0ccc), .wait = copperWait(0x4d01, 0xff00)},
+        {.color = copSetColor(0, 0x0ddd), .wait = copperWait(0x4e01, 0xff00)},
+        {.color = copSetColor(0, 0x0eee), .wait = copperWait(0x4f01, 0xff00)},
+        {.color = copSetColor(0, 0x0fff), .wait = copperWait(0xffff, 0xfffe)},
+    }};
 
 // set up a 320x256 lowres display
 ScreenScan screenScanDefault() {

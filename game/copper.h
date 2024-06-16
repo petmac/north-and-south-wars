@@ -40,8 +40,10 @@ struct Copper1 {
   CopperMove copjmp2;
 };
 
+struct Copper2;
+
 extern Copper1 copper1;
-extern u16 copper2[];
+extern Copper2 copper2;
 
 constexpr CopperMove copperMoveImpl(u16 offset, u16 value) {
   return (CopperMove){
@@ -51,6 +53,13 @@ constexpr CopperMove copperMoveImpl(u16 offset, u16 value) {
 }
 
 #define copperMove(field, value) copperMoveImpl(customOffset(field), value)
+
+constexpr CopperWait copperWait(u16 ir1, u16 ir2) {
+  return (CopperWait){
+      .ir1 = ir1,
+      .ir2 = ir2,
+  };
+}
 
 constexpr CopperSetPointer copperSetPointerImpl(u16 offset, const void *p) {
   const u32 address = reinterpret_cast<u32>(p);

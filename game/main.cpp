@@ -89,7 +89,7 @@ int main() {
   copper1.copjmp2 = copperMove(copjmp2, 0x7fff);
 
   custom.cop1lc = (u32)&copper1;
-  custom.cop2lc = (u32)copper2;
+  custom.cop2lc = (u32)&copper2;
   custom.dmacon = DMAF_BLITTER; // disable blitter dma for copjmp bug
   custom.copjmp1 = 0x7fff;      // start coppper
   custom.dmacon =
