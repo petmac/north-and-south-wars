@@ -69,6 +69,7 @@ int main() {
 
   TakeSystem();
 
+  scroll = &copper1.setPlanes.bplcon1.value;
   constexpr u16 lineSize = 320 / 8;
 
   // set bitplane pointers
