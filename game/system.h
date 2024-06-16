@@ -1,5 +1,7 @@
 #pragma once
 
+using InterruptHandler = void();
+
 void TakeSystem();
 void FreeSystem();
-void SetInterruptHandler(void *interrupt);
+void SetInterruptHandler(InterruptHandler *interrupt);

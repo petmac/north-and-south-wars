@@ -16,7 +16,7 @@ static u16 SystemInts;
 static u16 SystemDMA;
 static u16 SystemADKCON;
 static void *volatile VBR = 0;
-static void *SystemIrq;
+static InterruptHandler *SystemIrq;
 static View *ActiView;
 
 static void *GetVBR(void) {
@@ -48,12 +48,12 @@ static void WaitVbl() {
   debug_stop_idle();
 }
 
-static void *GetInterruptHandler() {
-  return *(void *volatile *)(((u8 *)VBR) + 0x6c);
+static InterruptHandler *GetInterruptHandler() {
+  return *(InterruptHandler *volatile *)(((u8 *)VBR) + 0x6c);
 }
 
-void SetInterruptHandler(void *interrupt) {
-  *(void *volatile *)(((u8 *)VBR) + 0x6c) = interrupt;
+void SetInterruptHandler(InterruptHandler *interrupt) {
+  *(InterruptHandler *volatile *)(((u8 *)VBR) + 0x6c) = interrupt;
 }
 
 void TakeSystem() {

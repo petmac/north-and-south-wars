@@ -113,7 +113,7 @@ int main() {
       DMAF_SETCLR | DMAF_MASTER | DMAF_RASTER | DMAF_COPPER | DMAF_BLITTER;
 
   // DEMO
-  SetInterruptHandler((void *)interruptHandler);
+  SetInterruptHandler(interruptHandler);
   custom.intena = INTF_SETCLR | INTF_INTEN | INTF_VERTB;
   custom.intreq = (1 << INTB_VERTB); // reset vbl req
 
