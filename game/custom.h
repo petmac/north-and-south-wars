@@ -122,3 +122,9 @@ constexpr u16 BLP32 = 1 << 0;
 
 inline volatile Custom &custom =
     *reinterpret_cast<volatile Custom *const>(0xdff000UL);
+
+constexpr u16 customOffsetImpl(volatile void *field) {
+  return static_cast<u16>(reinterpret_cast<u32>(field));
+}
+
+#define customOffset(field) customOffsetImpl(&static_cast<Custom *>(0)->field)

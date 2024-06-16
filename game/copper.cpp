@@ -4,7 +4,7 @@
 
 #include "gcc8_c_support.h" // offsetof
 
-u16 copper1[512] __attribute__((section(".MEMF_CHIP")));
+Copper1 copper1 __attribute__((section(".MEMF_CHIP")));
 
 // put copperlist into chip mem so we can use it without copying
 u16 copper2[] __attribute__((section(".MEMF_CHIP"))) = {
@@ -75,43 +75,40 @@ u16 copper2[] __attribute__((section(".MEMF_CHIP"))) = {
 };
 
 // set up a 320x256 lowres display
-u16 *screenScanDefault(u16 *copListEnd) {
-  const u16 x = 129;
-  const u16 width = 320;
-  const u16 height = 256;
-  const u16 y = 44;
-  const u16 RES = 8; // 8=lowres,4=hires
-  u16 xstop = x + width;
-  u16 ystop = y + height;
-  u16 fw = (x >> 1) - RES;
+ScreenScan screenScanDefault() {
+  constexpr u16 x = 129;
+  constexpr u16 width = 320;
+  constexpr u16 height = 256;
+  constexpr u16 y = 44;
+  constexpr u16 RES = 8; // 8=lowres,4=hires
+  constexpr u16 xstop = x + width;
+  constexpr u16 ystop = y + height;
+  constexpr u16 fw = (x >> 1) - RES;
 
-  *copListEnd++ = offsetof(Custom, ddfstrt);
-  *copListEnd++ = fw;
-  *copListEnd++ = offsetof(Custom, ddfstop);
-  *copListEnd++ = fw + (((width >> 4) - 1) << 3);
-  *copListEnd++ = offsetof(Custom, diwstrt);
-  *copListEnd++ = x + (y << 8);
-  *copListEnd++ = offsetof(Custom, diwstop);
-  *copListEnd++ = (xstop - 256) + ((ystop - 256) << 8);
-  return copListEnd;
+  return ScreenScan{
+      .ddfstrt = copperMove(ddfstrt, fw),
+      .ddfstop = copperMove(ddfstop, fw + (((width >> 4) - 1) << 3)),
+      .diwstrt = copperMove(diwstrt, x + (y << 8)),
+      .diwstop = copperMove(diwstop, (xstop - 256) + ((ystop - 256) << 8)),
+  };
 }
 
-u16 *copSetPlanes(u8 bplPtrStart, u16 *copListEnd, const u8 **planes,
-                  int numPlanes) {
-  for (u16 i = 0; i < numPlanes; i++) {
-    u32 addr = (u32)planes[i];
-    *copListEnd++ =
-        offsetof(Custom, bplpt[0]) + (i + bplPtrStart) * sizeof(void *);
-    *copListEnd++ = (u16)(addr >> 16);
-    *copListEnd++ =
-        offsetof(Custom, bplpt[0]) + (i + bplPtrStart) * sizeof(void *) + 2;
-    *copListEnd++ = (u16)addr;
-  }
-  return copListEnd;
-}
+SetPlanes copSetPlanes(const u8 **planes) {
+  constexpr u16 lineSize = 320 / 8;
 
-u16 *copSetColor(u16 *copListCurrent, u16 index, u16 color) {
-  *copListCurrent++ = offsetof(Custom, color) + sizeof(u16) * index;
-  *copListCurrent++ = color;
-  return copListCurrent;
+  return (SetPlanes){
+      .bplcon0 = copperMove(bplcon0, BPLCON0::COLOR | BPLCON0::BPU(5)),
+      .bplcon1 = copperMove(bplcon1, 0),
+      .bplcon2 = copperMove(bplcon2, BPLCON2::PF2PRI),
+      .bpl1mod = copperMove(bpl1mod, 4 * lineSize),
+      .bpl2mod = copperMove(bpl2mod, 4 * lineSize),
+      .bplpt =
+          {
+              copperSetPointer(bplpt[0], planes[0]),
+              copperSetPointer(bplpt[1], planes[1]),
+              copperSetPointer(bplpt[2], planes[2]),
+              copperSetPointer(bplpt[3], planes[3]),
+              copperSetPointer(bplpt[4], planes[4]),
+          },
+  };
 }

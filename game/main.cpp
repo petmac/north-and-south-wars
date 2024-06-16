@@ -69,42 +69,26 @@ int main() {
 
   TakeSystem();
 
-  u16 *copPtr = copper1;
-
-  copPtr = screenScanDefault(copPtr);
-  // enable bitplanes
-  *copPtr++ = offsetof(Custom, bplcon0);
-  *copPtr++ = BPLCON0::COLOR | BPLCON0::BPU(5);
-  *copPtr++ = offsetof(Custom, bplcon1); // scrolling
-  scroll = copPtr;
-  *copPtr++ = 0;
-  *copPtr++ = offsetof(Custom, bplcon2); // playfied priority
-  *copPtr++ = BPLCON2::PF2PRI;           // 0x24;			//Sprites have priority
-                                         // over playfields
-
-  const u16 lineSize = 320 / 8;
-
-  // set bitplane modulo
-  *copPtr++ = offsetof(Custom, bpl1mod); // odd planes   1,3,5
-  *copPtr++ = 4 * lineSize;
-  *copPtr++ = offsetof(Custom, bpl2mod); // even  planes 2,4
-  *copPtr++ = 4 * lineSize;
+  constexpr u16 lineSize = 320 / 8;
 
   // set bitplane pointers
   const u8 *planes[5];
-  for (int a = 0; a < 5; a++)
+  for (int a = 0; a < 5; a++) {
     planes[a] = (u8 *)image + lineSize * a;
-  copPtr = copSetPlanes(0, copPtr, planes, 5);
+  }
+
+  copper1.screenScan = screenScanDefault();
+  copper1.setPlanes = copSetPlanes(planes);
 
   // set colors
-  for (int a = 0; a < 32; a++)
-    copPtr = copSetColor(copPtr, a, ((u16 *)colors)[a]);
+  for (int a = 0; a < 32; a++) {
+    copper1.colors[a] = copSetColor(a, ((u16 *)colors)[a]);
+  }
 
   // jump to copper2
-  *copPtr++ = offsetof(Custom, copjmp2);
-  *copPtr++ = 0x7fff;
+  copper1.copjmp2 = copperMove(copjmp2, 0x7fff);
 
-  custom.cop1lc = (u32)copper1;
+  custom.cop1lc = (u32)&copper1;
   custom.cop2lc = (u32)copper2;
   custom.dmacon = DMAF_BLITTER; // disable blitter dma for copjmp bug
   custom.copjmp1 = 0x7fff;      // start coppper
