@@ -4,10 +4,10 @@
 
 #include "gcc8_c_support.h" // offsetof
 
-UWORD copper1[512] __attribute__((section(".MEMF_CHIP")));
+u16 copper1[512] __attribute__((section(".MEMF_CHIP")));
 
 // put copperlist into chip mem so we can use it without copying
-UWORD copper2[] __attribute__((section(".MEMF_CHIP"))) = {
+u16 copper2[] __attribute__((section(".MEMF_CHIP"))) = {
     offsetof(Custom, color[0]),
     0x0000,
     0x4101,
@@ -75,15 +75,15 @@ UWORD copper2[] __attribute__((section(".MEMF_CHIP"))) = {
 };
 
 // set up a 320x256 lowres display
-USHORT *screenScanDefault(USHORT *copListEnd) {
-  const USHORT x = 129;
-  const USHORT width = 320;
-  const USHORT height = 256;
-  const USHORT y = 44;
-  const USHORT RES = 8; // 8=lowres,4=hires
-  USHORT xstop = x + width;
-  USHORT ystop = y + height;
-  USHORT fw = (x >> 1) - RES;
+u16 *screenScanDefault(u16 *copListEnd) {
+  const u16 x = 129;
+  const u16 width = 320;
+  const u16 height = 256;
+  const u16 y = 44;
+  const u16 RES = 8; // 8=lowres,4=hires
+  u16 xstop = x + width;
+  u16 ystop = y + height;
+  u16 fw = (x >> 1) - RES;
 
   *copListEnd++ = offsetof(Custom, ddfstrt);
   *copListEnd++ = fw;
@@ -96,22 +96,22 @@ USHORT *screenScanDefault(USHORT *copListEnd) {
   return copListEnd;
 }
 
-USHORT *copSetPlanes(UBYTE bplPtrStart, USHORT *copListEnd,
-                     const UBYTE **planes, int numPlanes) {
-  for (USHORT i = 0; i < numPlanes; i++) {
-    ULONG addr = (ULONG)planes[i];
+u16 *copSetPlanes(u8 bplPtrStart, u16 *copListEnd, const u8 **planes,
+                  int numPlanes) {
+  for (u16 i = 0; i < numPlanes; i++) {
+    u32 addr = (u32)planes[i];
     *copListEnd++ =
-        offsetof(Custom, bplpt[0]) + (i + bplPtrStart) * sizeof(APTR);
-    *copListEnd++ = (UWORD)(addr >> 16);
+        offsetof(Custom, bplpt[0]) + (i + bplPtrStart) * sizeof(void *);
+    *copListEnd++ = (u16)(addr >> 16);
     *copListEnd++ =
-        offsetof(Custom, bplpt[0]) + (i + bplPtrStart) * sizeof(APTR) + 2;
-    *copListEnd++ = (UWORD)addr;
+        offsetof(Custom, bplpt[0]) + (i + bplPtrStart) * sizeof(void *) + 2;
+    *copListEnd++ = (u16)addr;
   }
   return copListEnd;
 }
 
-USHORT *copSetColor(USHORT *copListCurrent, USHORT index, USHORT color) {
-  *copListCurrent++ = offsetof(Custom, color) + sizeof(UWORD) * index;
+u16 *copSetColor(u16 *copListCurrent, u16 index, u16 color) {
+  *copListCurrent++ = offsetof(Custom, color) + sizeof(u16) * index;
   *copListCurrent++ = color;
   return copListCurrent;
 }

@@ -1,5 +1,5 @@
 #include "mouse.h"
 
-#include <exec/types.h>
+#include "types.h"
 
-bool MouseLeft() { return !((*(volatile UBYTE *)0xbfe001) & 64); }
+bool MouseLeft() { return !((*(volatile u8 *)0xbfe001) & 64); }

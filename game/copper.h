@@ -1,11 +1,11 @@
 #pragma once
 
-#include <exec/types.h>
+#include "types.h"
 
-extern UWORD copper1[];
-extern UWORD copper2[];
+extern u16 copper1[];
+extern u16 copper2[];
 
-USHORT *screenScanDefault(USHORT *copListEnd);
-USHORT *copSetPlanes(UBYTE bplPtrStart, USHORT *copListEnd,
-                     const UBYTE **planes, int numPlanes);
-USHORT *copSetColor(USHORT *copListCurrent, USHORT index, USHORT color);
+u16 *screenScanDefault(u16 *copListEnd);
+u16 *copSetPlanes(u8 bplPtrStart, u16 *copListEnd, const u8 **planes,
+                  int numPlanes);
+u16 *copSetColor(u16 *copListCurrent, u16 index, u16 color);

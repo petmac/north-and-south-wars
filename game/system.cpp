@@ -2,6 +2,7 @@
 
 #include "custom.h"
 #include "libs.h"
+#include "types.h"
 
 #include "gcc8_c_support.h"
 
@@ -11,19 +12,19 @@
 #include <proto/graphics.h>
 
 // backup
-static UWORD SystemInts;
-static UWORD SystemDMA;
-static UWORD SystemADKCON;
-static volatile APTR VBR = 0;
-static APTR SystemIrq;
+static u16 SystemInts;
+static u16 SystemDMA;
+static u16 SystemADKCON;
+static void *volatile VBR = 0;
+static void *SystemIrq;
 static View *ActiView;
 
-static APTR GetVBR(void) {
-  APTR vbr = 0;
-  UWORD getvbr[] = {0x4e7a, 0x0801, 0x4e73}; // MOVEC.L VBR,D0 RTE
+static void *GetVBR(void) {
+  void *vbr = 0;
+  u16 getvbr[] = {0x4e7a, 0x0801, 0x4e73}; // MOVEC.L VBR,D0 RTE
 
   if (SysBase->AttnFlags & AFF_68010)
-    vbr = (APTR)Supervisor((ULONG(*)())getvbr);
+    vbr = (void *)Supervisor((u32(*)())getvbr);
 
   return vbr;
 }
@@ -33,13 +34,13 @@ static APTR GetVBR(void) {
 static void WaitVbl() {
   debug_start_idle();
   while (1) {
-    volatile ULONG vpos = *(volatile ULONG *)0xDFF004;
+    volatile u32 vpos = *(volatile u32 *)0xDFF004;
     vpos &= 0x1ff00;
     if (vpos != (311 << 8))
       break;
   }
   while (1) {
-    volatile ULONG vpos = *(volatile ULONG *)0xDFF004;
+    volatile u32 vpos = *(volatile u32 *)0xDFF004;
     vpos &= 0x1ff00;
     if (vpos == (311 << 8))
       break;
@@ -47,12 +48,12 @@ static void WaitVbl() {
   debug_stop_idle();
 }
 
-static APTR GetInterruptHandler() {
-  return *(volatile APTR *)(((UBYTE *)VBR) + 0x6c);
+static void *GetInterruptHandler() {
+  return *(void *volatile *)(((u8 *)VBR) + 0x6c);
 }
 
 void SetInterruptHandler(void *interrupt) {
-  *(volatile APTR *)(((UBYTE *)VBR) + 0x6c) = interrupt;
+  *(void *volatile *)(((u8 *)VBR) + 0x6c) = interrupt;
 }
 
 void TakeSystem() {
@@ -103,8 +104,8 @@ void FreeSystem() {
   SetInterruptHandler(SystemIrq);
 
   /*Restore system copper list(s). */
-  custom.cop1lc = (ULONG)GfxBase->copinit;
-  custom.cop2lc = (ULONG)GfxBase->LOFlist;
+  custom.cop1lc = (u32)GfxBase->copinit;
+  custom.cop2lc = (u32)GfxBase->LOFlist;
   custom.copjmp1 = 0x7fff; // start coppper
 
   /*Restore all interrupts and DMA settings. */
