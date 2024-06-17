@@ -80,8 +80,9 @@ void TakeSystem() {
   custom.dmacon = 0x7fff; // Clear all DMA channels
 
   // set all colors black
-  for (int a = 0; a < 32; a++)
+  for (int a = 0; a < 32; a++) {
     custom.color[a] = 0;
+  }
 
   WaitVbl();
   WaitVbl();

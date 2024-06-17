@@ -33,17 +33,12 @@ struct SetPlanes {
   CopperSetPointer bplpt[5];
 };
 
-struct Copper1 {
+struct Copper {
   ScreenScan screenScan;
   SetPlanes setPlanes;
   CopperMove colors[32];
-  CopperMove copjmp2;
+  CopperWait end;
 };
-
-struct Copper2;
-
-extern Copper1 copper1;
-extern Copper2 copper2;
 
 constexpr CopperMove copperMoveImpl(u16 offset, u16 value) {
   return (CopperMove){
