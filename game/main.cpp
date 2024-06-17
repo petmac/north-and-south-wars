@@ -1,3 +1,4 @@
+#include "chip.h"
 #include "copper.h"
 #include "libs.h"
 #include "mouse.h"
@@ -7,7 +8,11 @@
 #include <hardware/intbits.h>
 #include <proto/dos.h>
 
+static u8 backBufferIndex = 0;
+
 static __attribute__((interrupt)) void interruptHandler() {
+  backBufferIndex = 1 - backBufferIndex;
+
   custom.intreq = (1 << INTB_VERTB);
   custom.intreq = (1 << INTB_VERTB); // reset vbl req. twice for a4000 bug.
 }

@@ -1,10 +1,13 @@
 add_executable(
     a.elf
+    chip.cpp
+    chip.h
     copper.cpp
     copper.h
     custom.h
     doynax.cpp
     doynax.h
+    frame_chip.h
     libs.cpp
     libs.h
     main.cpp
