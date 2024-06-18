@@ -121,7 +121,7 @@ constexpr u16 BLP32 = 1 << 0;
 } // namespace FMODE
 
 inline volatile Custom &custom =
-    *reinterpret_cast<volatile Custom *const>(0xdff000UL);
+    *reinterpret_cast<volatile Custom *>(0xdff000UL);
 
 constexpr u16 customOffsetImpl(volatile void *field) {
   return static_cast<u16>(reinterpret_cast<u32>(field));

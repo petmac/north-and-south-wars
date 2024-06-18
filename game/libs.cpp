@@ -7,7 +7,10 @@ DosLibrary *DOSBase;
 struct GfxBase *GfxBase;
 
 bool loadLibs() {
-  SysBase = *reinterpret_cast<ExecBase *const *const>(4UL);
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Warray-bounds"
+  SysBase = *reinterpret_cast<ExecBase *const *>(4UL);
+#pragma GCC diagnostic pop
   GfxBase =
       reinterpret_cast<struct GfxBase *>(OpenLibrary("graphics.library", 0));
   if (GfxBase == nullptr) {

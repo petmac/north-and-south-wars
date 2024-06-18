@@ -99,6 +99,7 @@ copSetPlanes(const InterleavedBitmap<width, height, depth> *bitmap) {
       .bplcon2 = copperMove(bplcon2, BPLCON2::PF2PRI),
       .bpl1mod = copperMove(bpl1mod, modulo),
       .bpl2mod = copperMove(bpl2mod, modulo),
+      .bplpt = {},
   };
 
   for (u16 planeIndex = 0; planeIndex < depth; ++planeIndex) {

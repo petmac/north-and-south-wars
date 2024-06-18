@@ -15,7 +15,8 @@
         "CMAKE_BUILD_TYPE": "RelWithDebInfo",
         "TOOLCHAIN_PATH": "$env{TOOLCHAIN_PATH}/opt",
         "TOOLCHAIN_PREFIX": "m68k-amiga-elf",
-        "TOOLCHAIN_CXXFLAGS": "-fno-rtti"
+        "TOOLCHAIN_CXXFLAGS": "-fno-rtti -std=c++20",
+        "TOOLCHAIN_COMMON": "-Wall -Wextra"
       }
     }
   ],
