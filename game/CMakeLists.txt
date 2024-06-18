@@ -7,6 +7,8 @@ add_executable(
     doynax.cpp
     doynax.h
     frame_chip.h
+    game.cpp
+    game.h
     libs.cpp
     libs.h
     main.cpp

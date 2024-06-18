@@ -1,5 +1,6 @@
 #include "chip.h"
 #include "copper.h"
+#include "game.h"
 #include "libs.h"
 #include "mouse.h"
 #include "system.h"
@@ -8,8 +9,11 @@
 #include <hardware/intbits.h>
 #include <proto/dos.h>
 
+static u8 backBufferIndex = 0;
+static Game game;
+
 static __attribute__((interrupt)) void interruptHandler() {
-  static u8 backBufferIndex = 0;
+  updateGame(game);
 
   // Get back buffer
   FrameChip &frameChip = chip.frames[backBufferIndex];
@@ -53,6 +57,7 @@ int main() {
   custom.cop2lc = 0;
   custom.dmacon = DMAF_SETCLR | DMAF_MASTER | DMAF_BLITTER;
 
+  game = initGame();
   SetInterruptHandler(interruptHandler);
 
   custom.intena = INTF_SETCLR | INTF_INTEN | INTF_VERTB;
