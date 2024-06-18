@@ -2,7 +2,6 @@ add_executable(
     a.elf
     chip.cpp
     chip.h
-    copper.cpp
     copper.h
     custom.h
     doynax.cpp

@@ -1,7 +1,11 @@
 #pragma once
 
 #include "bitmap.h"
+#include "copper.h"
+
+using Background = InterleavedBitmap<320, 256, 4>;
 
 struct FrameChip {
-  InterleavedBitmap<320, 256, 4> background;
+  Copper copper;
+  Background background;
 };

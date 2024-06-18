@@ -8,13 +8,37 @@
 #include <hardware/intbits.h>
 #include <proto/dos.h>
 
-static u8 backBufferIndex = 0;
-
 static __attribute__((interrupt)) void interruptHandler() {
+  static u8 backBufferIndex = 0;
+
+  // Get back buffer
+  FrameChip &frameChip = chip.frames[backBufferIndex];
+  Copper &copper = frameChip.copper;
+  Background &background = frameChip.background;
+
+  // Draw to back buffer
+  background.words[0][0][0] = 0xffff;
+  background.words[1][0][1] = 0xffff;
+  background.words[2][1][2] = 0xffff;
+  background.words[3][1][3] = 0xffff;
+
+  // Prep copperlist
+  copper.screenScan = screenScanDefault();
+  copper.setPlanes = copSetPlanes(&frameChip.background);
+  copper.colors[0] = copperMove(color[0], 0x124);
+  copper.colors[1] = copperMove(color[1], 0xff0);
+  copper.end = copperEnd();
+
+  // Present back buffer
+  custom.cop1lc = reinterpret_cast<u32>(&copper);
+  custom.dmacon = DMAF_SETCLR | DMAF_RASTER | DMAF_COPPER;
+
+  // Swap front and back buffers
   backBufferIndex = 1 - backBufferIndex;
 
-  custom.intreq = (1 << INTB_VERTB);
-  custom.intreq = (1 << INTB_VERTB); // reset vbl req. twice for a4000 bug.
+  // Acknowledge interrupt
+  custom.intreq = INTF_VERTB;
+  custom.intreq = INTF_VERTB; // reset vbl req. twice for a4000 bug.
 }
 
 int main() {
@@ -27,8 +51,6 @@ int main() {
   // Start with display disabled
   custom.cop1lc = 0;
   custom.cop2lc = 0;
-  custom.dmacon = DMAF_BLITTER; // disable blitter dma for copjmp bug
-  custom.copjmp1 = 0x7fff;      // start coppper
   custom.dmacon = DMAF_SETCLR | DMAF_MASTER | DMAF_BLITTER;
 
   SetInterruptHandler(interruptHandler);

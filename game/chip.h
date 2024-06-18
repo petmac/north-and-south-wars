@@ -6,4 +6,4 @@ struct Chip {
   FrameChip frames[2];
 };
 
-extern volatile Chip chip;
+extern Chip chip;
