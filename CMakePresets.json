@@ -12,6 +12,7 @@
       "binaryDir": "${sourceDir}/out",
       "toolchainFile": "${sourceDir}/external/AmigaCMakeCrossToolchains/m68k-bartman.cmake",
       "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "RelWithDebInfo",
         "TOOLCHAIN_PATH": "$env{TOOLCHAIN_PATH}/opt",
         "TOOLCHAIN_PREFIX": "m68k-amiga-elf",
         "TOOLCHAIN_CXXFLAGS": "-fno-rtti"
