@@ -13,6 +13,12 @@ static u8 backBufferIndex = 0;
 static Game game;
 
 static __attribute__((interrupt)) void interruptHandler() {
+  // Acknowledge interrupt
+  custom.intreq = INTF_VERTB;
+  custom.intreq = INTF_VERTB; // reset vbl req. twice for a4000 bug.
+}
+
+static void runFrame() {
   updateGame(game);
 
   // Get back buffer
@@ -34,15 +40,12 @@ static __attribute__((interrupt)) void interruptHandler() {
   copper.end = copperEnd();
 
   // Present back buffer
+  WaitVbl();
   custom.cop1lc = reinterpret_cast<u32>(&copper);
   custom.dmacon = DMAF_SETCLR | DMAF_RASTER | DMAF_COPPER;
 
   // Swap front and back buffers
   backBufferIndex = 1 - backBufferIndex;
-
-  // Acknowledge interrupt
-  custom.intreq = INTF_VERTB;
-  custom.intreq = INTF_VERTB; // reset vbl req. twice for a4000 bug.
 }
 
 int main() {
@@ -64,6 +67,7 @@ int main() {
   custom.intreq = INTF_VERTB; // reset vbl req
 
   while (!MouseLeft()) {
+    runFrame();
   }
 
   // END
