@@ -11,6 +11,8 @@ add_executable(
     game.h
     libs.cpp
     libs.h
+    loader.cpp
+    loader.h
     main.cpp
     mouse.cpp
     mouse.h
