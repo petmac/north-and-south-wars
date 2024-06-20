@@ -1,6 +1,8 @@
+TEMP_DIR := temp
+
 TMX := assets/map.tmx
 TSX := assets/tiles.tsx
-MAP := out/data/map
+MAP := $(TEMP_DIR)/data/map
 TMX2MAP := tools/target/release/tmx2map
 
 .PHONY: all
@@ -8,14 +10,14 @@ all: cmake-build
 
 .PHONY: clean
 clean:
-	rm -rf out/
+	rm -rf $(TEMP_DIR)
 	cd tools && cargo clean
 
 .PHONY: cmake-build
-cmake-build: out/build.ninja
+cmake-build: $(TEMP_DIR)/build.ninja
 	cmake --build --preset amiga
 
-out/build.ninja: CMakeLists.txt CMakePresets.json
+$(TEMP_DIR)/build.ninja: CMakeLists.txt CMakePresets.json
 	cmake --preset amiga
 
 $(MAP): $(TMX2MAP) $(TMX) $(TSX)

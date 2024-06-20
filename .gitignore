@@ -5,7 +5,7 @@
 /.vscode/settings.json
 
 # CMake
-/out/
+/temp/
 
 # Obsidian
 /obsidian/.obsidian/

@@ -9,7 +9,7 @@
     {
       "name": "amiga",
       "generator": "Ninja",
-      "binaryDir": "${sourceDir}/out",
+      "binaryDir": "${sourceDir}/temp",
       "toolchainFile": "${sourceDir}/external/AmigaCMakeCrossToolchains/m68k-bartman.cmake",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "RelWithDebInfo",
