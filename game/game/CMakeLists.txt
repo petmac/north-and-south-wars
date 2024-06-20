@@ -18,10 +18,14 @@ add_executable(
     mouse.h
     system.cpp
     system.h
-    types.h
     )
 
-target_link_libraries(a.elf PRIVATE support)
+target_link_libraries(
+    a.elf
+    PRIVATE
+    support
+    util
+    )
 
 add_custom_command(
     TARGET a.elf POST_BUILD
