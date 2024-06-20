@@ -11,7 +11,7 @@ Game initGame() {
 void updateGame(Game &game) {
   switch (game.state) {
   case GameState::loadingFontAndPalette:
-    if (!load(Resource::smallFont) || !load(Resource::palette)) {
+    if (!loadSmallFont() || !loadPalette()) {
       return;
     }
     game.state = GameState::loadingIntro;
