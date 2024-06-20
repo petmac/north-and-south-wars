@@ -1,4 +1,4 @@
-#include "loader.h"
+#include "game/loader.h"
 
 bool load(Resource resource) {
   switch (resource) {

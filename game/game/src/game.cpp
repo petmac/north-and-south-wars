@@ -1,6 +1,6 @@
-#include "game.h"
+#include "game/game.h"
 
-#include "loader.h"
+#include "game/loader.h"
 
 Game initGame() {
   return (Game){

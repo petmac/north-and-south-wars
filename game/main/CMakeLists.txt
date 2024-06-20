@@ -4,10 +4,7 @@ add_executable(
     chip.h
     copper.h
     frame_chip.h
-    game.cpp
-    game.h
     loader.cpp
-    loader.h
     main.cpp
     )
 
@@ -15,6 +12,7 @@ target_link_libraries(
     a.elf
     PRIVATE
     amiga
+    game
     support
     )
 
