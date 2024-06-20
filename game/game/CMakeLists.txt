@@ -8,8 +8,6 @@ add_executable(
     frame_chip.h
     game.cpp
     game.h
-    libs.cpp
-    libs.h
     loader.cpp
     loader.h
     main.cpp

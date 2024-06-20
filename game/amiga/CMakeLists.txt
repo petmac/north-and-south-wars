@@ -3,7 +3,9 @@ add_library(
     OBJECT
     include/amiga/bitmap.h
     include/amiga/custom.h
+    include/amiga/libs.h
     include/amiga/mouse.h
+    src/libs.cpp
     src/mouse.cpp
     )
 

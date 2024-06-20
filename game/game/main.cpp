@@ -1,9 +1,9 @@
 #include "chip.h"
 #include "copper.h"
 #include "game.h"
-#include "libs.h"
 #include "system.h"
 
+#include "amiga/libs.h"
 #include "amiga/mouse.h"
 
 #include <hardware/dmabits.h>

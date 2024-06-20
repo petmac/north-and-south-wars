@@ -1,4 +1,4 @@
-#include "libs.h"
+#include "amiga/libs.h"
 
 #include <proto/exec.h>
 
