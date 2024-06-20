@@ -5,8 +5,10 @@ TSX := assets/tiles.tsx
 MAP := $(TEMP_DIR)/data/map
 TMX2MAP := tools/target/release/tmx2map
 
+ASEPRITE := "$(HOME)/Library/Application Support/Steam/steamapps/common/Aseprite/Aseprite.app/Contents/MacOS/aseprite"
+
 .PHONY: all
-all: cmake-build
+all: cmake-build $(TEMP_DIR)/assets/small_font.png
 
 .PHONY: clean
 clean:
@@ -29,3 +31,7 @@ $(TMX2MAP): tools
 .PHONY: tools
 tools:
 	cd tools && cargo build --release
+
+# Convert from .aseprite to .png
+$(TEMP_DIR)/assets/%.png: assets/%.aseprite
+	$(ASEPRITE) --batch $< --save-as $@ 
