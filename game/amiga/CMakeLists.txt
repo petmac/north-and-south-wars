@@ -2,6 +2,7 @@ add_library(
     amiga
     OBJECT
     include/amiga/bitmap.h
+    include/amiga/copper.h
     include/amiga/custom.h
     include/amiga/doynax.h
     include/amiga/libs.h
