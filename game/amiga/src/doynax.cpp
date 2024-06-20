@@ -1,4 +1,4 @@
-#include "doynax.h"
+#include "amiga/doynax.h"
 
 #include "gcc8_c_support.h"
 

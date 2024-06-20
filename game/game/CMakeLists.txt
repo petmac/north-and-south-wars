@@ -3,8 +3,6 @@ add_executable(
     chip.cpp
     chip.h
     copper.h
-    doynax.cpp
-    doynax.h
     frame_chip.h
     game.cpp
     game.h

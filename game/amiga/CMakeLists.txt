@@ -3,9 +3,11 @@ add_library(
     OBJECT
     include/amiga/bitmap.h
     include/amiga/custom.h
+    include/amiga/doynax.h
     include/amiga/libs.h
     include/amiga/mouse.h
     include/amiga/system.h
+    src/doynax.cpp
     src/libs.cpp
     src/mouse.cpp
     src/system.cpp
