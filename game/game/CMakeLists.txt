@@ -13,8 +13,6 @@ add_executable(
     loader.cpp
     loader.h
     main.cpp
-    mouse.cpp
-    mouse.h
     system.cpp
     system.h
     )

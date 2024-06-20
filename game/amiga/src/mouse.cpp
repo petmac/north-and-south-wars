@@ -1,4 +1,4 @@
-#include "mouse.h"
+#include "amiga/mouse.h"
 
 #include "util/types.h"
 

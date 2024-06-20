@@ -2,8 +2,9 @@
 #include "copper.h"
 #include "game.h"
 #include "libs.h"
-#include "mouse.h"
 #include "system.h"
+
+#include "amiga/mouse.h"
 
 #include <hardware/dmabits.h>
 #include <hardware/intbits.h>
