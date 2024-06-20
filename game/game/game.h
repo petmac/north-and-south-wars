@@ -1,6 +1,6 @@
 #pragma once
 
-#include "types.h"
+#include "util/types.h"
 
 enum class GameState : u8 {
   loadingFontAndPalette,

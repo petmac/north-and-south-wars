@@ -1,11 +1,11 @@
 add_library(
     util
     INTERFACE
-    types.h
+    include/util/types.h
     )
 
 target_include_directories(
     util
     INTERFACE
-    .
+    include
     )
