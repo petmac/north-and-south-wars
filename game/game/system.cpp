@@ -1,8 +1,8 @@
 #include "system.h"
 
-#include "custom.h"
 #include "libs.h"
 
+#include "amiga/custom.h"
 #include "gcc8_c_support.h"
 
 #include <exec/execbase.h>

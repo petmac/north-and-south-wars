@@ -3,7 +3,6 @@ add_executable(
     chip.cpp
     chip.h
     copper.h
-    custom.h
     doynax.cpp
     doynax.h
     frame_chip.h
@@ -23,6 +22,7 @@ add_executable(
 target_link_libraries(
     a.elf
     PRIVATE
+    amiga
     support
     util
     )
