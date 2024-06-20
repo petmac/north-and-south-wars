@@ -1,6 +1,5 @@
 #pragma once
 
-#include "bitmap.h"
 #include "copper.h"
 
 using Background = InterleavedBitmap<320, 256, 4>;

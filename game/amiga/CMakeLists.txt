@@ -1,6 +1,7 @@
 add_library(
     amiga
     INTERFACE
+    include/amiga/bitmap.h
     include/amiga/custom.h
     )
 

@@ -1,7 +1,6 @@
 #pragma once
 
-#include "bitmap.h"
-
+#include "amiga/bitmap.h"
 #include "amiga/custom.h"
 
 struct CopperMove {
