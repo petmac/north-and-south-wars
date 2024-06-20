@@ -11,8 +11,6 @@ add_executable(
     loader.cpp
     loader.h
     main.cpp
-    system.cpp
-    system.h
     )
 
 target_link_libraries(

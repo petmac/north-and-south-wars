@@ -1,4 +1,4 @@
-#include "system.h"
+#include "amiga/system.h"
 
 #include "amiga/custom.h"
 #include "gcc8_c_support.h"

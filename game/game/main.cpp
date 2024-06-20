@@ -1,10 +1,10 @@
 #include "chip.h"
 #include "copper.h"
 #include "game.h"
-#include "system.h"
 
 #include "amiga/libs.h"
 #include "amiga/mouse.h"
+#include "amiga/system.h"
 
 #include <hardware/dmabits.h>
 #include <hardware/intbits.h>
