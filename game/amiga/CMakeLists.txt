@@ -15,6 +15,6 @@ target_include_directories(
 
 target_link_libraries(
     amiga
-    PRIVATE
+    PUBLIC
     util
     )

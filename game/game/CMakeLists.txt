@@ -22,7 +22,6 @@ target_link_libraries(
     PRIVATE
     amiga
     support
-    util
     )
 
 add_custom_command(
