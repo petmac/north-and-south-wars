@@ -5,4 +5,3 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/external/AmigaCMakeCr
 enable_language(ASM_VASM)
 
 add_subdirectory(game)
-add_subdirectory(support)

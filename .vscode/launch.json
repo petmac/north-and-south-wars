@@ -15,7 +15,7 @@
       "preLaunchTask": "Amiga",
       "name": "Amiga 1200",
       "config": "A1200",
-      "program": "${workspaceFolder}/out/game/a",
+      "program": "${workspaceFolder}/out/game/game/a",
       "kickstart": "${config:amiga.rom-paths.A1200}",
       "internalConsoleOptions": "openOnSessionStart",
       "emuargs": ["--floppy_drive_0_sounds=off"]
