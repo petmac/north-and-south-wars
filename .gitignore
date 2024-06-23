@@ -1,6 +1,9 @@
 # macOS
 .DS_Store
 
+# Homebrew
+/Brewfile.lock.json
+
 # VS Code
 /.vscode/settings.json
 
