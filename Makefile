@@ -7,8 +7,11 @@ TMX2MAP := tools/target/release/tmx2map
 
 ASEPRITE := "$(HOME)/Library/Application Support/Steam/steamapps/common/Aseprite/Aseprite.app/Contents/MacOS/aseprite"
 
+FREEIMAGE_PREFIX := $(shell brew --prefix freeimage)
+KINGCON := external/kingcon/build/kingcon
+
 .PHONY: all
-all: cmake-build $(TEMP_DIR)/assets/small_font.png
+all: cmake-build $(TEMP_DIR)/assets/small_font.png $(KINGCON)
 
 .PHONY: clean
 clean:
@@ -35,3 +38,7 @@ tools:
 # Convert from .aseprite to .png
 $(TEMP_DIR)/assets/%.png: assets/%.aseprite
 	$(ASEPRITE) --batch $< --save-as $@ 
+
+# Kingcon
+$(KINGCON):
+	CPATH="$(FREEIMAGE_PREFIX)/include" LIBRARY_PATH="$(FREEIMAGE_PREFIX)/lib" $(MAKE) --directory external/kingcon
