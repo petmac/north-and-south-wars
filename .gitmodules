@@ -1,3 +1,6 @@
 [submodule "external/AmigaCMakeCrossToolchains"]
 	path = external/AmigaCMakeCrossToolchains
 	url = https://github.com/AmigaPorts/AmigaCMakeCrossToolchains.git
+[submodule "external/kingcon"]
+	path = external/kingcon
+	url = https://github.com/grahambates/kingcon.git
