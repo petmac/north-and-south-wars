@@ -36,7 +36,17 @@ static void runFrame() {
   // Prep copperlist
   copper.screenScan = screenScanDefault();
   copper.setPlanes = copSetPlanes(&frameChip.background);
-  copper.colors[0] = copperMove(color[0], 0x124);
+  switch (game.state) {
+  case GameState::loadingFontAndPalette:
+    copper.colors[0] = copperMove(color[0], 0x124);
+    break;
+  case GameState::loadingIntro:
+    copper.colors[0] = copperMove(color[0], 0x421);
+    break;
+  case GameState::error:
+    copper.colors[0] = copperMove(color[0], 0xf00);
+    break;
+  }
   copper.colors[1] = copperMove(color[1], 0xff0);
   copper.end = copperEnd();
 
