@@ -42,7 +42,7 @@ $(TEMP_DIR)/assets/%.png: assets/%.aseprite
 # Convert from .png to .BPL and PAL
 # https://github.com/grahambates/kingcon/blob/master/README.md#image-conversion-output-format
 %.BPL %.PAL: %.png $(KINGCON)
-	$(KINGCON) $< $(basename $@) -Format=5 -Interleaved -RawPalette
+	$(KINGCON) $< $(basename $@) -Format=5 -RawPalette -Interleaved -Mask=32
 
 # Kingcon
 $(KINGCON):
