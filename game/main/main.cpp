@@ -74,7 +74,7 @@ int main() {
   game = initGame();
   SetInterruptHandler(interruptHandler);
 
-  custom.intena = INTF_SETCLR | INTF_INTEN | INTF_VERTB;
+  custom.intena = INTF_SETCLR | INTF_INTEN | INTF_VERTB | INTF_PORTS;
   custom.intreq = INTF_VERTB; // reset vbl req
 
   while (!MouseLeft()) {

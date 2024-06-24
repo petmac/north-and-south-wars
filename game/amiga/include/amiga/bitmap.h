@@ -16,3 +16,19 @@ template <u16 width, u16 height, u16 depth> struct InterleavedBitmap {
 
   Row rows[height];
 };
+
+template <u16 width, u16 height, u16 depth> struct MaskedInterleavedBitmap {
+  static constexpr u16 widthInWords = (width + 15) / 16;
+  static constexpr u16 widthInBytes = widthInWords * 2;
+
+  struct Row {
+    struct Plane {
+      u16 words[widthInWords];
+    };
+
+    Plane imagePlanes[depth];
+    Plane maskPlanes[depth];
+  };
+
+  Row rows[height];
+};

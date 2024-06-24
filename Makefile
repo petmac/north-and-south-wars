@@ -1,4 +1,5 @@
 TEMP_DIR := temp
+OUT_DIR := $(TEMP_DIR)/game/main
 
 TMX := assets/map.tmx
 TSX := assets/tiles.tsx
@@ -11,7 +12,7 @@ FREEIMAGE_PREFIX := $(shell brew --prefix freeimage)
 KINGCON := external/kingcon/build/kingcon
 
 .PHONY: all
-all: cmake-build $(TEMP_DIR)/assets/small_font.BPL $(TEMP_DIR)/assets/small_font.PAL
+all: cmake-build $(OUT_DIR)/data/small_font.BPL $(OUT_DIR)/data/small_font.PAL
 
 .PHONY: clean
 clean:
@@ -41,7 +42,8 @@ $(TEMP_DIR)/assets/%.png: assets/%.aseprite
 
 # Convert from .png to .BPL and PAL
 # https://github.com/grahambates/kingcon/blob/master/README.md#image-conversion-output-format
-%.BPL %.PAL: %.png $(KINGCON)
+$(OUT_DIR)/data/%.BPL $(OUT_DIR)/data/%.PAL: $(TEMP_DIR)/assets/%.png $(KINGCON)
+	mkdir -p $(dir $@)
 	$(KINGCON) $< $(basename $@) -Format=5 -RawPalette -Interleaved -Mask=32
 
 # Kingcon
