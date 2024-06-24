@@ -11,7 +11,7 @@ FREEIMAGE_PREFIX := $(shell brew --prefix freeimage)
 KINGCON := external/kingcon/build/kingcon
 
 .PHONY: all
-all: cmake-build $(TEMP_DIR)/assets/small_font.BPL $(KINGCON)
+all: cmake-build $(TEMP_DIR)/assets/small_font.BPL $(TEMP_DIR)/assets/small_font.PAL
 
 .PHONY: clean
 clean:
@@ -39,9 +39,9 @@ tools:
 $(TEMP_DIR)/assets/%.png: assets/%.aseprite
 	$(ASEPRITE) --batch $< --save-as $@ 
 
-# Convert from .png to .BPL
-%.BPL: %.png $(KINGCON)
-	$(KINGCON) $< $(basename $@) -Format=5 -Interleaved
+# Convert from .png to .BPL and PAL
+%.BPL %.PAL: %.png $(KINGCON)
+	$(KINGCON) $< $(basename $@) -Format=5 -Interleaved -RawPalette
 
 # Kingcon
 $(KINGCON):
