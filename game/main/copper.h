@@ -59,8 +59,8 @@ copSetPlanes(const InterleavedBitmap<width, height, depth> *bitmap) {
   };
 
   for (u16 planeIndex = 0; planeIndex < depth; ++planeIndex) {
-    ret.bplpt[planeIndex] =
-        copperSetPointer(bplpt[planeIndex], &bitmap->words[0][planeIndex][0]);
+    ret.bplpt[planeIndex] = copperSetPointer(
+        bplpt[planeIndex], &bitmap->rows[0].planes[planeIndex].words[0]);
   }
 
   for (u16 planeIndex = depth; planeIndex < 8; ++planeIndex) {

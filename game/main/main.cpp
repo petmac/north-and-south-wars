@@ -28,10 +28,10 @@ static void runFrame() {
   Background &background = frameChip.background;
 
   // Draw to back buffer
-  background.words[0][0][0] = 0xffff;
-  background.words[1][0][1] = 0xffff;
-  background.words[2][1][2] = 0xffff;
-  background.words[3][1][3] = 0xffff;
+  background.rows[0].planes[0].words[0] = 0xffff;
+  background.rows[1].planes[0].words[1] = 0xffff;
+  background.rows[2].planes[1].words[2] = 0xffff;
+  background.rows[3].planes[1].words[3] = 0xffff;
 
   // Prep copperlist
   copper.screenScan = screenScanDefault();
