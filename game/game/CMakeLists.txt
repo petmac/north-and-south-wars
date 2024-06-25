@@ -1,8 +1,8 @@
 add_library(
     game
     OBJECT
+    include/game/callbacks.h
     include/game/game.h
-    include/game/loader.h
     src/game.cpp
     )
 

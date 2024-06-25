@@ -1,6 +1,6 @@
 #include "game/game.h"
 
-#include "game/loader.h"
+#include "game/callbacks.h"
 
 Game initGame() {
   return (Game){
