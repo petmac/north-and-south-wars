@@ -1,5 +1,4 @@
 #include "chip.h"
-#include "copper.h"
 
 #include "amiga/libs.h"
 #include "amiga/mouse.h"
