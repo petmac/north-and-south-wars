@@ -32,23 +32,6 @@ static void runFrame() {
   background.rows[2].planes[1].words[2] = 0xffff;
   background.rows[3].planes[1].words[3] = 0xffff;
 
-  // Prep copperlist
-  copper.screenScan = screenScanDefault();
-  copper.setPlanes = copSetPlanes(&frameChip.background);
-  switch (game.state) {
-  case GameState::loadingFontAndPalette:
-    copper.colors[0] = copperMove(color[0], 0x124);
-    break;
-  case GameState::loadingIntro:
-    copper.colors[0] = copperMove(color[0], 0x421);
-    break;
-  case GameState::error:
-    copper.colors[0] = copperMove(color[0], 0xf00);
-    break;
-  }
-  copper.colors[1] = copperMove(color[1], 0xff0);
-  copper.end = copperEnd();
-
   // Present back buffer
   WaitVbl();
   custom.cop1lc = reinterpret_cast<u32>(&copper);
@@ -71,6 +54,8 @@ int main() {
   custom.dmacon = DMAF_SETCLR | DMAF_MASTER | DMAF_BLITTER;
 
   game = initGame();
+  initChip();
+
   SetInterruptHandler(interruptHandler);
 
   custom.intena = INTF_SETCLR | INTF_INTEN | INTF_VERTB | INTF_PORTS;

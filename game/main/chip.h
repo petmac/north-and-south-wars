@@ -10,3 +10,5 @@ struct Chip {
 };
 
 extern Chip chip;
+
+void initChip();
