@@ -1,6 +1,7 @@
 #include "game/callbacks.h"
 
 #include "chip.h"
+#include "palette.h"
 
 #include "gcc8_c_support.h"
 
@@ -32,4 +33,16 @@ bool loadSmallFont() {
   return load(&chip.smallFont, sizeof(chip.smallFont), "data/small_font.BPL");
 }
 
-bool loadPalette() { return true; }
+bool loadPalette() {
+  Palette palette;
+  if (!load(&palette, sizeof(palette), "data/small_font.PAL")) {
+    return false;
+  }
+
+  for (u16 colorIndex = 0; colorIndex < 32; ++colorIndex) {
+    chip.frames[0].copper.colors[colorIndex].value = palette[colorIndex];
+    chip.frames[1].copper.colors[colorIndex].value = palette[colorIndex];
+  }
+
+  return true;
+}

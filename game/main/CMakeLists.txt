@@ -6,6 +6,7 @@ add_executable(
     frame_chip.h
     loader.cpp
     main.cpp
+    palette.h
     )
 
 target_link_libraries(
