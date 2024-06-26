@@ -13,6 +13,17 @@
       "type": "amiga",
       "request": "launch",
       "preLaunchTask": "Amiga",
+      "name": "Amiga 500",
+      "config": "A500",
+      "program": "${workspaceFolder}/temp/game/main/a",
+      "kickstart": "${config:amiga.rom-paths.A500}",
+      "internalConsoleOptions": "openOnSessionStart",
+      "emuargs": ["--floppy_drive_0_sounds=off"]
+    },
+    {
+      "type": "amiga",
+      "request": "launch",
+      "preLaunchTask": "Amiga",
       "name": "Amiga 1200",
       "config": "A1200",
       "program": "${workspaceFolder}/temp/game/main/a",
