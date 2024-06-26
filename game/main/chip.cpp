@@ -10,7 +10,7 @@ static void initFrameChip(FrameChip &frameChip) {
   copper.screenScan = screenScanDefault();
   copper.setPlanes = copSetPlanes(&background);
   for (u16 colorIndex = 0; colorIndex < 32; ++colorIndex) {
-    copper.colors[colorIndex] = copperMove(color[1], 0xff0);
+    copper.colors[colorIndex] = copperMove(color[colorIndex], 0xff0);
   }
   copper.end = copperEnd();
 }
