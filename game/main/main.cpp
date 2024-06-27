@@ -1,3 +1,4 @@
+#include "blit.h"
 #include "chip.h"
 
 #include "amiga/libs.h"
@@ -27,10 +28,7 @@ static void runFrame() {
   Background &background = frameChip.background;
 
   // Draw to back buffer
-  background.rows[0].planes[0].words[0] = 0xffff;
-  background.rows[1].planes[0].words[1] = 0xffff;
-  background.rows[2].planes[1].words[2] = 0xffff;
-  background.rows[3].planes[1].words[3] = 0xffff;
+  blitFast(background, chip.smallFont);
 
   // Present back buffer
   WaitVbl();

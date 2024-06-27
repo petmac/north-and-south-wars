@@ -1,5 +1,6 @@
 add_executable(
     a.elf
+    blit.h
     chip.cpp
     chip.h
     copper.h

@@ -23,11 +23,11 @@ template <u16 width, u16 height, u16 depth> struct MaskedInterleavedBitmap {
 
   struct Row {
     struct Plane {
-      u16 words[widthInWords];
+      u16 imageWords[widthInWords];
+      u16 maskWords[widthInWords];
     };
 
-    Plane imagePlanes[depth];
-    Plane maskPlanes[depth];
+    Plane planes[depth];
   };
 
   Row rows[height];

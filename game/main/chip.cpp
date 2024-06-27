@@ -6,6 +6,17 @@ static void initFrameChip(FrameChip &frameChip) {
   Copper &copper = frameChip.copper;
   Background &background = frameChip.background;
 
+  // Fill background
+  for (u16 rowIndex = 0; rowIndex < 256; ++rowIndex) {
+    const u16 colorIndex = rowIndex & 31;
+    for (u16 planeIndex = 0; planeIndex < 5; ++planeIndex) {
+      const u16 word = (colorIndex & (1 << planeIndex)) ? 0xffff : 0x0000;
+      for (u16 wordIndex = 0; wordIndex < (320 / 16); ++wordIndex) {
+        background.rows[rowIndex].planes[planeIndex].words[wordIndex] = word;
+      }
+    }
+  }
+
   // Prep copperlist
   copper.screenScan = screenScanDefault();
   copper.setPlanes = copSetPlanes(&background);
