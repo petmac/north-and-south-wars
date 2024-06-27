@@ -28,7 +28,7 @@ static void runFrame() {
   Background &background = frameChip.background;
 
   // Draw to back buffer
-  blitFast(background, chip.smallFont);
+  blitFast(background, chip.smallFont, 1, 16);
 
   // Present back buffer
   WaitVbl();
