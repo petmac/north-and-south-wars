@@ -8,6 +8,7 @@ add_executable(
     loader.cpp
     main.cpp
     palette.h
+    text.h
     )
 
 target_link_libraries(

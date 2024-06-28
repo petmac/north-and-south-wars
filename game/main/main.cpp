@@ -1,5 +1,6 @@
 #include "blit.h"
 #include "chip.h"
+#include "text.h"
 
 #include "amiga/libs.h"
 #include "amiga/mouse.h"
@@ -28,7 +29,9 @@ static void runFrame() {
   Background &background = frameChip.background;
 
   // Draw to back buffer
-  blitFast(background, chip.smallFont, 1, 16);
+  for (u16 i = 0; i < 20; ++i) {
+    drawText(background, chip.smallFont, 2 + i, 16 + i * 8, "Hello, World!");
+  }
 
   // Present back buffer
   WaitVbl();
