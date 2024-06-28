@@ -3,7 +3,7 @@
 #include "amiga/bitmap.h"
 #include "amiga/custom.h"
 
-#include <hardware/blit.h>  // WaitBlit
+#include <hardware/blit.h>  // BC0F_SRCA, etc.
 #include <proto/graphics.h> // WaitBlit
 
 template <u16 srcWidth, u16 srcHeight, u16 dstWidth, u16 dstHeight, u16 depth>
