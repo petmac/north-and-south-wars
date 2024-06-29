@@ -20,6 +20,9 @@ void drawText(InterleavedBitmap<dstWidth, dstHeight, depth> &dst,
   constexpr u16 bltdmod = bltcmod;
   constexpr u16 bltsize = ((depth * 8) << HSIZEBITS) | 1;
 
+  auto &firstDstPlaneAsc = dst.rows[y].planes[0];
+  auto &firstDstPlaneDesc = dst.rows[y + 7].planes[depth - 1];
+
   WaitBlit();
   custom.bltamod = bltamod;
   custom.bltalwm = 0xffff;
@@ -39,24 +42,21 @@ void drawText(InterleavedBitmap<dstWidth, dstHeight, depth> &dst,
       const bool desc = srcXBytesIsOdd && !dstXBytesIsOdd;
       const bool needsShift = srcXBytesIsOdd != dstXBytesIsOdd;
       const u16 shift = needsShift ? (8 << ASHIFTSHIFT) : 0;
-      const u16 firstPlaneIndex = desc ? depth - 1 : 0;
-      const auto *const firstSrcPlane =
-          &font.rows[desc ? srcY + 7 : srcY].planes[firstPlaneIndex];
+      const auto &firstSrcPlaneAsc = font.rows[srcY].planes[0];
+      const auto &firstSrcPlaneDesc = font.rows[srcY + 7].planes[depth - 1];
+      const auto &firstSrcPlane = desc ? firstSrcPlaneDesc : firstSrcPlaneAsc;
+      auto &firstDstPlane = desc ? firstDstPlaneDesc : firstDstPlaneAsc;
 
       const u16 bltcon0 = shift | BC0F_SRCA | BC0F_SRCB | BC0F_SRCC |
                           BC0F_DEST | ABC | ABNC | NABC | NANBC;
       const u16 bltcon1 = shift | (desc ? BC1F_DESC : 0);
 
       u16 *const bltapt =
-          const_cast<u16 *>(&firstSrcPlane->maskWords[srcXWords]);
+          const_cast<u16 *>(&firstSrcPlane.maskWords[srcXWords]);
       const u16 bltafwm = srcXBytesIsOdd ? 0x00ff : 0xff00;
-
       u16 *const bltbpt =
-          const_cast<u16 *>(&firstSrcPlane->imageWords[srcXWords]);
-
-      u16 *const bltcpt =
-          &dst.rows[desc ? y + 7 : y].planes[firstPlaneIndex].words[xWords];
-
+          const_cast<u16 *>(&firstSrcPlane.imageWords[srcXWords]);
+      u16 *const bltcpt = &firstDstPlane.words[xWords];
       u16 *const bltdpt = bltcpt;
 
       WaitBlit();
