@@ -12,11 +12,23 @@ void drawText(InterleavedBitmap<dstWidth, dstHeight, depth> &dst,
     return;
   }
 
+  constexpr u16 srcWidthWords = (srcWidth + 15) / 16;
+  constexpr u16 dstWidthWords = (dstWidth + 15) / 16;
+  constexpr u16 bltamod = (srcWidthWords - 1 + srcWidthWords) * 2;
+  constexpr u16 bltbmod = bltamod;
+  constexpr u16 bltcmod = (dstWidthWords - 1) * 2;
+  constexpr u16 bltdmod = bltcmod;
+  constexpr u16 bltsize = ((depth * 8) << HSIZEBITS) | 1;
+
+  WaitBlit();
+  custom.bltamod = bltamod;
+  custom.bltalwm = 0xffff;
+  custom.bltbmod = bltbmod;
+  custom.bltcmod = bltcmod;
+  custom.bltdmod = bltdmod;
+
   for (;;) {
     if (ch != ' ') {
-      constexpr u16 srcWidthWords = (srcWidth + 15) / 16;
-      constexpr u16 dstWidthWords = (dstWidth + 15) / 16;
-
       const u16 xWords = xBytes >> 1;
       const u16 glyphIndex = ch - ' ';
       const u16 srcXBytes = glyphIndex & 15;
@@ -37,35 +49,24 @@ void drawText(InterleavedBitmap<dstWidth, dstHeight, depth> &dst,
 
       u16 *const bltapt =
           const_cast<u16 *>(&firstSrcPlane->maskWords[srcXWords]);
-      constexpr u16 bltamod = (srcWidthWords - 1 + srcWidthWords) * 2;
       const u16 bltafwm = srcXBytesIsOdd ? 0x00ff : 0xff00;
 
       u16 *const bltbpt =
           const_cast<u16 *>(&firstSrcPlane->imageWords[srcXWords]);
-      constexpr u16 bltbmod = bltamod;
 
       u16 *const bltcpt =
           &dst.rows[desc ? y + 7 : y].planes[firstPlaneIndex].words[xWords];
-      constexpr u16 bltcmod = (dstWidthWords - 1) * 2;
 
       u16 *const bltdpt = bltcpt;
-      constexpr u16 bltdmod = bltcmod;
-
-      constexpr u16 bltsize = ((depth * 8) << HSIZEBITS) | 1;
 
       WaitBlit();
       custom.bltcon0 = bltcon0;
       custom.bltcon1 = bltcon1;
       custom.bltapt = bltapt;
-      custom.bltamod = bltamod;
       custom.bltafwm = bltafwm;
-      custom.bltalwm = 0xffff;
       custom.bltbpt = bltbpt;
-      custom.bltbmod = bltbmod;
       custom.bltcpt = bltcpt;
-      custom.bltcmod = bltcmod;
       custom.bltdpt = bltdpt;
-      custom.bltdmod = bltdmod;
       custom.bltsize = bltsize;
     }
 
