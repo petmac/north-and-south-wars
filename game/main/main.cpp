@@ -29,7 +29,7 @@ static void runFrame() {
   Background &background = frameChip.background;
 
   // Draw to back buffer
-  for (u16 i = 0; i < 20; ++i) {
+  for (u16 i = 0; i < 8; ++i) {
     drawText(background, chip.smallFont, 2 + i, 16 + i * 8, "Hello, World!");
   }
 
