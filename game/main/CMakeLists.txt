@@ -4,7 +4,12 @@ add_executable(
     chip.cpp
     chip.h
     copper.h
+    draw.cpp
+    draw.h
+    fast.cpp
+    fast.h
     frame_chip.h
+    frame_fast.h
     loader.cpp
     main.cpp
     palette.h
