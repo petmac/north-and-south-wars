@@ -19,6 +19,10 @@ void updateGame(Game &game) {
     break;
 
   case GameState::loadingIntro:
+    game.state = GameState::intro;
+    break;
+
+  case GameState::intro:
     break;
 
   case GameState::error:

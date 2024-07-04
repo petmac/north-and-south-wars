@@ -9,6 +9,10 @@ static void drawLoadingIntro(Background &background) {
   drawText(background, chip.smallFont, 0, 0, "Loading intro");
 }
 
+static void drawIntro(Background &background) {
+  drawText(background, chip.smallFont, 0, 0, "Intro");
+}
+
 static void drawError(Background &background) {
   drawText(background, chip.smallFont, 0, 0, "Error");
 }
@@ -20,6 +24,9 @@ void draw(FrameChip &frameChip, FrameFast &frameFast, const Game &game) {
     break;
   case GameState::loadingIntro:
     drawLoadingIntro(background);
+    break;
+  case GameState::intro:
+    drawIntro(background);
     break;
   case GameState::error:
     drawError(background);
