@@ -1,5 +1,8 @@
 #pragma once
 
+#include "amiga/bitmap.h"
+#include "amiga/custom.h"
+
 #include <hardware/blit.h>  // BC0F_SRCA, etc.
 #include <proto/graphics.h> // WaitBlit
 
