@@ -9,23 +9,29 @@
 
 #include "game/game.h"
 
+static constexpr u16 centerY = (256 - 8) / 2;
+
 static void drawLoading(Background &background, FrameFast &frameFast) {
+  constexpr u16 x = (40 - 7) / 2;
+
   if (frameFast.state == FrameState::drawnLoading) {
     return;
   }
 
   clear(background);
-  drawText(background, chip.smallFont, 0, 0, "Loading intro");
+  drawText(background, chip.smallFont, x, centerY, "Loading");
   frameFast.state = FrameState::drawnLoading;
 }
 
 static void drawError(Background &background, FrameFast &frameFast) {
+  constexpr u16 x = (40 - 5) / 2;
+
   if (frameFast.state == FrameState::drawnError) {
     return;
   }
 
   clear(background);
-  drawText(background, chip.smallFont, 0, 0, "Error");
+  drawText(background, chip.smallFont, x, centerY, "Error");
   frameFast.state = FrameState::drawnError;
 }
 
