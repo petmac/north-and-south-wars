@@ -6,6 +6,28 @@
 #include <hardware/blit.h>  // BC0F_SRCA, etc.
 #include <proto/graphics.h> // WaitBlit
 
+template <u16 dstWidth, u16 dstHeight, u16 depth>
+void clear(InterleavedBitmap<dstWidth, dstHeight, depth> &dst) {
+  constexpr u16 dstWidthWords = (dstWidth + 15) / 16;
+  constexpr u16 bltsize = ((1 * depth) << HSIZEBITS) | dstWidthWords;
+
+  WaitBlit();
+  custom.bltcon0 = BC0F_DEST | A_TO_D;
+  custom.bltcon1 = 0;
+  custom.bltadat = 0xffff;
+  custom.bltafwm = 0xffff;
+  custom.bltalwm = 0xffff;
+  custom.bltdmod = 0;
+
+  for (u16 y = 0; y < dstHeight; ++y) {
+    u16 *const bltdpt = &dst.rows[y].planes[0].words[0];
+
+    WaitBlit();
+    custom.bltdpt = bltdpt;
+    custom.bltsize = bltsize;
+  }
+}
+
 template <u16 srcWidth, u16 srcHeight, u16 dstWidth, u16 dstHeight, u16 depth>
 void blitFast(InterleavedBitmap<dstWidth, dstHeight, depth> &dst,
               const MaskedInterleavedBitmap<srcWidth, srcHeight, depth> &src,

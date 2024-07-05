@@ -4,6 +4,9 @@
 
 enum class FrameState : u8 {
   cleared,
+  drawnLoading,
+  drawnIntro,
+  drawnError,
 };
 
 struct FrameFast {
