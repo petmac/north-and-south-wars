@@ -4,6 +4,8 @@ add_executable(
     chip.cpp
     chip.h
     copper.h
+    draw_intro.cpp
+    draw_intro.h
     draw.cpp
     draw.h
     fast.cpp
