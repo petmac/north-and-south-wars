@@ -6,6 +6,8 @@ add_executable(
     copper.h
     draw_intro.cpp
     draw_intro.h
+    draw_title.cpp
+    draw_title.h
     draw.cpp
     draw.h
     fast.cpp

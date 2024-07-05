@@ -1,6 +1,7 @@
 #include "game/game.h"
 
 #include "intro.h"
+#include "title.h"
 
 #include "game/callbacks.h"
 
@@ -8,6 +9,7 @@ Game initGame() {
   return (Game){
       .state = GameState::loadingFontAndPalette,
       .intro = {},
+      .title = {},
   };
 }
 
@@ -32,6 +34,11 @@ void updateGame(Game &game) {
     break;
 
   case GameState::loadingTitle:
+    game.state = GameState::title;
+    break;
+
+  case GameState::title:
+    updateTitle(game.title, game);
     break;
 
   case GameState::error:
@@ -41,3 +48,6 @@ void updateGame(Game &game) {
 
 // Intro callbacks
 void goToTitleScreen(Game &game) { game.state = GameState::loadingTitle; }
+
+// Title callbacks
+void goToCampaignMap(Game &game) {}

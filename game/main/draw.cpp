@@ -3,6 +3,7 @@
 #include "blit.h"
 #include "chip.h"
 #include "draw_intro.h"
+#include "draw_title.h"
 #include "frame_fast.h"
 #include "text.h"
 
@@ -39,6 +40,9 @@ void drawGame(FrameChip &frameChip, FrameFast &frameFast, const Game &game) {
   case GameState::intro:
   case GameState::loadingTitle:
     drawIntro(background, frameFast, game.intro);
+    break;
+  case GameState::title:
+    drawTitle(background, frameFast, game.title);
     break;
   case GameState::error:
     drawError(background, frameFast);
