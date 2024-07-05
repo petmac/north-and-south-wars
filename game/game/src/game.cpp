@@ -28,10 +28,16 @@ void updateGame(Game &game) {
     break;
 
   case GameState::intro:
-    updateIntro(game.intro);
+    updateIntro(game.intro, game);
+    break;
+
+  case GameState::loadingTitle:
     break;
 
   case GameState::error:
     break;
   }
 }
+
+// Intro callbacks
+void goToTitleScreen(Game &game) { game.state = GameState::loadingTitle; }

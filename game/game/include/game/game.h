@@ -6,6 +6,7 @@ enum class GameState : u8 {
   loadingFontAndPalette,
   loadingIntro,
   intro,
+  loadingTitle,
   error,
 };
 

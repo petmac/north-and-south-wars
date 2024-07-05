@@ -76,6 +76,7 @@ void drawGame(FrameChip &frameChip, FrameFast &frameFast, const Game &game) {
     drawLoadingIntro(background, frameFast);
     break;
   case GameState::intro:
+  case GameState::loadingTitle:
     drawIntro(background, frameFast, game.intro);
     break;
   case GameState::error:

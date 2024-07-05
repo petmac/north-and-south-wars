@@ -2,3 +2,4 @@
 
 bool loadSmallFont();
 bool loadPalette();
+bool mouseLeft();

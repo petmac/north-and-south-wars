@@ -1,5 +1,6 @@
 #include "intro.h"
 
+#include "game/callbacks.h"
 #include "game/intro.h"
 
 const char *const introTextLines[] = {
@@ -22,9 +23,18 @@ const char *const introTextLines[] = {
     "deserunt mollit anim id est laborum.",
 };
 
-void updateIntro(Intro &intro) {
-  // Run out of lines?
+void updateIntro(Intro &intro, Game &game) {
   constexpr u16 lineCount = sizeof(introTextLines) / sizeof(introTextLines[0]);
+
+  // Skip intro?
+  if (mouseLeft()) {
+    intro.linesComplete = lineCount;
+    intro.charsComplete = 0;
+    goToTitleScreen(game);
+    return;
+  }
+
+  // Run out of lines?
   if (intro.linesComplete >= lineCount) {
     return;
   }

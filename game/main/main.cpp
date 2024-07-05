@@ -3,7 +3,6 @@
 #include "fast.h"
 
 #include "amiga/libs.h"
-#include "amiga/mouse.h"
 #include "amiga/system.h"
 
 #include <hardware/dmabits.h>
@@ -58,7 +57,7 @@ int main() {
   custom.intena = INTF_SETCLR | INTF_INTEN | INTF_VERTB | INTF_PORTS;
   custom.intreq = INTF_VERTB; // reset vbl req
 
-  while (!MouseLeft()) {
+  for (;;) {
     runFrame();
   }
 
