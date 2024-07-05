@@ -24,7 +24,7 @@ static void runFrame() {
   FrameFast &frameFast = fast.frames[fast.backBufferIndex];
 
   // Draw
-  draw(frameChip, frameFast, fast.game);
+  drawGame(frameChip, frameFast, fast.game);
 
   // Update game while drawing finishes
   updateGame(fast.game);

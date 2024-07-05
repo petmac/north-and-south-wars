@@ -1,6 +1,6 @@
 #pragma once
 
-#include "util/types.h"
+#include "intro.h"
 
 enum class GameState : u8 {
   loadingFontAndPalette,
@@ -11,6 +11,7 @@ enum class GameState : u8 {
 
 struct Game {
   GameState state;
+  Intro intro;
 };
 
 Game initGame();

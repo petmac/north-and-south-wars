@@ -2,6 +2,8 @@
 
 static void initFrameFast(FrameFast &frameFast) {
   frameFast.state = FrameState::cleared;
+  frameFast.intro.linesDrawn = 0;
+  frameFast.intro.charsDrawn = 0;
 }
 
 void initFast(Fast &fast) {
