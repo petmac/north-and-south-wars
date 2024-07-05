@@ -6,6 +6,8 @@
 const char *const introTextLines[] = {
     // 0000000111111111122222222223333333333
     // 3456789012345678901234567890123456789
+    "              - Notice -",
+    "",
     "Lorem ipsum dolor sit amet, consectetur",
     "adipiscing elit, sed do eiusmod tempor",
     "incididunt ut labore et dolore magna",
@@ -21,6 +23,9 @@ const char *const introTextLines[] = {
     "Excepteur sint occaecat cupidatat non",
     "proident, sunt in culpa qui officia",
     "deserunt mollit anim id est laborum.",
+    "",
+    "",
+    "- Click left mouse button to continue -",
 };
 
 void updateIntro(Intro &intro, Game &game) {
