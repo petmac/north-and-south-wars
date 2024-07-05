@@ -2,6 +2,7 @@
 
 #include "blit.h"
 #include "chip.h"
+#include "draw_campaign_map.h"
 #include "draw_intro.h"
 #include "draw_title.h"
 #include "frame_fast.h"
@@ -50,6 +51,9 @@ void drawGame(FrameChip &frameChip, FrameFast &frameFast, const Game &game) {
     break;
   case GameState::title:
     drawTitle(background, frameFast, game.title);
+    break;
+  case GameState::campaignMap:
+    drawCampaignMap(background, frameFast, game.campaignMap);
     break;
   case GameState::error:
     drawError(background, frameFast);

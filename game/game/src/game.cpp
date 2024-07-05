@@ -1,5 +1,6 @@
 #include "game/game.h"
 
+#include "campaign_map.h"
 #include "intro.h"
 #include "title.h"
 
@@ -10,6 +11,7 @@ Game initGame() {
       .state = GameState::loadingFontAndPalette,
       .intro = {},
       .title = {},
+      .campaignMap = {},
   };
 }
 
@@ -42,6 +44,11 @@ void updateGame(Game &game) {
     break;
 
   case GameState::loadingCampaignMap:
+    game.state = GameState::campaignMap;
+    break;
+
+  case GameState::campaignMap:
+    updateCampaignMap(game.campaignMap, game);
     break;
 
   case GameState::error:

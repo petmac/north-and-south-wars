@@ -4,6 +4,8 @@ add_executable(
     chip.cpp
     chip.h
     copper.h
+    draw_campaign_map.cpp
+    draw_campaign_map.h
     draw_intro.cpp
     draw_intro.h
     draw_title.cpp

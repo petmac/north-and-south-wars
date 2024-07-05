@@ -7,6 +7,7 @@ enum class FrameState : u8 {
   drawnLoading,
   drawnIntro,
   drawnTitle,
+  drawnCampaignMap,
   drawnError,
 };
 
