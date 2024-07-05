@@ -33,8 +33,6 @@ void updateIntro(Intro &intro, Game &game) {
 
   // Skip intro?
   if (mouseLeft()) {
-    intro.linesComplete = lineCount;
-    intro.charsComplete = 0;
     goToTitleScreen(game);
     return;
   }

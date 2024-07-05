@@ -41,10 +41,10 @@ void drawGame(FrameChip &frameChip, FrameFast &frameFast, const Game &game) {
   case GameState::loadingFontAndPalette:
     break;
   case GameState::loadingIntro:
+  case GameState::loadingTitle:
     drawLoading(background, frameFast);
     break;
   case GameState::intro:
-  case GameState::loadingTitle:
     drawIntro(background, frameFast, game.intro);
     break;
   case GameState::title:
