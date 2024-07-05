@@ -42,6 +42,7 @@ void drawGame(FrameChip &frameChip, FrameFast &frameFast, const Game &game) {
     break;
   case GameState::loadingIntro:
   case GameState::loadingTitle:
+  case GameState::loadingCampaignMap:
     drawLoading(background, frameFast);
     break;
   case GameState::intro:

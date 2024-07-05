@@ -9,6 +9,7 @@ enum class GameState : u8 {
   intro,
   loadingTitle,
   title,
+  loadingCampaignMap,
   error,
 };
 

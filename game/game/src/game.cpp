@@ -41,6 +41,9 @@ void updateGame(Game &game) {
     updateTitle(game.title, game);
     break;
 
+  case GameState::loadingCampaignMap:
+    break;
+
   case GameState::error:
     break;
   }
@@ -50,4 +53,4 @@ void updateGame(Game &game) {
 void goToTitleScreen(Game &game) { game.state = GameState::loadingTitle; }
 
 // Title callbacks
-void goToCampaignMap(Game &game) {}
+void goToCampaignMap(Game &game) { game.state = GameState::loadingCampaignMap; }
