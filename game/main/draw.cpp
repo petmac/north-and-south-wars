@@ -9,7 +9,7 @@
 
 #include "game/game.h"
 
-static void drawLoadingIntro(Background &background, FrameFast &frameFast) {
+static void drawLoading(Background &background, FrameFast &frameFast) {
   if (frameFast.state == FrameState::drawnLoading) {
     return;
   }
@@ -35,7 +35,7 @@ void drawGame(FrameChip &frameChip, FrameFast &frameFast, const Game &game) {
   case GameState::loadingFontAndPalette:
     break;
   case GameState::loadingIntro:
-    drawLoadingIntro(background, frameFast);
+    drawLoading(background, frameFast);
     break;
   case GameState::intro:
   case GameState::loadingTitle:
