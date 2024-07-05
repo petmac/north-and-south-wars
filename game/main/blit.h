@@ -14,7 +14,7 @@ void clear(InterleavedBitmap<dstWidth, dstHeight, depth> &dst) {
   WaitBlit();
   custom.bltcon0 = BC0F_DEST | A_TO_D;
   custom.bltcon1 = 0;
-  custom.bltadat = 0xffff;
+  custom.bltadat = 0;
   custom.bltafwm = 0xffff;
   custom.bltalwm = 0xffff;
   custom.bltdmod = 0;
