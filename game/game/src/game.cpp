@@ -2,6 +2,7 @@
 
 #include "campaign_map.h"
 #include "intro.h"
+#include "mission.h"
 #include "title.h"
 
 #include "game/callbacks.h"
@@ -12,6 +13,7 @@ Game initGame() {
       .intro = {},
       .title = {},
       .campaignMap = {},
+      .mission = {},
   };
 }
 
@@ -51,6 +53,14 @@ void updateGame(Game &game) {
     updateCampaignMap(game.campaignMap, game);
     break;
 
+  case GameState::loadingMission:
+    game.state = GameState::playingMission;
+    break;
+
+  case GameState::playingMission:
+    updateMission(game.mission, game);
+    break;
+
   case GameState::error:
     break;
   }
@@ -61,3 +71,6 @@ void goToTitleScreen(Game &game) { game.state = GameState::loadingTitle; }
 
 // Title callbacks
 void goToCampaignMap(Game &game) { game.state = GameState::loadingCampaignMap; }
+
+// Campaign map callbacks
+void startMission(Game &game) { game.state = GameState::loadingMission; }

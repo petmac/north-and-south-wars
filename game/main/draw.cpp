@@ -4,6 +4,7 @@
 #include "chip.h"
 #include "draw_campaign_map.h"
 #include "draw_intro.h"
+#include "draw_mission.h"
 #include "draw_title.h"
 #include "frame_fast.h"
 #include "text.h"
@@ -44,6 +45,7 @@ void drawGame(FrameChip &frameChip, FrameFast &frameFast, const Game &game) {
   case GameState::loadingIntro:
   case GameState::loadingTitle:
   case GameState::loadingCampaignMap:
+  case GameState::loadingMission:
     drawLoading(background, frameFast);
     break;
   case GameState::intro:
@@ -54,6 +56,9 @@ void drawGame(FrameChip &frameChip, FrameFast &frameFast, const Game &game) {
     break;
   case GameState::campaignMap:
     drawCampaignMap(background, frameFast, game.campaignMap);
+    break;
+  case GameState::playingMission:
+    drawMission(background, frameFast, game.mission);
     break;
   case GameState::error:
     drawError(background, frameFast);

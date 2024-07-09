@@ -8,6 +8,8 @@ add_executable(
     draw_campaign_map.h
     draw_intro.cpp
     draw_intro.h
+    draw_mission.cpp
+    draw_mission.h
     draw_title.cpp
     draw_title.h
     draw.cpp

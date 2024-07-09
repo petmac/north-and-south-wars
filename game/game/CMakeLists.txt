@@ -5,12 +5,15 @@ add_library(
     include/game/campaign_map.h
     include/game/game.h
     include/game/intro.h
+    include/game/mission.h
     include/game/title.h
     src/campaign_map.cpp
     src/campaign_map.h
     src/game.cpp
     src/intro.cpp
     src/intro.h
+    src/mission.cpp
+    src/mission.h
     src/title.cpp
     src/title.h
     )
