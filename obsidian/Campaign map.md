@@ -4,6 +4,6 @@ Progresses through the regions in the U.S.
 
 Approximately historical order
 
-When moving on to a region, it triggers the battle in that region
+When moving on to a region, it triggers the mission in that region
 
-BATTLE START
+MISSION START
