@@ -1,5 +1,7 @@
 #include "intro.h"
 
+#include "dev.h"
+
 #include "game/callbacks.h"
 #include "game/intro.h"
 
@@ -30,6 +32,12 @@ const char *const introTextLines[] = {
 
 void updateIntro(Intro &intro, Game &game) {
   constexpr u16 lineCount = sizeof(introTextLines) / sizeof(introTextLines[0]);
+
+  // Dev skip.
+  if (dev && (intro.linesComplete >= 3)) {
+    goToTitleScreen(game);
+    return;
+  }
 
   // Skip intro?
   if (mouseLeft()) {

@@ -9,6 +9,7 @@ add_library(
     include/game/title.h
     src/campaign_map.cpp
     src/campaign_map.h
+    src/dev.h
     src/game.cpp
     src/intro.cpp
     src/intro.h
