@@ -28,6 +28,10 @@ void updateGame(Game &game) {
     break;
 
   case GameState::loadingIntro:
+    if (false) {
+      game.state = GameState::error;
+      return;
+    }
     game.state = GameState::intro;
     startIntro(game.intro);
     break;
@@ -37,6 +41,10 @@ void updateGame(Game &game) {
     break;
 
   case GameState::loadingTitle:
+    if (false) {
+      game.state = GameState::error;
+      return;
+    }
     game.state = GameState::title;
     startTitle(game.title);
     break;
@@ -46,6 +54,10 @@ void updateGame(Game &game) {
     break;
 
   case GameState::loadingCampaignMap:
+    if (false) {
+      game.state = GameState::error;
+      return;
+    }
     game.state = GameState::campaignMap;
     startCampaignMap(game.campaignMap);
     break;
@@ -55,6 +67,10 @@ void updateGame(Game &game) {
     break;
 
   case GameState::loadingMission:
+    if (false) {
+      game.state = GameState::error;
+      return;
+    }
     game.state = GameState::playingMission;
     startMission(game.mission);
     break;
