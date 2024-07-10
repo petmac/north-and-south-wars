@@ -3,10 +3,12 @@
 #include "game/callbacks.h"
 #include "game/title.h"
 
+void startTitle(Title &title) {}
+
 void updateTitle(Title &title, Game &game) {
   // Continue?
   if (mouseLeft()) {
-    goToCampaignMap(game);
+    loadCampaignMap(game);
     return;
   }
 }

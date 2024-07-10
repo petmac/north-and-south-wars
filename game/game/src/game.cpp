@@ -29,8 +29,7 @@ void updateGame(Game &game) {
 
   case GameState::loadingIntro:
     game.state = GameState::intro;
-    game.intro.linesComplete = 0;
-    game.intro.charsComplete = 0;
+    startIntro(game.intro);
     break;
 
   case GameState::intro:
@@ -39,6 +38,7 @@ void updateGame(Game &game) {
 
   case GameState::loadingTitle:
     game.state = GameState::title;
+    startTitle(game.title);
     break;
 
   case GameState::title:
@@ -47,6 +47,7 @@ void updateGame(Game &game) {
 
   case GameState::loadingCampaignMap:
     game.state = GameState::campaignMap;
+    startCampaignMap(game.campaignMap);
     break;
 
   case GameState::campaignMap:
@@ -55,6 +56,7 @@ void updateGame(Game &game) {
 
   case GameState::loadingMission:
     game.state = GameState::playingMission;
+    startMission(game.mission);
     break;
 
   case GameState::playingMission:
@@ -67,10 +69,10 @@ void updateGame(Game &game) {
 }
 
 // Intro callbacks
-void goToTitleScreen(Game &game) { game.state = GameState::loadingTitle; }
+void loadTitleScreen(Game &game) { game.state = GameState::loadingTitle; }
 
 // Title callbacks
-void goToCampaignMap(Game &game) { game.state = GameState::loadingCampaignMap; }
+void loadCampaignMap(Game &game) { game.state = GameState::loadingCampaignMap; }
 
 // Campaign map callbacks
-void startMission(Game &game) { game.state = GameState::loadingMission; }
+void loadMission(Game &game) { game.state = GameState::loadingMission; }

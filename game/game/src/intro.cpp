@@ -30,18 +30,23 @@ const char *const introTextLines[] = {
     "- Click left mouse button to continue -",
 };
 
+void startIntro(Intro &intro) {
+  intro.linesComplete = 0;
+  intro.charsComplete = 0;
+}
+
 void updateIntro(Intro &intro, Game &game) {
   constexpr u16 lineCount = sizeof(introTextLines) / sizeof(introTextLines[0]);
 
   // Dev skip.
   if (dev && (intro.linesComplete >= 3)) {
-    goToTitleScreen(game);
+    loadTitleScreen(game);
     return;
   }
 
   // Skip intro?
   if (mouseLeft()) {
-    goToTitleScreen(game);
+    loadTitleScreen(game);
     return;
   }
 

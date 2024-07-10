@@ -3,7 +3,8 @@
 struct Game;
 struct Title;
 
+void startTitle(Title &title);
 void updateTitle(Title &title, Game &game);
 
 // Callbacks
-void goToCampaignMap(Game &game);
+void loadCampaignMap(Game &game);

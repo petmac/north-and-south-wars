@@ -3,7 +3,8 @@
 struct Game;
 struct Intro;
 
+void startIntro(Intro &intro);
 void updateIntro(Intro &intro, Game &game);
 
 // Callbacks
-void goToTitleScreen(Game &game);
+void loadTitleScreen(Game &game);

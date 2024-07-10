@@ -3,7 +3,8 @@
 struct CampaignMap;
 struct Game;
 
+void startCampaignMap(CampaignMap &campaignMap);
 void updateCampaignMap(CampaignMap &campaignMap, Game &game);
 
 // Callbacks
-void startMission(Game &game);
+void loadMission(Game &game);
