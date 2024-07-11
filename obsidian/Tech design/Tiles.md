@@ -25,7 +25,9 @@ Forest
 * NW
 * Centre
 
-Water with optional surrounding land
+Water
+Listed compass directions indicate surrounding land
+Add special tiles for water with neighbouring rivers NESW
 
 | #   | North | East | South | West | NE  | SE  | SW  | NW  |
 | --- | ----- | ---- | ----- | ---- | --- | --- | --- | --- |
@@ -77,5 +79,26 @@ Water with optional surrounding land
 | 46  | -     | x    | x     | x    | ?   | ?   | ?   | ?   |
 | 47  | x     | x    | x     | x    | ?   | ?   | ?   | ?   |
 River
+Listed compass directions indicate neighbouring river tiles
+
+| #   | North | East | South | West |
+| --- | ----- | ---- | ----- | ---- |
+|     | -     | -    | -     | -    |
+|     | x     | -    | -     | -    |
+|     | -     | x    | -     | -    |
+|     | x     | x    | -     | -    |
+|     | -     | -    | x     | -    |
+|     | x     | -    | x     | -    |
+|     | -     | x    | x     | -    |
+|     | x     | x    | x     | -    |
+|     | -     | -    | -     | x    |
+|     | x     | -    | -     | x    |
+|     | -     | x    | -     | x    |
+|     | x     | x    | -     | x    |
+|     | -     | -    | x     | x    |
+|     | x     | -    | x     | x    |
+|     | -     | x    | x     | x    |
+|     | x     | x    | x     | x    |
+
 
 Reef
