@@ -1,6 +1,7 @@
 Grass
 Hill
 Mountain
+Forest
 
 Road
 * Horizontal
@@ -13,17 +14,6 @@ Road
 Bridge
 * Horizontal
 * Vertical
-
-Forest
-* N
-* NE
-* E
-* SE
-* S
-* SW
-* S
-* NW
-* Centre
 
 Deep water
 Listed compass directions indicate surrounding land
