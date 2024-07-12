@@ -73,6 +73,3 @@ Listed compass directions indicate neighbouring river tiles
 | 14  | x     | -    | x     | x    |
 | 15  | -     | x    | x     | x    |
 | 16  | x     | x    | x     | x    |
-
-
-Reef
