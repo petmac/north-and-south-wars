@@ -4,12 +4,16 @@ Mountain
 Forest
 
 Road
-* Horizontal
-* Vertical
-* N to E
-* E to S
-* W to S
-* W to N
+Listed compass directions indicate connecting road
+
+| #   | North | East | South | West |
+| --- | ----- | ---- | ----- | ---- |
+| 1   | x     | x    | -     | -    |
+| 2   | x     | -    | x     | -    |
+| 3   | x     | -    | -     | x    |
+| 4   | -     | x    | x     |      |
+| 5   | -     | x    | -     | x    |
+| 6   | -     | -    | x     | x    |
 
 Bridge
 * Horizontal
