@@ -1,7 +1,7 @@
-use std::{error::Error, fs::File, path::PathBuf};
+use std::{error::Error, fs::File, io::Write, path::PathBuf};
 
 use clap::Parser;
-use tiled::{Loader, Tileset};
+use tiled::Loader;
 
 #[derive(Parser)]
 struct Cli {
@@ -9,11 +9,14 @@ struct Cli {
     output_map_path: PathBuf,
 }
 
-struct TilesetImages {
-    tiles: Vec<TileImage>,
-}
+const MAX_MAP_WIDTH: usize = 30;
+const MAX_MAP_HEIGHT: usize = 20;
 
-struct TileImage {}
+struct Map {
+    width: u8,
+    height: u8,
+    tile_indices: [[u8; MAX_MAP_WIDTH]; MAX_MAP_HEIGHT],
+}
 
 fn main() -> Result<(), Box<dyn Error>> {
     let cli = Cli::parse();
@@ -23,54 +26,40 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     let mut loader = Loader::new();
     let tmx = loader.load_tmx_map(cli.input_tmx_path)?;
+    let layer = tmx
+        .layers()
+        .filter_map(|layer| layer.as_tile_layer())
+        .next()
+        .ok_or("No tile layers in map")?;
 
-    let tileset_images: Vec<TilesetImages> = tmx
-        .tilesets()
-        .iter()
-        .map(|tileset| load_tileset(tileset.as_ref()).unwrap())
-        .collect();
+    let width = layer.width().ok_or("Layer has no width")? as usize;
+    let height = layer.height().ok_or("Layer has no height")? as usize;
+    let mut tile_indices: [[u8; MAX_MAP_WIDTH]; MAX_MAP_HEIGHT] =
+        [[0; MAX_MAP_WIDTH]; MAX_MAP_HEIGHT];
 
-    for layer in tmx.layers().filter_map(|layer| layer.as_tile_layer()) {
-        let layer_w = layer.width().ok_or("Layer has no width")?;
-        let layer_h = layer.height().ok_or("Layer has no height")?;
-
-        for tile_row in 0..layer_h {
-            for tile_col in 0..layer_w {
-                let layer_tile = match layer.get_tile(tile_col as i32, tile_row as i32) {
-                    Some(layer_tile) => layer_tile,
-                    None => continue,
-                };
-                let tileset_images = &tileset_images[layer_tile.tileset_index()];
-                let tile_image = &tileset_images.tiles[layer_tile.id() as usize];
-                todo!()
-            }
+    for tile_row in 0..height {
+        for tile_col in 0..width {
+            let layer_tile = match layer.get_tile(tile_col as i32, tile_row as i32) {
+                Some(layer_tile) => layer_tile,
+                None => continue,
+            };
+            let tile_index = layer_tile.id() as u8;
+            tile_indices[tile_row][tile_col] = tile_index;
         }
     }
 
-    Ok(())
-}
+    let map = Map {
+        width: width as u8,
+        height: width as u8,
+        tile_indices,
+    };
 
-fn load_tileset(tileset: &Tileset) -> Result<TilesetImages, Box<dyn Error>> {
-    let image = tileset.image.as_ref().ok_or("Tileset has no image")?;
-    let path = image.source.canonicalize()?;
-    let decoder = png::Decoder::new(File::open(path)?);
-    let mut reader = decoder.read_info()?;
-    let mut buf = vec![0; reader.output_buffer_size()];
-    let info = reader.next_frame(&mut buf)?;
-    let bytes = &buf[..info.buffer_size()];
-    let image_rows: Vec<&[u8]> = bytes.chunks_exact(image.width as usize).collect();
-    let offset_between_tiles = (tileset.margin + (tileset.spacing * tileset.tile_width)) as usize;
-
-    for tile_index in 0..tileset.tilecount as usize {
-        let tile_col = tile_index % tileset.columns as usize;
-        let tile_row = tile_index / tileset.columns as usize;
-        let tile_x1 = tile_col * offset_between_tiles;
-        let tile_y1 = tile_row * offset_between_tiles;
-        let tile_x2 = tile_x1 + tileset.tile_width as usize;
-        let tile_y2 = tile_y1 + tileset.tile_height as usize;
-        let subimage_rows = &image_rows[tile_y1..tile_y2];
-        let subimage = subimage_rows.iter().map(|&row| &row[tile_x1..tile_x2]);
+    let mut output_file = File::create(cli.output_map_path)?;
+    output_file.write(&[map.width])?;
+    output_file.write(&[map.height])?;
+    for row in &map.tile_indices {
+        output_file.write(row)?;
     }
 
-    Ok(TilesetImages { tiles: Vec::new() })
+    Ok(())
 }

@@ -6,7 +6,7 @@
       "request": "launch",
       "name": "tmx2map",
       "program": "${workspaceFolder}/tools/target/debug/tmx2map",
-      "args": ["assets/map.tmx", "temp/data/map"],
+      "args": ["assets/map.tmx", "temp/game/main/data/map.map"],
       "preLaunchTask": "Tools (Debug)"
     },
     {
