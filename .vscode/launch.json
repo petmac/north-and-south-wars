@@ -10,6 +10,14 @@
       "preLaunchTask": "Tools (Debug)"
     },
     {
+      "type": "lldb",
+      "request": "launch",
+      "name": "tsx2bpl",
+      "program": "${workspaceFolder}/tools/target/debug/tsx2bpl",
+      "args": ["assets/tiles.tsx", "temp/game/main/data/tiles.bpl"],
+      "preLaunchTask": "Tools (Debug)"
+    },
+    {
       "type": "amiga",
       "request": "launch",
       "preLaunchTask": "Amiga",
