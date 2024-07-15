@@ -58,6 +58,19 @@ fn load_tileset(tileset: &Tileset) -> Result<TilesetImages, Box<dyn Error>> {
     let mut buf = vec![0; reader.output_buffer_size()];
     let info = reader.next_frame(&mut buf)?;
     let bytes = &buf[..info.buffer_size()];
+    let image_rows: Vec<&[u8]> = bytes.chunks_exact(image.width as usize).collect();
+    let offset_between_tiles = (tileset.margin + (tileset.spacing * tileset.tile_width)) as usize;
+
+    for tile_index in 0..tileset.tilecount as usize {
+        let tile_col = tile_index % tileset.columns as usize;
+        let tile_row = tile_index / tileset.columns as usize;
+        let tile_x1 = tile_col * offset_between_tiles;
+        let tile_y1 = tile_row * offset_between_tiles;
+        let tile_x2 = tile_x1 + tileset.tile_width as usize;
+        let tile_y2 = tile_y1 + tileset.tile_height as usize;
+        let subimage_rows = &image_rows[tile_y1..tile_y2];
+        let subimage = subimage_rows.iter().map(|&row| &row[tile_x1..tile_x2]);
+    }
 
     Ok(TilesetImages { tiles: Vec::new() })
 }
