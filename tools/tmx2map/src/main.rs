@@ -50,7 +50,7 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     let map = Map {
         width: width as u8,
-        height: width as u8,
+        height: height as u8,
         tile_indices,
     };
 
