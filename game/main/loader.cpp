@@ -7,7 +7,9 @@
 
 #include <proto/dos.h>
 
-static bool load(void *dst, u16 size, const char *path) {
+template <typename T> static bool load(T &dst, const char *path) {
+  constexpr u16 size = sizeof(T);
+
   KPrintF("Loading \"%s\"", reinterpret_cast<u32>(path));
   KPrintF("Size = %lu", size);
   u32 file = Open(path, MODE_OLDFILE);
@@ -17,7 +19,7 @@ static bool load(void *dst, u16 size, const char *path) {
     return false;
   }
 
-  const u32 bytesRead = Read(file, dst, size);
+  const u32 bytesRead = Read(file, &dst, size);
   KPrintF("Read %lu bytes", bytesRead);
   if (bytesRead != size) {
     KPrintF("Bytes read %lu does not match buffer size %lu", bytesRead, size);
@@ -29,13 +31,11 @@ static bool load(void *dst, u16 size, const char *path) {
   return true;
 }
 
-bool loadSmallFont() {
-  return load(&chip.smallFont, sizeof(chip.smallFont), "data/small_font.BPL");
-}
+bool loadSmallFont() { return load(chip.smallFont, "data/small_font.BPL"); }
 
 bool loadPalette() {
   Palette palette;
-  if (!load(&palette, sizeof(palette), "data/small_font.PAL")) {
+  if (!load(palette, "data/small_font.PAL")) {
     return false;
   }
 
