@@ -1,10 +1,15 @@
 TEMP_DIR := temp
 OUT_DIR := $(TEMP_DIR)/game/main
+DATA_DIR := $(OUT_DIR)/data
 
 TMX := assets/map.tmx
 TSX := assets/tiles.tsx
-MAP := $(TEMP_DIR)/data/map
+
+MAP := $(DATA_DIR)/map.map
+TILES_BPL := $(DATA_DIR)/tiles.bpl
+
 TMX2MAP := tools/target/release/tmx2map
+TSX2BPL := tools/target/release/tsx2bpl
 
 ASEPRITE := "$(HOME)/Library/Application Support/Steam/steamapps/common/Aseprite/Aseprite.app/Contents/MacOS/aseprite"
 
@@ -12,7 +17,7 @@ FREEIMAGE_PREFIX := $(shell brew --prefix freeimage)
 KINGCON := external/kingcon/build/kingcon
 
 .PHONY: all
-all: cmake-build $(OUT_DIR)/data/small_font.BPL $(OUT_DIR)/data/small_font.PAL
+all: cmake-build $(DATA_DIR)/small_font.BPL $(DATA_DIR)/small_font.PAL $(MAP) $(TILES_BPL)
 
 .PHONY: clean
 clean:
@@ -26,11 +31,15 @@ cmake-build: $(TEMP_DIR)/build.ninja
 $(TEMP_DIR)/build.ninja: CMakeLists.txt CMakePresets.json
 	cmake --preset amiga
 
-$(MAP): $(TMX2MAP) $(TMX) $(TSX)
+$(MAP): $(TMX) $(TMX2MAP)
 	mkdir -p $(dir $@)
-	$(TMX2MAP) $(TMX) $@
+	$(TMX2MAP) $< $@
 
-$(TMX2MAP): tools
+$(TILES_BPL): $(TSX) $(TSX2BPL) assets/tiles.png
+	mkdir -p $(dir $@)
+	$(TSX2BPL) $< $@
+
+$(TMX2MAP) $(TSX2BPL): tools
 
 .PHONY: tools
 tools:
@@ -38,11 +47,11 @@ tools:
 
 # Convert from .aseprite to .png
 $(TEMP_DIR)/assets/%.png: assets/%.aseprite
-	$(ASEPRITE) --batch $< --save-as $@ 
+	$(ASEPRITE) --batch $< --save-as $@
 
 # Convert from .png to .BPL and PAL
 # https://github.com/grahambates/kingcon/blob/master/README.md#image-conversion-output-format
-$(OUT_DIR)/data/%.BPL $(OUT_DIR)/data/%.PAL: $(TEMP_DIR)/assets/%.png $(KINGCON)
+$(DATA_DIR)/%.BPL $(DATA_DIR)/%.PAL: $(TEMP_DIR)/assets/%.png $(KINGCON)
 	mkdir -p $(dir $@)
 	$(KINGCON) $< $(basename $@) -Format=5 -RawPalette -Interleaved -Mask=32
 
