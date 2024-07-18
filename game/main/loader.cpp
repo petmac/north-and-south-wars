@@ -46,3 +46,5 @@ bool loadPalette() {
 
   return true;
 }
+
+bool loadTileset() { return load(chip.tileset, "data/tiles.bpl"); }

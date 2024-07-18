@@ -26,6 +26,7 @@ add_executable(
     playfield.h
     small_font.h
     text.h
+    tileset.h
     )
 
 target_link_libraries(

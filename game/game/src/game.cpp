@@ -67,7 +67,7 @@ void updateGame(Game &game) {
     break;
 
   case GameState::loadingMission:
-    if (false) {
+    if (!loadTileset()) {
       game.state = GameState::error;
       return;
     }
