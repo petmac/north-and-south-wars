@@ -74,14 +74,14 @@ fn load_tileset(tileset: &Tileset) -> Result<ImageAtlas, Box<dyn Error>> {
     let info = reader.next_frame(&mut buf)?;
     let bytes = &buf[..info.buffer_size()];
     let image_rows: Vec<&[u8]> = bytes.chunks_exact(image.width as usize).collect();
-    let offset_between_tiles = (tileset.margin + (tileset.spacing * tileset.tile_width)) as usize;
+    let offset_between_tiles = (tileset.spacing + tileset.tile_width) as usize;
 
     let mut images = Vec::new();
     for tile_index in 0..tileset.tilecount as usize {
         let tile_col = tile_index % tileset.columns as usize;
         let tile_row = tile_index / tileset.columns as usize;
-        let tile_x1 = tile_col * offset_between_tiles;
-        let tile_y1 = tile_row * offset_between_tiles;
+        let tile_x1 = tileset.margin as usize + (tile_col * offset_between_tiles);
+        let tile_y1 = tileset.margin as usize + (tile_row * offset_between_tiles);
         let tile_x2 = tile_x1 + tileset.tile_width as usize;
         let tile_y2 = tile_y1 + tileset.tile_height as usize;
         let subimage_rows = &image_rows[tile_y1..tile_y2];
@@ -116,10 +116,10 @@ fn convert_image(input_image: &[&[u8]]) -> Image {
 
                 let output_plane_row = &mut output_row.plane_rows[plane_index];
                 let output_word = &mut output_plane_row.words[word_index];
-                let output_byte = &mut if hi_byte {
-                    output_word.hi
+                let output_byte = if hi_byte {
+                    &mut output_word.hi
                 } else {
-                    output_word.lo
+                    &mut output_word.lo
                 };
                 *output_byte |= (1 as u8) << shift_in_byte;
             }
