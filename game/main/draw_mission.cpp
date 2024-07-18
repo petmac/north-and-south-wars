@@ -15,10 +15,13 @@ void drawMission(Background &background, FrameFast &frameFast,
 
   clear(background);
   drawText(background, chip.smallFont, 0, 0, "Mission");
-  blitFast(background, chip.tileset.tiles[0], 4, 16);
-  blitFast(background, chip.tileset.tiles[1], 5, 32);
-  blitFast(background, chip.tileset.tiles[2], 6, 48);
-  blitFast(background, chip.tileset.tiles[3], 7, 64);
+  for (u16 row = 0; row < mission.map.height; ++row) {
+    for (u16 column = 0; column < mission.map.width; ++column) {
+      const u16 tileIndex = mission.map.tiles[row][column];
+      blitFast(background, chip.tileset.tiles[tileIndex], column,
+               row * tileHeight);
+    }
+  }
 
   frameFast.state = FrameState::drawnMission;
 }

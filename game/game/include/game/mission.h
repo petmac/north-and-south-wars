@@ -1,3 +1,7 @@
 #pragma once
 
-struct Mission {};
+#include "map.h"
+
+struct Mission {
+  Map map;
+};

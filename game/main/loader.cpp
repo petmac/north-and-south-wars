@@ -3,6 +3,8 @@
 #include "chip.h"
 #include "palette.h"
 
+#include "game/map.h"
+
 #include "gcc8_c_support.h"
 
 #include <proto/dos.h>
@@ -48,3 +50,5 @@ bool loadPalette() {
 }
 
 bool loadTileset() { return load(chip.tileset, "data/tiles.bpl"); }
+
+bool loadMap(Map &map) { return load(map, "data/map.map"); }
