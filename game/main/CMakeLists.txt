@@ -1,5 +1,6 @@
 add_executable(
     a.elf
+    background.h
     blit.h
     chip.cpp
     chip.h
@@ -22,6 +23,8 @@ add_executable(
     loader.cpp
     main.cpp
     palette.h
+    playfield.h
+    small_font.h
     text.h
     )
 

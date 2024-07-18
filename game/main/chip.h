@@ -1,8 +1,7 @@
 #pragma once
 
 #include "frame_chip.h"
-
-using SmallFont = MaskedInterleavedBitmap<128, 48, 5>;
+#include "small_font.h"
 
 struct Chip {
   FrameChip frames[2];

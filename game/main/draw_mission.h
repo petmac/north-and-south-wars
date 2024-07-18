@@ -1,6 +1,6 @@
 #pragma once
 
-#include "frame_chip.h" // Background
+#include "background.h"
 
 struct FrameFast;
 struct Mission;
