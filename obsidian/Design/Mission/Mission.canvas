@@ -1,8 +1,8 @@
 {
 	"nodes":[
-		{"id":"dabc940c184f0e83","type":"text","text":"Idle","x":-380,"y":-80,"width":250,"height":60},
+		{"id":"dabc940c184f0e83","type":"text","text":"Select unit","x":-380,"y":-80,"width":250,"height":60},
 		{"id":"277a4a4f0c87fc16","type":"text","text":"Show menu","x":80,"y":-80,"width":250,"height":60},
-		{"id":"d7776d8ee435f639","type":"text","text":"Select next unit position","x":-380,"y":80,"width":250,"height":60},
+		{"id":"d7776d8ee435f639","type":"text","text":"Select unit destination","x":-380,"y":80,"width":250,"height":60},
 		{"id":"bb61df39d55234be","type":"text","text":"Moving unit","x":-380,"y":240,"width":250,"height":60},
 		{"id":"478aa74b52b939e0","type":"text","text":"Select unit action","x":-380,"y":400,"width":250,"height":60},
 		{"id":"ef283a2abeaa5719","type":"text","text":"Introduction","x":-381,"y":-580,"width":250,"height":60},
@@ -10,7 +10,7 @@
 		{"id":"56cba6bbe8c4530f","type":"text","text":"Resupply","x":-380,"y":-240,"width":250,"height":60},
 		{"id":"758e5cf30f0fcce6","type":"text","text":"Select target","x":-380,"y":560,"width":250,"height":60},
 		{"id":"f6f21a3c5f9c8a1a","type":"text","text":"Transitioning to close-up","x":-380,"y":720,"width":250,"height":60},
-		{"id":"b29785a43f63659f","x":-455,"y":900,"width":400,"height":400,"type":"file","file":"Design/Mission/Close-up.canvas"}
+		{"id":"b29785a43f63659f","type":"file","file":"Design/Mission/Close-up.canvas","x":-455,"y":900,"width":400,"height":400}
 	],
 	"edges":[
 		{"id":"c99b62f9905ecfe1","fromNode":"dabc940c184f0e83","fromSide":"bottom","toNode":"d7776d8ee435f639","toSide":"top","label":"Unit selected"},
