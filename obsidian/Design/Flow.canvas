@@ -6,8 +6,8 @@
 		{"id":"66d232e4e0a63895","type":"text","text":"Main menu","x":-245,"y":100,"width":250,"height":60},
 		{"id":"524d627619316ec6","type":"text","text":"Intro, loading front end","x":-245,"y":-300,"width":250,"height":60},
 		{"id":"7ec00ebf836d1bbb","type":"text","text":"Loading font, palette","x":-245,"y":-680,"width":250,"height":60},
-		{"id":"a5e0bf377b04731f","type":"file","file":"Campaign map.md","x":-320,"y":280,"width":400,"height":400},
-		{"id":"0e3ba324af5d1280","type":"file","file":"Mission.canvas","x":-320,"y":780,"width":400,"height":400},
+		{"id":"a5e0bf377b04731f","type":"file","file":"Design/Campaign map/Campaign map.md","x":-320,"y":280,"width":400,"height":400},
+		{"id":"0e3ba324af5d1280","type":"file","file":"Design/Mission/Mission.canvas","x":-320,"y":780,"width":400,"height":400},
 		{"id":"ea536e7b8d07348c","type":"text","text":"Campaign completed","x":360,"y":450,"width":250,"height":60}
 	],
 	"edges":[

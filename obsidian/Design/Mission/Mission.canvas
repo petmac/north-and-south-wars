@@ -10,7 +10,7 @@
 		{"id":"56cba6bbe8c4530f","type":"text","text":"Resupply","x":-380,"y":-240,"width":250,"height":60},
 		{"id":"758e5cf30f0fcce6","type":"text","text":"Select target","x":-380,"y":560,"width":250,"height":60},
 		{"id":"f6f21a3c5f9c8a1a","type":"text","text":"Transitioning to close-up","x":-380,"y":720,"width":250,"height":60},
-		{"id":"b29785a43f63659f","x":-455,"y":900,"width":400,"height":400,"type":"file","file":"Close-up.canvas"}
+		{"id":"b29785a43f63659f","x":-455,"y":900,"width":400,"height":400,"type":"file","file":"Design/Mission/Close-up.canvas"}
 	],
 	"edges":[
 		{"id":"c99b62f9905ecfe1","fromNode":"dabc940c184f0e83","fromSide":"bottom","toNode":"d7776d8ee435f639","toSide":"top","label":"Unit selected"},
