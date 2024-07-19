@@ -17,7 +17,7 @@ FREEIMAGE_PREFIX := $(shell brew --prefix freeimage)
 KINGCON := external/kingcon/build/kingcon
 
 .PHONY: all
-all: cmake-build $(DATA_DIR)/small_font.BPL $(DATA_DIR)/small_font.PAL $(MAP) $(TILES_BPL)
+all: cmake-build $(DATA_DIR)/palette.PAL $(DATA_DIR)/small_font.BPL $(TILES_BPL) $(MAP)
 
 .PHONY: clean
 clean:
@@ -31,13 +31,13 @@ cmake-build: $(TEMP_DIR)/build.ninja
 $(TEMP_DIR)/build.ninja: CMakeLists.txt CMakePresets.json
 	cmake --preset amiga
 
-$(MAP): $(TMX) $(TMX2MAP)
-	mkdir -p $(dir $@)
-	$(TMX2MAP) $< $@
-
 $(TILES_BPL): $(TSX) $(TSX2BPL) assets/tiles.png
 	mkdir -p $(dir $@)
 	$(TSX2BPL) $< $@
+
+$(MAP): $(TMX) $(TMX2MAP)
+	mkdir -p $(dir $@)
+	$(TMX2MAP) $< $@
 
 $(TMX2MAP) $(TSX2BPL): tools
 
@@ -45,15 +45,21 @@ $(TMX2MAP) $(TSX2BPL): tools
 tools:
 	cd tools && cargo build --release
 
-# Convert from .aseprite to .png
+# Convert image from .png to .BPL
+# https://github.com/grahambates/kingcon/blob/master/README.md#image-conversion-output-format
+$(DATA_DIR)/%.BPL: $(TEMP_DIR)/assets/%.png $(KINGCON)
+	mkdir -p $(dir $@)
+	$(KINGCON) $< $(basename $@) -Format=5 -Interleaved -Mask=32
+
+# Convert palette from .png to .pal
+# https://github.com/grahambates/kingcon/blob/master/README.md#image-conversion-output-format
+$(DATA_DIR)/palette.PAL: $(TEMP_DIR)/assets/palette.png $(KINGCON)
+	mkdir -p $(dir $@)
+	$(KINGCON) $< $(basename $@) -Format=5 -RawPalette
+
+# Convert image from .aseprite to .png
 $(TEMP_DIR)/assets/%.png: assets/%.aseprite
 	$(ASEPRITE) --batch $< --save-as $@
-
-# Convert from .png to .BPL and PAL
-# https://github.com/grahambates/kingcon/blob/master/README.md#image-conversion-output-format
-$(DATA_DIR)/%.BPL $(DATA_DIR)/%.PAL: $(TEMP_DIR)/assets/%.png $(KINGCON)
-	mkdir -p $(dir $@)
-	$(KINGCON) $< $(basename $@) -Format=5 -RawPalette -Interleaved -Mask=32
 
 # Kingcon
 $(KINGCON):

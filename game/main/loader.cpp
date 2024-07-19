@@ -37,7 +37,7 @@ bool loadSmallFont() { return load(chip.smallFont, "data/small_font.BPL"); }
 
 bool loadPalette() {
   Palette palette;
-  if (!load(palette, "data/small_font.PAL")) {
+  if (!load(palette, "data/palette.PAL")) {
     return false;
   }
 
