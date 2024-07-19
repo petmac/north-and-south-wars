@@ -1,6 +1,8 @@
 #pragma once
 
-#include "util/types.h"
+#include "game/map.h" // maxMapWidth, maxMapHeight
+
+constexpr u16 maxDirtyTiles = maxMapWidth * maxMapHeight;
 
 enum class FrameState : u8 {
   cleared,
@@ -17,7 +19,18 @@ struct IntroFrameState {
   u16 charsDrawn;
 };
 
+struct TileCoord {
+  u8 column;
+  u8 row;
+};
+
+struct MissionFrameState {
+  u16 dirtyTileCount;
+  TileCoord dirtyTiles[maxDirtyTiles];
+};
+
 struct FrameFast {
   FrameState state;
   IntroFrameState intro;
+  MissionFrameState mission;
 };
