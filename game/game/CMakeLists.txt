@@ -7,6 +7,7 @@ add_library(
     include/game/intro.h
     include/game/map.h
     include/game/mission.h
+    include/game/screen.h
     include/game/title.h
     src/campaign_map.cpp
     src/campaign_map.h

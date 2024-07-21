@@ -2,6 +2,7 @@
 
 #include "amiga/bitmap.h"
 #include "amiga/copper.h"
+#include "game/screen.h"
 
 struct ScreenScan {
   CopperMove ddfstrt;
@@ -29,8 +30,8 @@ struct Copper {
 
 constexpr ScreenScan screenScanDefault() {
   constexpr u16 x = 129;
-  constexpr u16 width = 320;
-  constexpr u16 height = 256;
+  constexpr u16 width = screenWidth;
+  constexpr u16 height = screenHeight;
   constexpr u16 y = 44;
   constexpr u16 RES = 8; // 8=lowres,4=hires
   constexpr u16 xstop = x + width;
