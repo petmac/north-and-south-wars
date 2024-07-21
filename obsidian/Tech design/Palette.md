@@ -30,6 +30,6 @@
 | 26  | Sprites 4 & 5 | Dark orange        | Beard/hair                             |
 | 27  | Sprites 4 & 5 | Orange             | Beard/hair                             |
 | 28  |               | Bright yellow      | UI, explosions                         |
-| 29  | Sprites 6 & 7 | Bright red         | UI                                     |
-| 30  | Sprites 6 & 7 |                    |                                        |
+| 29  | Sprites 6 & 7 | Bright red         | UI, mouse pointer                      |
+| 30  | Sprites 6 & 7 | Black (duplicate)  | Mouse pointer                          |
 | 31  | Sprites 6 & 7 | White              | Mouse pointer, explosions              |
