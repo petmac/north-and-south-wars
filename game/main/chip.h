@@ -7,6 +7,7 @@
 
 struct Chip {
   FrameChip frames[2];
+  u16 zeroes[2]; // Dummy sprite
   MousePointerSpriteImage mousePointer;
   SmallFont smallFont;
   Tileset tileset;

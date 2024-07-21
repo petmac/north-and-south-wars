@@ -20,6 +20,7 @@ struct SetPlanes {
 };
 
 struct Copper {
+  CopperSetPointer sprites[8];
   ScreenScan screenScan;
   SetPlanes setPlanes;
   CopperMove colors[32];
@@ -52,7 +53,7 @@ copSetPlanes(const InterleavedBitmap<width, height, depth> *bitmap) {
   SetPlanes ret = {
       .bplcon0 = copperMove(bplcon0, BPLCON0::COLOR | BPLCON0::BPU(depth)),
       .bplcon1 = copperMove(bplcon1, 0),
-      .bplcon2 = copperMove(bplcon2, BPLCON2::PF2PRI),
+      .bplcon2 = copperMove(bplcon2, BPLCON2::PF2P2 | BPLCON2::PF1P2),
       .bpl1mod = copperMove(bpl1mod, modulo),
       .bpl2mod = copperMove(bpl2mod, modulo),
       .bplpt = {},

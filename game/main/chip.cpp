@@ -7,6 +7,11 @@ static void initFrameChip(FrameChip &frameChip) {
   Background &background = frameChip.background;
 
   // Prep copperlist
+  for (u16 spriteIndex = 0; spriteIndex < 8; ++spriteIndex) {
+    copper.sprites[spriteIndex] =
+        copperSetPointer(sprpt[spriteIndex], &chip.zeroes);
+  }
+  copper.sprites[7] = copperSetPointer(sprpt[7], &chip.mousePointer.position);
   copper.screenScan = screenScanDefault();
   copper.setPlanes = copSetPlanes(&background);
   for (u16 colorIndex = 0; colorIndex < 32; ++colorIndex) {

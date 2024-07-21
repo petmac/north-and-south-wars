@@ -31,7 +31,7 @@ static void runFrame() {
   // Present back buffer
   WaitVbl();
   custom.cop1lc = reinterpret_cast<u32>(&frameChip.copper);
-  custom.dmacon = DMAF_SETCLR | DMAF_RASTER | DMAF_COPPER;
+  custom.dmacon = DMAF_SETCLR | DMAF_RASTER | DMAF_COPPER | DMAF_SPRITE;
 
   // Swap front and back buffers
   fast.backBufferIndex = 1 - fast.backBufferIndex;
