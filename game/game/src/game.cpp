@@ -20,7 +20,7 @@ Game initGame() {
 void updateGame(Game &game) {
   switch (game.state) {
   case GameState::loadingFontAndPalette:
-    if (!loadSmallFont() || !loadPalette()) {
+    if (!loadMousePointer() || !loadPalette() || !loadSmallFont()) {
       game.state = GameState::error;
       return;
     }

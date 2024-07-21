@@ -2,8 +2,9 @@
 
 struct Map;
 
-bool loadSmallFont();
-bool loadPalette();
-bool loadTileset();
 bool loadMap(Map &map);
+bool loadMousePointer();
+bool loadPalette();
+bool loadSmallFont();
+bool loadTileset();
 bool mouseLeft();

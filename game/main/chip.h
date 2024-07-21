@@ -2,10 +2,12 @@
 
 #include "frame_chip.h"
 #include "small_font.h"
+#include "sprite_images.h"
 #include "tileset.h"
 
 struct Chip {
   FrameChip frames[2];
+  MousePointerSpriteImage mousePointer;
   SmallFont smallFont;
   Tileset tileset;
 };

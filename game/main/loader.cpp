@@ -33,7 +33,9 @@ template <typename T> static bool load(T &dst, const char *path) {
   return true;
 }
 
-bool loadSmallFont() { return load(chip.smallFont, "data/small_font.BPL"); }
+bool loadMap(Map &map) { return load(map, "data/map.map"); }
+
+bool loadMousePointer() { return load(chip.mousePointer, "data/mouse.SPR"); }
 
 bool loadPalette() {
   Palette palette;
@@ -49,6 +51,6 @@ bool loadPalette() {
   return true;
 }
 
-bool loadTileset() { return load(chip.tileset, "data/tiles.bpl"); }
+bool loadSmallFont() { return load(chip.smallFont, "data/small_font.BPL"); }
 
-bool loadMap(Map &map) { return load(map, "data/map.map"); }
+bool loadTileset() { return load(chip.tileset, "data/tiles.bpl"); }
