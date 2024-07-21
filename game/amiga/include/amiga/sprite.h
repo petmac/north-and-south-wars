@@ -5,7 +5,7 @@
 template <u16 h> struct SpriteImage {
   static constexpr u16 height = h;
 
-  u16 foo;
+  u16 unknown;  // KingCon adds it
   u16 position; // Calculate using spritePosition()
   u16 control;  // Calculate using spriteControl()
   u16 data[height][2];
