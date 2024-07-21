@@ -49,7 +49,11 @@ constexpr ScreenScan screenScanDefault() {
 template <u16 width, u16 height, u16 depth>
 constexpr SetPlanes
 copSetPlanes(const InterleavedBitmap<width, height, depth> *bitmap) {
-  constexpr u16 modulo = bitmap->widthInBytes * (depth - 1);
+  constexpr u16 screenWidthInWords = (screenWidth + 15) / 16;
+  constexpr u16 moduloForOffscreenPlayfield =
+      (bitmap->widthInWords - screenWidthInWords) * 2;
+  constexpr u16 moduloForInterleave = bitmap->widthInBytes * (depth - 1);
+  constexpr u16 modulo = moduloForOffscreenPlayfield + moduloForInterleave;
 
   SetPlanes ret = {
       .bplcon0 = copperMove(bplcon0, BPLCON0::COLOR | BPLCON0::BPU(depth)),
