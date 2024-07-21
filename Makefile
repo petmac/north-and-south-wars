@@ -17,7 +17,7 @@ FREEIMAGE_PREFIX := $(shell brew --prefix freeimage)
 KINGCON := external/kingcon/build/kingcon
 
 .PHONY: all
-all: cmake-build $(DATA_DIR)/palette.PAL $(DATA_DIR)/small_font.BPL $(TILES_BPL) $(MAP)
+all: cmake-build $(DATA_DIR)/mouse.SPR $(DATA_DIR)/palette.PAL $(DATA_DIR)/small_font.BPL $(TILES_BPL) $(MAP)
 
 .PHONY: clean
 clean:
@@ -51,11 +51,17 @@ $(DATA_DIR)/%.BPL: $(TEMP_DIR)/assets/%.png $(KINGCON)
 	mkdir -p $(dir $@)
 	$(KINGCON) $< $(basename $@) -Format=5 -Interleaved -Mask=32
 
-# Convert palette from .png to .pal
+# Convert palette from .png to .PAL
 # https://github.com/grahambates/kingcon/blob/master/README.md#image-conversion-output-format
 $(DATA_DIR)/palette.PAL: $(TEMP_DIR)/assets/palette.png $(KINGCON)
 	mkdir -p $(dir $@)
 	$(KINGCON) $< $(basename $@) -Format=5 -RawPalette
+
+# Convert image from .png to .SPR
+# https://github.com/grahambates/kingcon/blob/master/README.md#image-conversion-output-format
+$(DATA_DIR)/%.SPR: $(TEMP_DIR)/assets/%.png $(KINGCON)
+	mkdir -p $(dir $@)
+	$(KINGCON) $< $(basename $@) -Format=s16
 
 # Convert image from .aseprite to .png
 $(TEMP_DIR)/assets/%.png: assets/%.aseprite
