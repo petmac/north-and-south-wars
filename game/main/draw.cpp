@@ -13,15 +13,6 @@
 
 static constexpr u16 centerY = (256 - 8) / 2;
 
-static void updateMousePointerPosition() {
-  const u16 hStart = 128;
-  const u16 vStart = 44;
-  const u16 vStop = vStart + MousePointerSpriteImage::height;
-
-  chip.mousePointer.position = spritePosition(vStart, hStart);
-  chip.mousePointer.control = spriteControl(vStart, vStop, hStart);
-}
-
 static void drawLoading(Background &background, FrameFast &frameFast) {
   constexpr u16 x = (40 - 7) / 2;
 
@@ -47,8 +38,6 @@ static void drawError(Background &background, FrameFast &frameFast) {
 }
 
 void drawGame(FrameChip &frameChip, FrameFast &frameFast, const Game &game) {
-  updateMousePointerPosition();
-
   Background &background = frameChip.background;
   switch (game.state) {
   case GameState::loadingFontAndPalette:
