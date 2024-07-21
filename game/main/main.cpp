@@ -11,6 +11,38 @@
 
 static Fast fast;
 
+static void updateMousePointerPosition() {
+  // Read the input and update the game mouse coords
+  const u16 mouseData = custom.joy0dat;
+  const u8 mouseDataX = mouseData & 0xff;
+  const u8 mouseDataY = (mouseData >> 8) & 0xff;
+  const s8 mouseDX = mouseDataX - fast.lastMouseDataX;
+  const s8 mouseDY = mouseDataY - fast.lastMouseDataY;
+  s16 mouseX = fast.mouseX + mouseDX;
+  s16 mouseY = fast.mouseY + mouseDY;
+  if (mouseX < 0) {
+    mouseX = 0;
+  } else if (mouseX >= screenWidth) {
+    mouseX = screenWidth - 1;
+  }
+  if (mouseY < 0) {
+    mouseY = 0;
+  } else if (mouseY >= screenHeight) {
+    mouseY = screenHeight - 1;
+  }
+  fast.lastMouseDataX = mouseDataX;
+  fast.lastMouseDataY = mouseDataY;
+  fast.mouseX = mouseX;
+  fast.mouseY = mouseY;
+
+  // Update the sprite position
+  const u16 hStart = 128 + fast.mouseX;
+  const u16 vStart = 44 + fast.mouseY;
+  const u16 vStop = vStart + MousePointerSpriteImage::height;
+  chip.mousePointer.position = spritePosition(vStart, hStart);
+  chip.mousePointer.control = spriteControl(vStart, vStop, hStart);
+}
+
 static __attribute__((interrupt)) void interruptHandler() {
   // Acknowledge interrupt
   custom.intreq = INTF_VERTB;
@@ -18,6 +50,8 @@ static __attribute__((interrupt)) void interruptHandler() {
 }
 
 static void runFrame() {
+  updateMousePointerPosition();
+
   // Get per-frame data
   FrameChip &frameChip = chip.frames[fast.backBufferIndex];
   FrameFast &frameFast = fast.frames[fast.backBufferIndex];
