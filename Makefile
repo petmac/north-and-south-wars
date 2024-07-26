@@ -17,7 +17,7 @@ FREEIMAGE_PREFIX := $(shell brew --prefix freeimage)
 KINGCON := external/kingcon/build/kingcon
 
 .PHONY: all
-all: cmake-build $(DATA_DIR)/mouse.SPR $(DATA_DIR)/palette.PAL $(DATA_DIR)/small_font.BPL $(TILES_BPL) $(MAP)
+all: cmake-build $(DATA_DIR)/mouse.SPR $(DATA_DIR)/palette.PAL $(DATA_DIR)/small_font.BPL $(TILES_BPL) $(MAP) $(DATA_DIR)/units.BPL
 
 .PHONY: clean
 clean:
