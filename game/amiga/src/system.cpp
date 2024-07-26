@@ -51,7 +51,8 @@ void TakeSystem() {
 
   OwnBlitter();
   WaitBlit();
-  Disable();
+  // TODO Investigate why calling Disable() breaks vblank interrupts
+  // Disable();
 
   custom.intena = 0x7fff; // disable all interrupts
   custom.intreq = 0x7fff; // Clear any interrupts that were pending
@@ -94,7 +95,8 @@ void FreeSystem() {
 
   WaitBlit();
   DisownBlitter();
-  Enable();
+  // TODO Investigate why calling Disable() breaks vblank interrupts
+  // Enable();
 
   LoadView(ActiView);
   WaitTOF();
