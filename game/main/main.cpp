@@ -43,15 +43,21 @@ static void updateMousePointerPosition() {
   chip.mousePointer.control = spriteControl(vStart, vStop, hStart);
 }
 
+static void acknowledgeInterrupt(u16 flag) {
+  // Acknowledge interrupt twice for A4000 bug
+  custom.intreq = flag;
+  custom.intreq = flag;
+}
+
 static __attribute__((interrupt)) void interruptHandler() {
-  // Acknowledge interrupt
-  custom.intreq = INTF_VERTB;
-  custom.intreq = INTF_VERTB; // reset vbl req. twice for a4000 bug.
+  const u16 interrupts = custom.intreqr;
+  if (interrupts & INTF_VERTB) {
+    updateMousePointerPosition();
+    acknowledgeInterrupt(INTF_VERTB);
+  }
 }
 
 static void runFrame() {
-  updateMousePointerPosition();
-
   // Get per-frame data
   FrameChip &frameChip = chip.frames[fast.backBufferIndex];
   FrameFast &frameFast = fast.frames[fast.backBufferIndex];
