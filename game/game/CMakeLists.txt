@@ -8,7 +8,9 @@ add_library(
     include/game/map.h
     include/game/mission.h
     include/game/screen.h
+    include/game/teams.h
     include/game/title.h
+    include/game/units.h
     src/campaign_map.cpp
     src/campaign_map.h
     src/dev.h
