@@ -11,11 +11,20 @@ struct Cli {
 
 const MAX_MAP_WIDTH: usize = 30;
 const MAX_MAP_HEIGHT: usize = 20;
+const MAX_UNITS: usize = 32;
+
+#[derive(Clone, Copy)]
+struct TileCoords {
+    column: u8,
+    row: u8,
+}
 
 struct Map {
     width: u8,
     height: u8,
     tile_indices: [[u8; MAX_MAP_WIDTH]; MAX_MAP_HEIGHT],
+    unit_count: u8,
+    units: [TileCoords; MAX_UNITS],
 }
 
 fn main() -> Result<(), Box<dyn Error>> {
@@ -52,13 +61,18 @@ fn main() -> Result<(), Box<dyn Error>> {
         width: width as u8,
         height: height as u8,
         tile_indices,
+        unit_count: 0,
+        units: [TileCoords { column: 0, row: 0 }; MAX_UNITS],
     };
 
     let mut output_file = File::create(cli.output_map_path)?;
-    output_file.write(&[map.width])?;
-    output_file.write(&[map.height])?;
+    output_file.write(&[map.width, map.height])?;
     for row in &map.tile_indices {
         output_file.write(row)?;
+    }
+    output_file.write(&[map.unit_count])?;
+    for unit in &map.units {
+        output_file.write(&[unit.column, unit.row])?;
     }
 
     Ok(())
