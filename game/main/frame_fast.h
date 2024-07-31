@@ -19,14 +19,18 @@ struct IntroFrameState {
   u16 charsDrawn;
 };
 
-struct TileCoord {
+struct TileCoords {
   u8 column;
   u8 row;
 };
 
+struct DirtyTileList {
+  u16 count;
+  TileCoords coords[maxDirtyTiles];
+};
+
 struct MissionFrameState {
-  u16 dirtyTileCount;
-  TileCoord dirtyTiles[maxDirtyTiles];
+  DirtyTileList dirtyTiles;
 };
 
 struct FrameFast {
