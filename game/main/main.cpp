@@ -79,10 +79,10 @@ int main() {
 
   TakeSystem();
 
-  // Start with display disabled
+  // Start with raster, copper and sprites disabled
   custom.cop1lc = 0;
   custom.cop2lc = 0;
-  custom.dmacon = DMAF_SETCLR | DMAF_MASTER | DMAF_BLITTER;
+  custom.dmacon = DMAF_RASTER | DMAF_COPPER | DMAF_SPRITE;
 
   initChip();
   initFast(fast);
