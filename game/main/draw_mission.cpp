@@ -34,33 +34,33 @@ static void drawMissionText(Background &background, DirtyTileList &dirtyTiles,
 }
 
 static void drawTile(Background &background, u16 column, u16 row,
-                     const Mission &mission) {
-  const u16 tileIndex = mission.map.tiles[row][column];
+                     const Map &map) {
+  const u16 tileIndex = map.tiles[row][column];
   const TileBitmap &tile = chip.tileset.tiles[tileIndex];
   blitFast(background, tile, column, row * tileHeight);
 }
 
 static void restoreDirtyTiles(Background &background, DirtyTileList &dirtyTiles,
-                              const Mission &mission) {
+                              const Map &map) {
   for (u16 dirtyTileIndex = 0; dirtyTileIndex < dirtyTiles.count;
        ++dirtyTileIndex) {
     const TileCoords &coords = dirtyTiles.coords[dirtyTileIndex];
-    drawTile(background, coords.column, coords.row, mission);
+    drawTile(background, coords.column, coords.row, map);
   }
 
   dirtyTiles.count = 0;
 }
 
 static void makeBackgroundPristine(Background &background, FrameFast &frameFast,
-                                   const Mission &mission) {
+                                   const Map &map) {
   // If a mission has already been drawn, then respect dirty tile list
   if (frameFast.state == FrameState::drawnMission) {
-    restoreDirtyTiles(background, frameFast.mission.dirtyTiles, mission);
+    restoreDirtyTiles(background, frameFast.mission.dirtyTiles, map);
   } else {
     // Not sure what's on the background, so draw all tiles
-    for (u16 row = 0; row < mission.map.height; ++row) {
-      for (u16 column = 0; column < mission.map.width; ++column) {
-        drawTile(background, column, row, mission);
+    for (u16 row = 0; row < map.height; ++row) {
+      for (u16 column = 0; column < map.width; ++column) {
+        drawTile(background, column, row, map);
       }
     }
 
@@ -81,7 +81,8 @@ static void drawUnit(Background &background, DirtyTileList &dirtyTiles,
 
 void drawMission(Background &background, FrameFast &frameFast,
                  const Mission &mission) {
-  makeBackgroundPristine(background, frameFast, mission);
+  const Map &map = mission.map;
+  makeBackgroundPristine(background, frameFast, map);
 
   // Draw state-specific stuff
   DirtyTileList &dirtyTiles = frameFast.mission.dirtyTiles;
