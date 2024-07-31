@@ -2,7 +2,7 @@
 
 #include "util/types.h"
 
-enum class Team : u8 {
+enum class Force : u8 {
   north,
   south,
   count,

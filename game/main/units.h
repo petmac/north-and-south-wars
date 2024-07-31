@@ -3,16 +3,16 @@
 #include "playfield.h"
 
 #include "amiga/bitmap.h"
-#include "game/teams.h"
+#include "game/forces.h"
 #include "game/units.h"
 
 using UnitBitmap =
     MaskedInterleavedBitmap<unitWidth, unitHeight, playfieldDepth>;
 
-struct TeamBitmaps {
+struct ForceBitmaps {
   UnitBitmap units[static_cast<u16>(UnitType::count)];
 };
 
 struct UnitBitmaps {
-  TeamBitmaps teams[static_cast<u16>(Team::count)];
+  ForceBitmaps forces[static_cast<u16>(Force::count)];
 };

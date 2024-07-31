@@ -3,12 +3,12 @@ add_library(
     OBJECT
     include/game/callbacks.h
     include/game/campaign_map.h
+    include/game/forces.h
     include/game/game.h
     include/game/intro.h
     include/game/map.h
     include/game/mission.h
     include/game/screen.h
-    include/game/teams.h
     include/game/title.h
     include/game/units.h
     src/campaign_map.cpp
