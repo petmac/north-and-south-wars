@@ -49,6 +49,8 @@ void FreeSystem() {
   DisownBlitter();
 
   LoadView(ActiView);
+  ActiView = nullptr;
+
   WaitTOF();
   WaitTOF();
 
