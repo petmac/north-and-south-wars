@@ -70,6 +70,15 @@ static void makeBackgroundPristine(Background &background, FrameFast &frameFast,
   }
 }
 
+static void drawUnit(Background &background, DirtyTileList &dirtyTiles,
+                     u16 column, u16 row, Force force, UnitType unit) {
+  const ForceBitmaps &forceBitmaps = chip.units.forces[static_cast<u16>(force)];
+  const UnitBitmap &src = forceBitmaps.units[static_cast<u16>(unit)];
+
+  blitFast(background, src, column, row * tileHeight);
+  addDirtyTile(dirtyTiles, column, row);
+}
+
 void drawMission(Background &background, FrameFast &frameFast,
                  const Mission &mission) {
   makeBackgroundPristine(background, frameFast, mission);
@@ -102,4 +111,7 @@ void drawMission(Background &background, FrameFast &frameFast,
     drawMissionText(background, dirtyTiles, "Select target");
     break;
   }
+
+  // Draw units
+  drawUnit(background, dirtyTiles, 1, 2, Force::north, UnitType::infantry);
 }
