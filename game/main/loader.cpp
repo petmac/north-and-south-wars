@@ -54,3 +54,5 @@ bool loadPalette() {
 bool loadSmallFont() { return load(chip.smallFont, "data/small_font.BPL"); }
 
 bool loadTileset() { return load(chip.tileset, "data/tiles.bpl"); }
+
+bool loadUnits() { return load(chip.units, "data/units.bpl"); }

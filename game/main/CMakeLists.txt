@@ -27,6 +27,7 @@ add_executable(
     small_font.h
     text.h
     tileset.h
+    units.h
     )
 
 target_link_libraries(

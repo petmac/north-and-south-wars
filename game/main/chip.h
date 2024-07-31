@@ -4,6 +4,7 @@
 #include "small_font.h"
 #include "sprite_images.h"
 #include "tileset.h"
+#include "units.h"
 
 struct Chip {
   FrameChip frames[2];
@@ -11,6 +12,7 @@ struct Chip {
   MousePointerSpriteImage mousePointer;
   SmallFont smallFont;
   Tileset tileset;
+  UnitBitmaps units;
 };
 
 extern Chip chip;
