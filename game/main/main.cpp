@@ -8,6 +8,7 @@
 #include <hardware/dmabits.h>
 #include <hardware/intbits.h>
 #include <proto/dos.h>
+#include <proto/exec.h> // AddIntServer()
 
 static Fast fast;
 
@@ -49,13 +50,7 @@ static void acknowledgeInterrupt(u16 flag) {
   custom.intreq = flag;
 }
 
-static __attribute__((interrupt)) void interruptHandler() {
-  const u16 interrupts = custom.intreqr;
-  if (interrupts & INTF_VERTB) {
-    updateMousePointerPosition();
-    acknowledgeInterrupt(INTF_VERTB);
-  }
-}
+static void verticalBlankInterruptHandler() { updateMousePointerPosition(); }
 
 static void runFrame() {
   // Get per-frame data
@@ -92,14 +87,19 @@ int main() {
   initChip();
   initFast(fast);
 
-  SetInterruptHandler(interruptHandler);
+  // Set up vertical blank interrupt handler
+  fast.interrupt.is_Node.ln_Type = NT_INTERRUPT;
+  fast.interrupt.is_Node.ln_Pri = -60;
+  fast.interrupt.is_Node.ln_Name = const_cast<char *>("VERTB");
+  fast.interrupt.is_Code = &verticalBlankInterruptHandler;
 
-  custom.intena = INTF_SETCLR | INTF_INTEN | INTF_VERTB | INTF_PORTS;
-  custom.intreq = INTF_VERTB; // reset vbl req
+  AddIntServer(INTB_VERTB, &fast.interrupt);
 
   for (;;) {
     runFrame();
   }
+
+  RemIntServer(INTB_VERTB, &fast.interrupt);
 
   // END
   FreeSystem();

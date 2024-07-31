@@ -4,6 +4,8 @@
 
 #include "game/game.h"
 
+#include <exec/interrupts.h> // Interrupt
+
 struct Fast {
   Game game;
   u8 backBufferIndex;
@@ -12,6 +14,7 @@ struct Fast {
   u8 lastMouseDataY;
   u16 mouseX;
   u16 mouseY;
+  Interrupt interrupt;
 };
 
 void initFast(Fast &fast);
