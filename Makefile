@@ -49,7 +49,7 @@ tools:
 # https://github.com/grahambates/kingcon/blob/master/README.md#image-conversion-output-format
 $(DATA_DIR)/%.BPL: $(TEMP_DIR)/assets/%.png $(KINGCON)
 	mkdir -p $(dir $@)
-	$(KINGCON) $< $(basename $@) -Format=5 -Interleaved -Mask=32
+	$(KINGCON) $< $(basename $@) -Format=5 -Interleaved -Mask
 
 # Convert palette from .png to .PAL
 # https://github.com/grahambates/kingcon/blob/master/README.md#image-conversion-output-format
