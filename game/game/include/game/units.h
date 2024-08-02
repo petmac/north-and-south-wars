@@ -9,6 +9,6 @@ enum class UnitType : u8 {
   infantry,
   mech,
   lightTank,
-  heavyTank,
+  mediumTank,
   count,
 };
