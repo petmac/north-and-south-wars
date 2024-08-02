@@ -117,6 +117,6 @@ void drawMission(Background &background, FrameFast &frameFast,
   for (u16 unitIndex = 0; unitIndex < map.unitCount; ++unitIndex) {
     const MapUnit &unit = map.units[unitIndex];
     drawUnit(background, dirtyTiles, unit.coords.column, unit.coords.row,
-             Force::north, UnitType::infantry);
+             unit.force, unit.type);
   }
 }

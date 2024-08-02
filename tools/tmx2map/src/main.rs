@@ -19,12 +19,61 @@ struct TileCoords {
     row: u8,
 }
 
+#[derive(Clone, Copy)]
+#[repr(u8)]
+enum Force {
+    North,
+    South,
+}
+
+impl TryFrom<u8> for Force {
+    type Error = &'static str;
+
+    fn try_from(value: u8) -> Result<Self, Self::Error> {
+        match value {
+            0 => Ok(Force::North),
+            1 => Ok(Force::South),
+            _ => Err("Unhandled force value"),
+        }
+    }
+}
+
+#[derive(Clone, Copy)]
+#[repr(u8)]
+enum UnitType {
+    Infantry,
+    Mech,
+    LightTank,
+    MediumTank,
+    Count,
+}
+impl TryFrom<u8> for UnitType {
+    type Error = &'static str;
+
+    fn try_from(value: u8) -> Result<Self, Self::Error> {
+        match value {
+            0 => Ok(UnitType::Infantry),
+            1 => Ok(UnitType::Mech),
+            2 => Ok(UnitType::LightTank),
+            3 => Ok(UnitType::MediumTank),
+            _ => Err("Unhandled unit type value"),
+        }
+    }
+}
+
+#[derive(Clone, Copy)]
+struct MapUnit {
+    coords: TileCoords,
+    force: Force,
+    unit_type: UnitType,
+}
+
 struct Map {
     width: u8,
     height: u8,
     tile_indices: [[u8; MAX_MAP_WIDTH]; MAX_MAP_HEIGHT],
     unit_count: u8,
-    units: [TileCoords; MAX_UNITS],
+    units: [MapUnit; MAX_UNITS],
 }
 
 fn main() -> Result<(), Box<dyn Error>> {
@@ -43,7 +92,11 @@ fn main() -> Result<(), Box<dyn Error>> {
     let height = tiles_layer.height().ok_or("Layer has no height")? as usize;
     let mut tile_indices: [[u8; MAX_MAP_WIDTH]; MAX_MAP_HEIGHT] =
         [[0; MAX_MAP_WIDTH]; MAX_MAP_HEIGHT];
-    let mut units = [TileCoords { column: 0, row: 0 }; MAX_UNITS];
+    let mut units = [MapUnit {
+        coords: TileCoords { column: 0, row: 0 },
+        force: Force::North,
+        unit_type: UnitType::Infantry,
+    }; MAX_UNITS];
     let mut unit_count = 0;
 
     for tile_row in 0..height {
@@ -57,12 +110,21 @@ fn main() -> Result<(), Box<dyn Error>> {
 
             match units_layer.get_tile(tile_col as i32, tile_row as i32) {
                 Some(layer_tile) => {
-                    let unit_index = layer_tile.id() as u8;
+                    let unit_tile_index = layer_tile.id() as usize;
                     let coords = TileCoords {
                         column: tile_col as u8,
                         row: tile_row as u8,
                     };
-                    units[unit_count] = coords;
+                    let force_index = unit_tile_index / UnitType::Count as usize;
+                    let force = (force_index as u8).try_into()?;
+                    let unit_type_index = unit_tile_index % UnitType::Count as usize;
+                    let unit_type = (unit_type_index as u8).try_into()?;
+                    let map_unit = MapUnit {
+                        coords,
+                        force,
+                        unit_type,
+                    };
+                    units[unit_count] = map_unit;
                     unit_count += 1;
                 }
                 None => {}
@@ -85,7 +147,12 @@ fn main() -> Result<(), Box<dyn Error>> {
     }
     output_file.write(&[map.unit_count])?;
     for unit in &map.units {
-        output_file.write(&[unit.column, unit.row])?;
+        output_file.write(&[
+            unit.coords.column,
+            unit.coords.row,
+            unit.force as u8,
+            unit.unit_type as u8,
+        ])?;
     }
 
     Ok(())
