@@ -3,6 +3,7 @@
 #include "fast.h"
 
 #include "amiga/libs.h"
+#include "amiga/mouse.h"
 #include "amiga/system.h"
 
 #include <hardware/dmabits.h>
@@ -15,6 +16,8 @@ static Fast fast;
 static void updateMousePointerPosition() {
   // Read the input and update the game mouse coords
   const u16 mouseData = custom.joy0dat;
+  const bool mouseLeftButton = mouseLeft();
+  const bool mouseClicked = mouseLeftButton && !fast.lastMouseLeftButton;
   const u8 mouseDataX = mouseData & 0xff;
   const u8 mouseDataY = (mouseData >> 8) & 0xff;
   const s8 mouseDX = mouseDataX - fast.lastMouseDataX;
@@ -33,8 +36,11 @@ static void updateMousePointerPosition() {
   }
   fast.lastMouseDataX = mouseDataX;
   fast.lastMouseDataY = mouseDataY;
+  fast.lastMouseLeftButton = mouseLeftButton;
+
   fast.mouseX = mouseX;
   fast.mouseY = mouseY;
+  fast.mouseClicked |= mouseClicked;
 
   // Update the sprite position
   const u16 hStart = 128 + fast.mouseX;
@@ -59,6 +65,12 @@ static void runFrame() {
 
   // Draw
   drawGame(frameChip, frameFast, fast.game);
+
+  // Handle mouse clicks
+  if (fast.mouseClicked) {
+    fast.mouseClicked = false;
+    mouseClicked(fast.game);
+  }
 
   // Update game while drawing finishes
   updateGame(fast.game);

@@ -84,6 +84,32 @@ void updateGame(Game &game) {
   }
 }
 
+void mouseClicked(Game &game) {
+  switch (game.state) {
+  case GameState::loadingFontAndPalette:
+  case GameState::loadingIntro:
+    break;
+
+  case GameState::intro:
+    introMouseClicked(game);
+    break;
+
+  case GameState::loadingTitle:
+    break;
+
+  case GameState::title:
+    titleMouseClicked(game);
+    break;
+
+  case GameState::loadingCampaignMap:
+  case GameState::campaignMap:
+  case GameState::loadingMission:
+  case GameState::playingMission:
+  case GameState::error:
+    break;
+  }
+}
+
 // Intro callbacks
 void loadTitleScreen(Game &game) { game.state = GameState::loadingTitle; }
 

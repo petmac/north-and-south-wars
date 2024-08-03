@@ -8,4 +8,3 @@ bool loadPalette();
 bool loadSmallFont();
 bool loadTileset();
 bool loadUnits();
-bool mouseLeft();

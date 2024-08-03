@@ -7,14 +7,21 @@
 #include <exec/interrupts.h> // Interrupt
 
 struct Fast {
+  // Written on main thread
   Game game;
   u8 backBufferIndex;
   FrameFast frames[2];
-  u8 lastMouseDataX;
-  u8 lastMouseDataY;
+  Interrupt interrupt;
+
+  // Written during vertical blank interrupt
   u16 mouseX;
   u16 mouseY;
-  Interrupt interrupt;
+  bool mouseClicked;
+
+  // Read and written during vertical blank interrupt
+  u8 lastMouseDataX;
+  u8 lastMouseDataY;
+  bool lastMouseLeftButton;
 };
 
 void initFast(Fast &fast);

@@ -14,10 +14,12 @@ void initFast(Fast &fast) {
 
   fast.game = initGame();
   fast.backBufferIndex = 0;
-  fast.lastMouseDataX = mouseData & 0xff;
-  fast.lastMouseDataY = (mouseData >> 8) & 0xff;
   fast.mouseX = screenWidth / 2;
   fast.mouseY = screenHeight / 2;
+  fast.mouseClicked = false;
+  fast.lastMouseDataX = mouseData & 0xff;
+  fast.lastMouseDataY = (mouseData >> 8) & 0xff;
+  fast.lastMouseLeftButton = false;
 
   for (u16 frameIndex = 0; frameIndex < 2; ++frameIndex) {
     initFrameFast(fast.frames[frameIndex]);

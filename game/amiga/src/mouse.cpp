@@ -2,4 +2,4 @@
 
 #include "util/types.h"
 
-bool MouseLeft() { return !((*(volatile u8 *)0xbfe001) & 64); }
+bool mouseLeft() { return !((*(volatile u8 *)0xbfe001) & 64); }

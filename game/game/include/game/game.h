@@ -28,3 +28,4 @@ struct Game {
 
 Game initGame();
 void updateGame(Game &game);
+void mouseClicked(Game &game);

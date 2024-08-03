@@ -19,7 +19,6 @@ add_executable(
     fast.h
     frame_chip.h
     frame_fast.h
-    input.cpp
     loader.cpp
     main.cpp
     palette.h

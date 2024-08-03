@@ -9,8 +9,10 @@ void startTitle(Title &title) {}
 
 void updateTitle(Title &title, Game &game) {
   // Continue?
-  if (dev || mouseLeft()) {
+  if (dev) {
     loadCampaignMap(game);
     return;
   }
 }
+
+void titleMouseClicked(Game &game) { loadCampaignMap(game); }

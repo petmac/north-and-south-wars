@@ -44,12 +44,6 @@ void updateIntro(Intro &intro, Game &game) {
     return;
   }
 
-  // Skip intro?
-  if (mouseLeft()) {
-    loadTitleScreen(game);
-    return;
-  }
-
   // Run out of lines?
   if (intro.linesComplete >= lineCount) {
     return;
@@ -73,3 +67,5 @@ void updateIntro(Intro &intro, Game &game) {
     return;
   }
 }
+
+void introMouseClicked(Game &game) { loadTitleScreen(game); }
