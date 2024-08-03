@@ -27,3 +27,19 @@ void updateMission(Mission &mission, Game &game) {
     break;
   }
 }
+
+void missionMouseClicked(Mission &mission) {
+  switch (mission.state) {
+  case MissionState::intro:
+  case MissionState::startOfTurn:
+  case MissionState::resupply:
+    break;
+  case MissionState::selectUnit:
+    break;
+  case MissionState::selectUnitDestination:
+  case MissionState::movingUnit:
+  case MissionState::selectUnitAction:
+  case MissionState::selectTarget:
+    break;
+  }
+}

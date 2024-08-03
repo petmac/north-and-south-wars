@@ -104,7 +104,12 @@ void mouseClicked(Game &game) {
   case GameState::loadingCampaignMap:
   case GameState::campaignMap:
   case GameState::loadingMission:
+    break;
+
   case GameState::playingMission:
+    missionMouseClicked(game.mission);
+    break;
+
   case GameState::error:
     break;
   }
