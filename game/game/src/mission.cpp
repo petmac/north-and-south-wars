@@ -2,10 +2,21 @@
 
 #include "game/mission.h"
 
-static void selectUnitUnderMouse(Mission &mission, u16 mouseX, u16 mouseY) {
-  // Which tile is the mouse over?
+#include "pathfinding.h"
+
+static TileCoords mouseTileCoords(u16 mouseX, u16 mouseY) {
   const u16 tileColumn = mouseX / tileWidth;
   const u16 tileRow = mouseY / tileHeight;
+
+  return (TileCoords){
+      .column = static_cast<u8>(tileColumn),
+      .row = static_cast<u8>(tileRow),
+  };
+}
+
+static void selectUnitUnderMouse(Mission &mission, u16 mouseX, u16 mouseY) {
+  // Which tile is the mouse over?
+  const TileCoords mouseCoords = mouseTileCoords(mouseX, mouseY);
 
   // Look for a unit in the tile the mouse is over
   for (u16 unitIndex = 0; unitIndex < mission.map.unitCount; ++unitIndex) {
@@ -19,14 +30,17 @@ static void selectUnitUnderMouse(Mission &mission, u16 mouseX, u16 mouseY) {
     }
 
     // Is this unit on a different tile?
-    if ((mapUnit.coords.column != tileColumn) ||
-        (mapUnit.coords.row != tileRow)) {
+    if ((mapUnit.coords.column != mouseCoords.column) ||
+        (mapUnit.coords.row != mouseCoords.row)) {
       continue;
     }
 
     // Change state to unit destination selection
     mission.state = MissionState::selectUnitDestination;
     mission.selectedUnitIndex = unitIndex;
+
+    // Initialise pathfinding
+    findPath(mission.pathfinding, mouseCoords, mouseCoords);
     break;
   }
 }
@@ -36,7 +50,7 @@ void startMission(Mission &mission) {
   mission.selectedUnitIndex = 0;
 }
 
-void updateMission(Mission &mission, Game &game) {
+void updateMission(Mission &mission, u16 mouseX, u16 mouseY) {
   switch (mission.state) {
   case MissionState::intro:
     mission.state = MissionState::startOfTurn;
@@ -49,8 +63,11 @@ void updateMission(Mission &mission, Game &game) {
     break;
   case MissionState::selectUnit:
     break;
-  case MissionState::selectUnitDestination:
-    break;
+  case MissionState::selectUnitDestination: {
+    const MapUnit &selectedUnit = mission.map.units[mission.selectedUnitIndex];
+    const TileCoords mouseCoords = mouseTileCoords(mouseX, mouseY);
+    findPath(mission.pathfinding, selectedUnit.coords, mouseCoords);
+  } break;
   case MissionState::movingUnit:
     break;
   case MissionState::selectUnitAction:

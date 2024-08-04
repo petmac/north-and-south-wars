@@ -73,7 +73,7 @@ static void runFrame() {
   }
 
   // Update game while drawing finishes
-  updateGame(fast.game);
+  updateGame(fast.game, fast.mouseX, fast.mouseY);
 
   // Present back buffer
   WaitVbl();

@@ -8,6 +8,7 @@ add_library(
     include/game/intro.h
     include/game/map.h
     include/game/mission.h
+    include/game/pathfinding.h
     include/game/screen.h
     include/game/title.h
     include/game/units.h
@@ -19,6 +20,8 @@ add_library(
     src/intro.h
     src/mission.cpp
     src/mission.h
+    src/pathfinding.cpp
+    src/pathfinding.h
     src/title.cpp
     src/title.h
     )

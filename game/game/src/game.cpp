@@ -17,7 +17,7 @@ Game initGame() {
   };
 }
 
-void updateGame(Game &game) {
+void updateGame(Game &game, u16 mouseX, u16 mouseY) {
   switch (game.state) {
   case GameState::loadingFontAndPalette:
     if (!loadMousePointer() || !loadPalette() || !loadSmallFont()) {
@@ -76,7 +76,7 @@ void updateGame(Game &game) {
     break;
 
   case GameState::playingMission:
-    updateMission(game.mission, game);
+    updateMission(game.mission, mouseX, mouseY);
     break;
 
   case GameState::error:
