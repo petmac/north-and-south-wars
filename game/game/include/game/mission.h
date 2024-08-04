@@ -16,4 +16,5 @@ enum class MissionState : u8 {
 struct Mission {
   Map map;
   MissionState state;
+  u16 selectedUnitIndex;
 };

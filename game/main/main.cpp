@@ -69,7 +69,7 @@ static void runFrame() {
   // Handle mouse clicks
   if (fast.mouseClicked) {
     fast.mouseClicked = false;
-    mouseClicked(fast.game);
+    mouseClicked(fast.game, fast.mouseX, fast.mouseY);
   }
 
   // Update game while drawing finishes

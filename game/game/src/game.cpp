@@ -84,7 +84,7 @@ void updateGame(Game &game) {
   }
 }
 
-void mouseClicked(Game &game) {
+void mouseClicked(Game &game, u16 mouseX, u16 mouseY) {
   switch (game.state) {
   case GameState::loadingFontAndPalette:
   case GameState::loadingIntro:
@@ -107,7 +107,7 @@ void mouseClicked(Game &game) {
     break;
 
   case GameState::playingMission:
-    missionMouseClicked(game.mission);
+    missionMouseClicked(game.mission, mouseX, mouseY);
     break;
 
   case GameState::error:
