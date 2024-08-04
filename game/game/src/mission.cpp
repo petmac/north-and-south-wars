@@ -13,6 +13,11 @@ static void selectUnitUnderMouse(Mission &mission, u16 mouseX, u16 mouseY) {
 
     // TODO Is the unit dead?
 
+    // Is the unit from the wrong force?
+    if (mapUnit.force != Force::north) {
+      continue;
+    }
+
     // Is this unit on a different tile?
     if ((mapUnit.coords.column != tileColumn) ||
         (mapUnit.coords.row != tileRow)) {
