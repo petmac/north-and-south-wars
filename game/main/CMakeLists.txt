@@ -1,5 +1,6 @@
 add_executable(
     a.elf
+    assets/palette.h
     assets/small_font.h
     assets/sprite_images.h
     assets/tileset.h
@@ -25,7 +26,6 @@ add_executable(
     frame_fast.h
     loader.cpp
     main.cpp
-    palette.h
     playfield.h
     text.h
     )

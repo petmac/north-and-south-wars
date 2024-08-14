@@ -1,7 +1,7 @@
 #include "game/callbacks.h"
 
+#include "assets/palette.h"
 #include "chip.h"
-#include "palette.h"
 
 #include "game/map.h"
 
