@@ -1,5 +1,9 @@
 add_executable(
     a.elf
+    assets/small_font.h
+    assets/sprite_images.h
+    assets/tileset.h
+    assets/units.h
     background.h
     blit.h
     chip.cpp
@@ -23,10 +27,7 @@ add_executable(
     main.cpp
     palette.h
     playfield.h
-    small_font.h
     text.h
-    tileset.h
-    units.h
     )
 
 target_link_libraries(
