@@ -37,7 +37,7 @@ bool loadMap(Map &map) { return load(map, "data/map.map"); }
 
 bool loadMissionAssets() {
   return load(chip.tileset, "data/tiles.bpl") &&
-         load(chip.units, "data/units.bpl");
+         load(chip.units, "data/units.BPL");
 }
 
 bool loadMousePointer() { return load(chip.mousePointer, "data/mouse.SPR"); }
