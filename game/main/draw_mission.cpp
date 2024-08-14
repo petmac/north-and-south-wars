@@ -8,6 +8,15 @@
 #include "game/mission.h"
 
 static void addDirtyTile(DirtyTileList &dirtyTiles, u16 column, u16 row) {
+  // Dirty tile already in list?
+  for (u16 existingIndex = 0; existingIndex < dirtyTiles.count;
+       ++existingIndex) {
+    const TileCoords &existing = dirtyTiles.coords[existingIndex];
+    if ((existing.column == column) && (existing.row == row)) {
+      return;
+    }
+  }
+
   // Going to overflow the dirty tile list?
   if (dirtyTiles.count >= maxDirtyTiles) {
     return;
