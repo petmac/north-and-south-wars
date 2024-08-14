@@ -1,5 +1,6 @@
 #pragma once
 
+#include "assets/arrows.h"
 #include "assets/small_font.h"
 #include "assets/sprite_images.h"
 #include "assets/tileset.h"
@@ -11,6 +12,7 @@ struct Chip {
   u16 zeroes[2]; // Dummy sprite
   MousePointerSpriteImage mousePointer;
   SmallFont smallFont;
+  ArrowBitmaps arrows;
   Tileset tileset;
   UnitBitmaps units;
 };

@@ -36,7 +36,8 @@ template <typename T> static bool load(T &dst, const char *path) {
 bool loadMap(Map &map) { return load(map, "data/map.map"); }
 
 bool loadMissionAssets() {
-  return load(chip.tileset, "data/tiles.bpl") &&
+  return load(chip.arrows, "data/arrows.BPL") &&
+         load(chip.tileset, "data/tiles.bpl") &&
          load(chip.units, "data/units.BPL");
 }
 
