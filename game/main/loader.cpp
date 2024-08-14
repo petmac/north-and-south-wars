@@ -3,8 +3,6 @@
 #include "assets/palette.h"
 #include "chip.h"
 
-#include "game/map.h"
-
 #include "gcc8_c_support.h"
 
 #include <proto/dos.h>

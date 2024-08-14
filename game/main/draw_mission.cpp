@@ -85,13 +85,29 @@ static void drawUnit(Background &background, DirtyTileList &dirtyTiles,
   drawBobOnTile(background, dirtyTiles, column, row, src);
 }
 
+static void drawPath(Background &background, DirtyTileList &dirtyTiles,
+                     const Pathfinding &pathfinding) {
+  const ArrowBitmap &src =
+      chip.arrows.bitmaps[static_cast<u16>(ArrowType::pointEast)];
+
+  drawBobOnTile(background, dirtyTiles, pathfinding.destination.column,
+                pathfinding.destination.row, src);
+}
+
 void drawMission(Background &background, FrameFast &frameFast,
                  const Mission &mission) {
   const Map &map = mission.map;
   makeBackgroundPristine(background, frameFast, map);
 
-  // Draw state-specific stuff
+  // Draw units
   DirtyTileList &dirtyTiles = frameFast.mission.dirtyTiles;
+  for (u16 unitIndex = 0; unitIndex < map.unitCount; ++unitIndex) {
+    const MapUnit &unit = map.units[unitIndex];
+    drawUnit(background, dirtyTiles, unit.coords.column, unit.coords.row,
+             unit.force, unit.type);
+  }
+
+  // Draw state-specific stuff
   switch (mission.state) {
   case MissionState::intro:
     drawMissionText(background, dirtyTiles, "Intro");
@@ -107,6 +123,7 @@ void drawMission(Background &background, FrameFast &frameFast,
     break;
   case MissionState::selectUnitDestination:
     drawMissionText(background, dirtyTiles, "Select unit destination");
+    drawPath(background, dirtyTiles, mission.pathfinding);
     break;
   case MissionState::movingUnit:
     drawMissionText(background, dirtyTiles, "Moving unit");
@@ -117,12 +134,5 @@ void drawMission(Background &background, FrameFast &frameFast,
   case MissionState::selectTarget:
     drawMissionText(background, dirtyTiles, "Select target");
     break;
-  }
-
-  // Draw units
-  for (u16 unitIndex = 0; unitIndex < map.unitCount; ++unitIndex) {
-    const MapUnit &unit = map.units[unitIndex];
-    drawUnit(background, dirtyTiles, unit.coords.column, unit.coords.row,
-             unit.force, unit.type);
   }
 }
