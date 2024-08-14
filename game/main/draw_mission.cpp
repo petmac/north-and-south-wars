@@ -122,8 +122,8 @@ void drawMission(Background &background, FrameFast &frameFast,
     drawMissionText(background, dirtyTiles, "Select unit");
     break;
   case MissionState::selectUnitDestination:
-    drawMissionText(background, dirtyTiles, "Select unit destination");
     drawPath(background, dirtyTiles, mission.pathfinding);
+    drawMissionText(background, dirtyTiles, "Select unit destination");
     break;
   case MissionState::movingUnit:
     drawMissionText(background, dirtyTiles, "Moving unit");
