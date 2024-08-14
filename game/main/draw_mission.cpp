@@ -70,13 +70,19 @@ static void makeBackgroundPristine(Background &background, FrameFast &frameFast,
   }
 }
 
+static void drawBobOnTile(
+    Background &background, DirtyTileList &dirtyTiles, u16 column, u16 row,
+    const MaskedInterleavedBitmap<tileWidth, tileHeight, playfieldDepth> &src) {
+  blitFast(background, src, column, row * tileHeight);
+  addDirtyTile(dirtyTiles, column, row);
+}
+
 static void drawUnit(Background &background, DirtyTileList &dirtyTiles,
                      u16 column, u16 row, Force force, UnitType unit) {
   const ForceBitmaps &forceBitmaps = chip.units.forces[static_cast<u16>(force)];
   const UnitBitmap &src = forceBitmaps.units[static_cast<u16>(unit)];
 
-  blitFast(background, src, column, row * tileHeight);
-  addDirtyTile(dirtyTiles, column, row);
+  drawBobOnTile(background, dirtyTiles, column, row, src);
 }
 
 void drawMission(Background &background, FrameFast &frameFast,
