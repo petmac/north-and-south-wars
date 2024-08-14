@@ -3,8 +3,7 @@
 struct Map;
 
 bool loadMap(Map &map);
+bool loadMissionAssets();
 bool loadMousePointer();
 bool loadPalette();
 bool loadSmallFont();
-bool loadTileset();
-bool loadUnits();

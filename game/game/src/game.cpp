@@ -67,7 +67,7 @@ void updateGame(Game &game, u16 mouseX, u16 mouseY) {
     break;
 
   case GameState::loadingMission:
-    if (!loadTileset() || !loadMap(game.mission.map) || !loadUnits()) {
+    if (!loadMap(game.mission.map) || !loadMissionAssets()) {
       game.state = GameState::error;
       return;
     }
