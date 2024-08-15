@@ -2,6 +2,9 @@
 
 #include "map.h" // TileCoords
 
+constexpr u16 maxPathLength = 10;
+
 struct Pathfinding {
-  TileCoords destination; // TODO Temporary for drawing
+  TileCoords path[maxPathLength];
+  u16 pathLength;
 };

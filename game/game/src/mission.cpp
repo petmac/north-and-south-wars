@@ -40,7 +40,7 @@ static void selectUnitUnderMouse(Mission &mission, u16 mouseX, u16 mouseY) {
     mission.selectedUnitIndex = unitIndex;
 
     // Initialise pathfinding
-    findPath(mission.pathfinding, mouseCoords, mouseCoords);
+    findPath(mission.pathfinding, mission.map, mouseCoords, mouseCoords);
     break;
   }
 }
@@ -66,7 +66,8 @@ void updateMission(Mission &mission, u16 mouseX, u16 mouseY) {
   case MissionState::selectUnitDestination: {
     const MapUnit &selectedUnit = mission.map.units[mission.selectedUnitIndex];
     const TileCoords mouseCoords = mouseTileCoords(mouseX, mouseY);
-    findPath(mission.pathfinding, selectedUnit.coords, mouseCoords);
+    findPath(mission.pathfinding, mission.map, selectedUnit.coords,
+             mouseCoords);
   } break;
   case MissionState::movingUnit:
     break;
