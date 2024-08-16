@@ -83,7 +83,7 @@ struct PriorityQueue {
     u16 bestLocationIndex = 0;
 
     for (u16 itemIndex = 1; itemIndex < count; ++itemIndex) {
-      const Cost cost = items[bestLocationIndex].cost;
+      const Cost cost = items[itemIndex].cost;
       if (cost < lowestCost) {
         lowestCost = cost;
         bestLocationIndex = itemIndex;
