@@ -1,5 +1,6 @@
 #include "pathfinding.h"
 
+#include "game/callbacks.h" // KPrintF, TODO Remove
 #include "game/pathfinding.h"
 
 using Cost = u16;
@@ -60,13 +61,22 @@ struct PriorityQueue {
   constexpr bool empty() const { return count == 0; }
 
   constexpr void put(Location location, Cost cost) {
-    // TODO What to do if the location is already in the queue?
+    // Is the location is already in the queue?
+    for (u16 existingItemIndex = 0; existingItemIndex < count;
+         ++existingItemIndex) {
+      Item &existingItem = items[existingItemIndex];
+      if (existingItem.location != location) {
+        continue;
+      }
+      if (cost < existingItem.cost) {
+        existingItem.cost = cost;
+      }
+      return;
+    }
 
     // Is there enough space?
     if (count >= capacity) {
-      // TODO Log warning
-      for (;;) {
-      }
+      KPrintF("Out of space in priority queue");
       return;
     }
 
@@ -124,9 +134,7 @@ template <typename Key, typename Value> struct Dict {
 
     // Is there enough space?
     if (count >= capacity) {
-      // TODO Log warning
-      for (;;) {
-      }
+      KPrintF("Out of space in dictionary");
       return;
     }
 
@@ -138,26 +146,24 @@ template <typename Key, typename Value> struct Dict {
     items[count++] = item;
   }
 
-  constexpr bool contains(Key key) const {
+  constexpr Value *find(Key key) {
     for (u16 itemIndex = 0; itemIndex < count; ++itemIndex) {
-      if (items[itemIndex].key == key) {
-        return true;
+      Item &item = items[itemIndex];
+      if (item.key == key) {
+        return &item.value;
       }
     }
 
-    return false;
+    return nullptr;
   }
 
-  constexpr Value get(Key key) const {
-    for (u16 itemIndex = 0; itemIndex < count; ++itemIndex) {
-      const Item &item = items[itemIndex];
-
-      if (item.key == key) {
-        return item.value;
-      }
+  constexpr Value get(Key key) {
+    const Value *const value = find(key);
+    if (value == nullptr) {
+      return Value{};
     }
 
-    return Value{};
+    return *value;
   }
 };
 
@@ -178,13 +184,31 @@ static constexpr void addNeighbour(Dict<Location, Location> &came_from,
                                    PriorityQueue &frontier, const Graph &graph,
                                    Location current, Location next,
                                    Location goal) {
+  // Compute cost to reach next from current
   const Cost new_cost = cost_so_far.get(current) + cost(graph, current, next);
-  if (!cost_so_far.contains(next) || new_cost < cost_so_far.get(next)) {
+
+  // Have we already visited next?
+  Cost *const existingCost = cost_so_far.find(next);
+  if (existingCost != nullptr) {
+    // Already visited. Have we already visited with a lower cost?
+    if (*existingCost <= new_cost) {
+      // Don't add this path.
+      return;
+    }
+
+    // Found a better path
+    *existingCost = new_cost;
+  } else {
+    // This is a new path
     cost_so_far.put(next, new_cost);
-    const Cost priority = new_cost + heuristic(next, goal);
-    frontier.put(next, priority);
-    came_from.put(next, current);
   }
+
+  // Add next to frontier with heuristic to goal
+  const Cost priority = new_cost + heuristic(next, goal);
+  frontier.put(next, priority);
+
+  // Fix up the path with the lower cost route
+  came_from.put(next, current);
 }
 
 static constexpr void aStarSearch(Dict<Location, Location> &came_from,
@@ -198,7 +222,7 @@ static constexpr void aStarSearch(Dict<Location, Location> &came_from,
   cost_so_far.put(start, 0);
 
   while (!frontier.empty()) {
-    Location current = frontier.get();
+    const Location current = frontier.get();
 
     if (current == goal) {
       break;
@@ -252,14 +276,14 @@ void findPath(Pathfinding &pathfinding, const Map &map, const TileCoords &from,
   TileCoords next = to;
   pathfinding.pathLength = 0;
   while (pathfinding.pathLength < maxPathLength) {
-    if (!came_from.contains(next)) {
+    const Location *prev = came_from.find(next);
+    if (prev == nullptr) {
       break;
     }
-    const TileCoords prev = came_from.get(next);
     pathfinding.path[pathfinding.pathLength++] = next;
-    if (prev == from) {
+    if (*prev == from) {
       break;
     }
-    next = prev;
+    next = *prev;
   }
 }
