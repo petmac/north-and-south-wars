@@ -204,20 +204,10 @@ void findPath(Pathfinding &pathfinding, const Map &map, const TileCoords &start,
       row[columnIndex] = ~0;
     }
   }
+  pathfinding.start = start;
+  pathfinding.end = goal; // TODO Replace with shorter path
 
   // https://www.redblobgames.com/pathfinding/a-star/introduction.html
   // https://www.redblobgames.com/pathfinding/a-star/implementation.html
   aStarSearch(pathfinding.cameFrom, pathfinding.costSoFar, map, start, goal);
-
-  // Copy path to output
-  TileCoords next = goal;
-  pathfinding.pathLength = 0;
-  while (pathfinding.pathLength < maxPathLength) {
-    const Location prev = pathfinding.cameFrom[next.row][next.column];
-    pathfinding.path[pathfinding.pathLength++] = next;
-    if (prev == start) {
-      break;
-    }
-    next = prev;
-  }
 }

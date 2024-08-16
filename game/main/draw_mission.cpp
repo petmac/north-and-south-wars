@@ -99,8 +99,8 @@ static void drawPath(Background &background, DirtyTileList &dirtyTiles,
   const ArrowBitmap &src =
       chip.arrows.bitmaps[static_cast<u16>(ArrowType::pointEast)];
 
-  for (u16 pathIndex = 0; pathIndex < pathfinding.pathLength; ++pathIndex) {
-    const TileCoords coords = pathfinding.path[pathIndex];
+  for (TileCoords coords = pathfinding.end; coords != pathfinding.start;
+       coords = pathfinding.cameFrom[coords.row][coords.column]) {
     drawBobOnTile(background, dirtyTiles, coords.column, coords.row, src);
   }
 }
