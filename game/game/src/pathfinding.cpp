@@ -3,7 +3,6 @@
 #include "game/callbacks.h" // KPrintF, TODO Remove
 #include "game/pathfinding.h"
 
-using Cost = u16;
 using Graph = Map;
 using Location = TileCoords;
 
@@ -110,63 +109,6 @@ struct PriorityQueue {
   }
 };
 
-template <typename Key, typename Value> struct Dict {
-  static constexpr u16 capacity = 20;
-
-  struct Item {
-    Key key;
-    Value value;
-  };
-
-  u16 count;
-  Item items[capacity];
-
-  constexpr void put(Key key, Value value) {
-    // Is the key already in the dictionary?
-    for (u16 itemIndex = 0; itemIndex < count; ++itemIndex) {
-      Item &item = items[itemIndex];
-
-      if (item.key == key) {
-        item.value = value;
-        return;
-      }
-    }
-
-    // Is there enough space?
-    if (count >= capacity) {
-      KPrintF("Out of space in dictionary");
-      return;
-    }
-
-    // Add the item.
-    const Item item = {
-        .key = key,
-        .value = value,
-    };
-    items[count++] = item;
-  }
-
-  constexpr Value *find(Key key) {
-    for (u16 itemIndex = 0; itemIndex < count; ++itemIndex) {
-      Item &item = items[itemIndex];
-      if (item.key == key) {
-        return &item.value;
-      }
-    }
-
-    return nullptr;
-  }
-
-  constexpr Value get(Key key) {
-    const Value *const value = find(key);
-    if (value == nullptr) {
-      return Value{};
-    }
-
-    return *value;
-  }
-};
-
 static constexpr Cost dist(u16 a, u16 b) {
   if (a < b) {
     return b - a;
@@ -179,29 +121,23 @@ static constexpr Cost heuristic(const Location &a, const Location &b) {
   return dist(a.column, b.column) + dist(a.row, b.row);
 }
 
-static constexpr void addNeighbour(CameFrom &cameFrom,
-                                   Dict<Location, Cost> &costSoFar,
+static constexpr void addNeighbour(CameFrom &cameFrom, CostSoFar &costSoFar,
                                    PriorityQueue &frontier, const Graph &graph,
                                    Location current, Location next,
                                    Location goal) {
   // Compute cost to reach next from current
-  const Cost newCost = costSoFar.get(current) + cost(graph, current, next);
+  const Cost newCost =
+      costSoFar[current.row][current.column] + cost(graph, current, next);
 
-  // Have we already visited next?
-  Cost *const existingCost = costSoFar.find(next);
-  if (existingCost != nullptr) {
-    // Already visited. Have we already visited with a lower cost?
-    if (*existingCost <= newCost) {
-      // Don't add this path.
-      return;
-    }
-
-    // Found a better path
-    *existingCost = newCost;
-  } else {
-    // This is a new path
-    costSoFar.put(next, newCost);
+  // Is the new route to next more expensive than an existing route?
+  Cost &existingCost = costSoFar[next.row][next.column];
+  if (existingCost <= newCost) {
+    // Don't visit this neighbour again
+    return;
   }
+
+  // Store the new lower cost
+  existingCost = newCost;
 
   // Add next to frontier with heuristic to goal
   const Cost priority = newCost + heuristic(next, goal);
@@ -211,15 +147,14 @@ static constexpr void addNeighbour(CameFrom &cameFrom,
   cameFrom[next.row][next.column] = current;
 }
 
-static constexpr void aStarSearch(CameFrom &cameFrom,
-                                  Dict<Location, Cost> &costSoFar,
+static constexpr void aStarSearch(CameFrom &cameFrom, CostSoFar &costSoFar,
                                   const Graph &graph, Location start,
                                   Location goal) {
   PriorityQueue frontier{};
   frontier.put(start, 0);
 
   cameFrom[start.row][start.column] = start;
-  costSoFar.put(start, 0);
+  costSoFar[start.row][start.column] = 0;
 
   while (!frontier.empty()) {
     const Location current = frontier.get();
@@ -262,10 +197,17 @@ static constexpr void aStarSearch(CameFrom &cameFrom,
 
 void findPath(Pathfinding &pathfinding, const Map &map, const TileCoords &start,
               const TileCoords &goal) {
+  // Clear data structure
+  for (u16 rowIndex = 0; rowIndex < maxMapHeight; ++rowIndex) {
+    Cost(&row)[maxMapWidth] = pathfinding.costSoFar[rowIndex];
+    for (u16 columnIndex = 0; columnIndex < maxMapWidth; ++columnIndex) {
+      row[columnIndex] = ~0;
+    }
+  }
+
   // https://www.redblobgames.com/pathfinding/a-star/introduction.html
   // https://www.redblobgames.com/pathfinding/a-star/implementation.html
-  Dict<Location, Cost> costSoFar{};
-  aStarSearch(pathfinding.cameFrom, costSoFar, map, start, goal);
+  aStarSearch(pathfinding.cameFrom, pathfinding.costSoFar, map, start, goal);
 
   // Copy path to output
   TileCoords next = goal;
