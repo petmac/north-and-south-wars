@@ -7,7 +7,7 @@ using Cost = u16;
 using CostSoFar = Cost[maxMapHeight][maxMapWidth];
 
 struct Frontier {
-  static constexpr u16 capacity = 20;
+  static constexpr u16 capacity = maxMapWidth + maxMapHeight;
 
   struct Item {
     TileCoords location;
