@@ -179,7 +179,7 @@ static constexpr Cost heuristic(const Location &a, const Location &b) {
   return dist(a.column, b.column) + dist(a.row, b.row);
 }
 
-static constexpr void addNeighbour(Dict<Location, Location> &cameFrom,
+static constexpr void addNeighbour(CameFrom &cameFrom,
                                    Dict<Location, Cost> &costSoFar,
                                    PriorityQueue &frontier, const Graph &graph,
                                    Location current, Location next,
@@ -208,17 +208,17 @@ static constexpr void addNeighbour(Dict<Location, Location> &cameFrom,
   frontier.put(next, priority);
 
   // Fix up the path with the lower cost route
-  cameFrom.put(next, current);
+  cameFrom[next.row][next.column] = current;
 }
 
-static constexpr void aStarSearch(Dict<Location, Location> &cameFrom,
+static constexpr void aStarSearch(CameFrom &cameFrom,
                                   Dict<Location, Cost> &costSoFar,
                                   const Graph &graph, Location start,
                                   Location goal) {
   PriorityQueue frontier{};
   frontier.put(start, 0);
 
-  cameFrom.put(start, start);
+  cameFrom[start.row][start.column] = start;
   costSoFar.put(start, 0);
 
   while (!frontier.empty()) {
@@ -264,22 +264,18 @@ void findPath(Pathfinding &pathfinding, const Map &map, const TileCoords &start,
               const TileCoords &goal) {
   // https://www.redblobgames.com/pathfinding/a-star/introduction.html
   // https://www.redblobgames.com/pathfinding/a-star/implementation.html
-  Dict<Location, Location> cameFrom{};
   Dict<Location, Cost> costSoFar{};
-  aStarSearch(cameFrom, costSoFar, map, start, goal);
+  aStarSearch(pathfinding.cameFrom, costSoFar, map, start, goal);
 
   // Copy path to output
   TileCoords next = goal;
   pathfinding.pathLength = 0;
   while (pathfinding.pathLength < maxPathLength) {
-    const Location *prev = cameFrom.find(next);
-    if (prev == nullptr) {
-      break;
-    }
+    const Location prev = pathfinding.cameFrom[next.row][next.column];
     pathfinding.path[pathfinding.pathLength++] = next;
-    if (*prev == start) {
+    if (prev == start) {
       break;
     }
-    next = *prev;
+    next = prev;
   }
 }
