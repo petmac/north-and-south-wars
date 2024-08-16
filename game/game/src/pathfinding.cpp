@@ -179,47 +179,47 @@ static constexpr Cost heuristic(const Location &a, const Location &b) {
   return dist(a.column, b.column) + dist(a.row, b.row);
 }
 
-static constexpr void addNeighbour(Dict<Location, Location> &came_from,
-                                   Dict<Location, Cost> &cost_so_far,
+static constexpr void addNeighbour(Dict<Location, Location> &cameFrom,
+                                   Dict<Location, Cost> &costSoFar,
                                    PriorityQueue &frontier, const Graph &graph,
                                    Location current, Location next,
                                    Location goal) {
   // Compute cost to reach next from current
-  const Cost new_cost = cost_so_far.get(current) + cost(graph, current, next);
+  const Cost newCost = costSoFar.get(current) + cost(graph, current, next);
 
   // Have we already visited next?
-  Cost *const existingCost = cost_so_far.find(next);
+  Cost *const existingCost = costSoFar.find(next);
   if (existingCost != nullptr) {
     // Already visited. Have we already visited with a lower cost?
-    if (*existingCost <= new_cost) {
+    if (*existingCost <= newCost) {
       // Don't add this path.
       return;
     }
 
     // Found a better path
-    *existingCost = new_cost;
+    *existingCost = newCost;
   } else {
     // This is a new path
-    cost_so_far.put(next, new_cost);
+    costSoFar.put(next, newCost);
   }
 
   // Add next to frontier with heuristic to goal
-  const Cost priority = new_cost + heuristic(next, goal);
+  const Cost priority = newCost + heuristic(next, goal);
   frontier.put(next, priority);
 
   // Fix up the path with the lower cost route
-  came_from.put(next, current);
+  cameFrom.put(next, current);
 }
 
-static constexpr void aStarSearch(Dict<Location, Location> &came_from,
-                                  Dict<Location, Cost> &cost_so_far,
+static constexpr void aStarSearch(Dict<Location, Location> &cameFrom,
+                                  Dict<Location, Cost> &costSoFar,
                                   const Graph &graph, Location start,
                                   Location goal) {
   PriorityQueue frontier{};
   frontier.put(start, 0);
 
-  came_from.put(start, start);
-  cost_so_far.put(start, 0);
+  cameFrom.put(start, start);
+  costSoFar.put(start, 0);
 
   while (!frontier.empty()) {
     const Location current = frontier.get();
@@ -234,54 +234,50 @@ static constexpr void aStarSearch(Dict<Location, Location> &came_from,
           .column = current.column,
           .row = static_cast<u8>(current.row - 1),
       };
-      addNeighbour(came_from, cost_so_far, frontier, graph, current, next,
-                   goal);
+      addNeighbour(cameFrom, costSoFar, frontier, graph, current, next, goal);
     }
     if (neighbours.east) {
       const Location next{
           .column = static_cast<u8>(current.column + 1),
           .row = current.row,
       };
-      addNeighbour(came_from, cost_so_far, frontier, graph, current, next,
-                   goal);
+      addNeighbour(cameFrom, costSoFar, frontier, graph, current, next, goal);
     }
     if (neighbours.south) {
       const Location next{
           .column = current.column,
           .row = static_cast<u8>(current.row + 1),
       };
-      addNeighbour(came_from, cost_so_far, frontier, graph, current, next,
-                   goal);
+      addNeighbour(cameFrom, costSoFar, frontier, graph, current, next, goal);
     }
     if (neighbours.west) {
       const Location next{
           .column = static_cast<u8>(current.column - 1),
           .row = current.row,
       };
-      addNeighbour(came_from, cost_so_far, frontier, graph, current, next,
-                   goal);
+      addNeighbour(cameFrom, costSoFar, frontier, graph, current, next, goal);
     }
   }
 }
 
-void findPath(Pathfinding &pathfinding, const Map &map, const TileCoords &from,
-              const TileCoords &to) {
+void findPath(Pathfinding &pathfinding, const Map &map, const TileCoords &start,
+              const TileCoords &goal) {
   // https://www.redblobgames.com/pathfinding/a-star/introduction.html
   // https://www.redblobgames.com/pathfinding/a-star/implementation.html
-  Dict<Location, Location> came_from{};
-  Dict<Location, Cost> cost_so_far{};
-  aStarSearch(came_from, cost_so_far, map, from, to);
+  Dict<Location, Location> cameFrom{};
+  Dict<Location, Cost> costSoFar{};
+  aStarSearch(cameFrom, costSoFar, map, start, goal);
 
   // Copy path to output
-  TileCoords next = to;
+  TileCoords next = goal;
   pathfinding.pathLength = 0;
   while (pathfinding.pathLength < maxPathLength) {
-    const Location *prev = came_from.find(next);
+    const Location *prev = cameFrom.find(next);
     if (prev == nullptr) {
       break;
     }
     pathfinding.path[pathfinding.pathLength++] = next;
-    if (*prev == from) {
+    if (*prev == start) {
       break;
     }
     next = *prev;
