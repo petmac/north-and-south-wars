@@ -97,16 +97,11 @@ constexpr Location get(Frontier &frontier) {
   return bestLocation;
 }
 
-static constexpr Cost dist(u16 a, u16 b) {
-  if (a < b) {
-    return b - a;
-  } else {
-    return a - b;
-  }
-}
-
 static constexpr Cost heuristic(const Location &a, const Location &b) {
-  return dist(a.column, b.column) + dist(a.row, b.row);
+  const s16 y = static_cast<s16>(a.row) - static_cast<s16>(b.row);
+  const s16 x = static_cast<s16>(a.column) - static_cast<s16>(b.column);
+
+  return (y * y) + (x * x);
 }
 
 static constexpr void addNeighbour(CameFrom &cameFrom, CostSoFar &costSoFar,
