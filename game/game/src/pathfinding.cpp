@@ -46,68 +46,58 @@ static constexpr Cost cost(const Graph &, Location, Location) {
   return 1;
 }
 
-struct PriorityQueue {
-  static constexpr u16 capacity = 20;
+constexpr bool empty(const PriorityQueue &frontier) {
+  return frontier.count == 0;
+}
 
-  struct Item {
-    Location location;
-    Cost cost;
+constexpr void put(PriorityQueue &frontier, Location location, Cost cost) {
+  // Is the location is already in the queue?
+  for (u16 existingItemIndex = 0; existingItemIndex < frontier.count;
+       ++existingItemIndex) {
+    PriorityQueue::Item &existingItem = frontier.items[existingItemIndex];
+    if (existingItem.location != location) {
+      continue;
+    }
+    if (cost < existingItem.cost) {
+      existingItem.cost = cost;
+    }
+    return;
+  }
+
+  // Is there enough space?
+  if (frontier.count >= PriorityQueue::capacity) {
+    KPrintF("Out of space in priority queue");
+    return;
+  }
+
+  // Add the item.
+  const PriorityQueue::Item item = {
+      .location = location,
+      .cost = cost,
   };
+  frontier.items[frontier.count++] = item;
+}
 
-  u16 count;
-  Item items[capacity];
+constexpr Location get(PriorityQueue &frontier) {
+  Cost lowestCost = frontier.items[0].cost;
+  u16 bestLocationIndex = 0;
 
-  constexpr bool empty() const { return count == 0; }
-
-  constexpr void put(Location location, Cost cost) {
-    // Is the location is already in the queue?
-    for (u16 existingItemIndex = 0; existingItemIndex < count;
-         ++existingItemIndex) {
-      Item &existingItem = items[existingItemIndex];
-      if (existingItem.location != location) {
-        continue;
-      }
-      if (cost < existingItem.cost) {
-        existingItem.cost = cost;
-      }
-      return;
+  for (u16 itemIndex = 1; itemIndex < frontier.count; ++itemIndex) {
+    const Cost cost = frontier.items[itemIndex].cost;
+    if (cost < lowestCost) {
+      lowestCost = cost;
+      bestLocationIndex = itemIndex;
     }
-
-    // Is there enough space?
-    if (count >= capacity) {
-      KPrintF("Out of space in priority queue");
-      return;
-    }
-
-    // Add the item.
-    const Item item = {
-        .location = location,
-        .cost = cost,
-    };
-    items[count++] = item;
   }
 
-  constexpr Location get() {
-    Cost lowestCost = items[0].cost;
-    u16 bestLocationIndex = 0;
+  const Location bestLocation = frontier.items[bestLocationIndex].location;
 
-    for (u16 itemIndex = 1; itemIndex < count; ++itemIndex) {
-      const Cost cost = items[itemIndex].cost;
-      if (cost < lowestCost) {
-        lowestCost = cost;
-        bestLocationIndex = itemIndex;
-      }
-    }
+  // Remove the best item by overwriting it with the last item and shrinking.
+  --frontier.count;
+  frontier.items[bestLocationIndex] = frontier.items[frontier.count];
 
-    const Location bestLocation = items[bestLocationIndex].location;
-
-    // Remove the best item by overwriting it with the last item and shrinking.
-    --count;
-    items[bestLocationIndex] = items[count];
-
-    return bestLocation;
-  }
-};
+  return bestLocation;
+}
 
 static constexpr Cost dist(u16 a, u16 b) {
   if (a < b) {
@@ -141,23 +131,22 @@ static constexpr void addNeighbour(CameFrom &cameFrom, CostSoFar &costSoFar,
 
   // Add next to frontier with heuristic to goal
   const Cost priority = newCost + heuristic(next, goal);
-  frontier.put(next, priority);
+  put(frontier, next, priority);
 
   // Fix up the path with the lower cost route
   cameFrom[next.row][next.column] = current;
 }
 
 static constexpr void aStarSearch(CameFrom &cameFrom, CostSoFar &costSoFar,
-                                  const Graph &graph, Location start,
-                                  Location goal) {
-  PriorityQueue frontier{};
-  frontier.put(start, 0);
+                                  PriorityQueue &frontier, const Graph &graph,
+                                  Location start, Location goal) {
+  put(frontier, start, 0);
 
   cameFrom[start.row][start.column] = start;
   costSoFar[start.row][start.column] = 0;
 
-  while (!frontier.empty()) {
-    const Location current = frontier.get();
+  while (!empty(frontier)) {
+    const Location current = get(frontier);
 
     if (current == goal) {
       break;
@@ -204,10 +193,12 @@ void findPath(Pathfinding &pathfinding, const Map &map, const TileCoords &start,
       row[columnIndex] = ~0;
     }
   }
+  pathfinding.frontier.count = 0;
   pathfinding.start = start;
   pathfinding.end = goal; // TODO Replace with shorter path
 
   // https://www.redblobgames.com/pathfinding/a-star/introduction.html
   // https://www.redblobgames.com/pathfinding/a-star/implementation.html
-  aStarSearch(pathfinding.cameFrom, pathfinding.costSoFar, map, start, goal);
+  aStarSearch(pathfinding.cameFrom, pathfinding.costSoFar, pathfinding.frontier,
+              map, start, goal);
 }
