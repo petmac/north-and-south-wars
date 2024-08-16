@@ -6,7 +6,7 @@ using CameFrom = TileCoords[maxMapHeight][maxMapWidth];
 using Cost = u16;
 using CostSoFar = Cost[maxMapHeight][maxMapWidth];
 
-struct PriorityQueue {
+struct Frontier {
   static constexpr u16 capacity = 20;
 
   struct Item {
@@ -21,7 +21,7 @@ struct PriorityQueue {
 struct Pathfinding {
   CameFrom cameFrom;
   CostSoFar costSoFar;
-  PriorityQueue frontier;
+  Frontier frontier;
   TileCoords start;
   TileCoords end;
 };

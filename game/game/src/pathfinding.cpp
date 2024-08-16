@@ -46,15 +46,13 @@ static constexpr Cost cost(const Graph &, Location, Location) {
   return 1;
 }
 
-constexpr bool empty(const PriorityQueue &frontier) {
-  return frontier.count == 0;
-}
+constexpr bool empty(const Frontier &frontier) { return frontier.count == 0; }
 
-constexpr void put(PriorityQueue &frontier, Location location, Cost cost) {
+constexpr void put(Frontier &frontier, Location location, Cost cost) {
   // Is the location is already in the queue?
   for (u16 existingItemIndex = 0; existingItemIndex < frontier.count;
        ++existingItemIndex) {
-    PriorityQueue::Item &existingItem = frontier.items[existingItemIndex];
+    Frontier::Item &existingItem = frontier.items[existingItemIndex];
     if (existingItem.location != location) {
       continue;
     }
@@ -65,20 +63,20 @@ constexpr void put(PriorityQueue &frontier, Location location, Cost cost) {
   }
 
   // Is there enough space?
-  if (frontier.count >= PriorityQueue::capacity) {
+  if (frontier.count >= Frontier::capacity) {
     KPrintF("Out of space in priority queue");
     return;
   }
 
   // Add the item.
-  const PriorityQueue::Item item = {
+  const Frontier::Item item = {
       .location = location,
       .cost = cost,
   };
   frontier.items[frontier.count++] = item;
 }
 
-constexpr Location get(PriorityQueue &frontier) {
+constexpr Location get(Frontier &frontier) {
   Cost lowestCost = frontier.items[0].cost;
   u16 bestLocationIndex = 0;
 
@@ -112,7 +110,7 @@ static constexpr Cost heuristic(const Location &a, const Location &b) {
 }
 
 static constexpr void addNeighbour(CameFrom &cameFrom, CostSoFar &costSoFar,
-                                   PriorityQueue &frontier, const Graph &graph,
+                                   Frontier &frontier, const Graph &graph,
                                    Location current, Location next,
                                    Location goal) {
   // Compute cost to reach next from current
@@ -138,7 +136,7 @@ static constexpr void addNeighbour(CameFrom &cameFrom, CostSoFar &costSoFar,
 }
 
 static constexpr void aStarSearch(CameFrom &cameFrom, CostSoFar &costSoFar,
-                                  PriorityQueue &frontier, const Graph &graph,
+                                  Frontier &frontier, const Graph &graph,
                                   Location start, Location goal) {
   put(frontier, start, 0);
 
