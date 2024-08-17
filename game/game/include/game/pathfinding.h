@@ -9,13 +9,13 @@ using CostSoFar = Cost[maxMapHeight][maxMapWidth];
 struct Frontier {
   static constexpr u16 capacity = maxMapWidth + maxMapHeight;
 
-  struct Item {
-    TileCoords location;
-    Cost cost;
+  struct Location {
+    TileCoords coords;
+    Cost priority; // Lower is better
   };
 
   u16 count;
-  Item items[capacity];
+  Location locations[capacity];
 };
 
 struct Pathfinding {

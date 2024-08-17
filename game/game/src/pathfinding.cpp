@@ -3,9 +3,6 @@
 #include "game/callbacks.h" // KPrintF, TODO Remove
 #include "game/pathfinding.h"
 
-using Graph = Map;
-using Location = TileCoords;
-
 struct Neighbours {
   bool north;
   bool east;
@@ -13,91 +10,92 @@ struct Neighbours {
   bool west;
 };
 
-static constexpr Neighbours findNeighbours(const Graph &graph,
-                                           Location location) {
+static constexpr Neighbours findNeighbours(const Map &map, TileCoords coords) {
   Neighbours n{};
 
   // Is north possible?
   // TODO Handle water and bridge directions
-  if (location.row > 0) {
+  if (coords.row > 0) {
     n.north = true;
   }
 
   // Is east possible?
-  if (location.column < (graph.width - 1)) {
+  if (coords.column < (map.width - 1)) {
     n.east = true;
   }
 
   // Is south possible?
-  if (location.row < (graph.height - 1)) {
+  if (coords.row < (map.height - 1)) {
     n.south = true;
   }
 
   // Is west possible?
-  if (location.column > 0) {
+  if (coords.column > 0) {
     n.west = true;
   }
 
   return n;
 }
 
-static constexpr Cost cost(const Graph &, Location, Location) {
+static constexpr Cost cost(const Map &, TileCoords, TileCoords) {
   // TODO Take terrain and unit into account
   return 1;
 }
 
 constexpr bool empty(const Frontier &frontier) { return frontier.count == 0; }
 
-constexpr void put(Frontier &frontier, Location location, Cost cost) {
+constexpr void push(Frontier &frontier, TileCoords coords, Cost priority) {
   // Is the location is already in the queue?
-  for (u16 existingItemIndex = 0; existingItemIndex < frontier.count;
-       ++existingItemIndex) {
-    Frontier::Item &existingItem = frontier.items[existingItemIndex];
-    if (existingItem.location != location) {
+  for (u16 existingLocationIndex = 0; existingLocationIndex < frontier.count;
+       ++existingLocationIndex) {
+    Frontier::Location &existingLocation =
+        frontier.locations[existingLocationIndex];
+    if (existingLocation.coords != coords) {
       continue;
     }
-    if (cost < existingItem.cost) {
-      existingItem.cost = cost;
+    if (priority < existingLocation.priority) {
+      existingLocation.priority = priority;
     }
     return;
   }
 
   // Is there enough space?
   if (frontier.count >= Frontier::capacity) {
-    KPrintF("Out of space in priority queue");
+    KPrintF("Frontier is full");
     return;
   }
 
-  // Add the item.
-  const Frontier::Item item = {
-      .location = location,
-      .cost = cost,
+  // Add the location.
+  const Frontier::Location location = {
+      .coords = coords,
+      .priority = priority,
   };
-  frontier.items[frontier.count++] = item;
+  frontier.locations[frontier.count++] = location;
 }
 
-constexpr Location get(Frontier &frontier) {
-  Cost lowestCost = frontier.items[0].cost;
+constexpr TileCoords pop(Frontier &frontier) {
+  Cost bestPriority = frontier.locations[0].priority;
   u16 bestLocationIndex = 0;
 
-  for (u16 itemIndex = 1; itemIndex < frontier.count; ++itemIndex) {
-    const Cost cost = frontier.items[itemIndex].cost;
-    if (cost < lowestCost) {
-      lowestCost = cost;
-      bestLocationIndex = itemIndex;
+  for (u16 locationIndex = 1; locationIndex < frontier.count; ++locationIndex) {
+    const Cost priority = frontier.locations[locationIndex].priority;
+    if (priority < bestPriority) {
+      bestPriority = priority;
+      bestLocationIndex = locationIndex;
     }
   }
 
-  const Location bestLocation = frontier.items[bestLocationIndex].location;
+  const TileCoords bestLocation = frontier.locations[bestLocationIndex].coords;
 
-  // Remove the best item by overwriting it with the last item and shrinking.
+  // Remove the best location by overwriting it with the last location and
+  // shrinking.
   --frontier.count;
-  frontier.items[bestLocationIndex] = frontier.items[frontier.count];
+  frontier.locations[bestLocationIndex] = frontier.locations[frontier.count];
 
   return bestLocation;
 }
 
-static constexpr Cost heuristic(Location a, Location b) {
+static constexpr Cost heuristic(TileCoords a, TileCoords b) {
   const s16 y = static_cast<s16>(a.row) - static_cast<s16>(b.row);
   const s16 x = static_cast<s16>(a.column) - static_cast<s16>(b.column);
 
@@ -105,12 +103,12 @@ static constexpr Cost heuristic(Location a, Location b) {
 }
 
 static constexpr void addNeighbour(CameFrom &cameFrom, CostSoFar &costSoFar,
-                                   Frontier &frontier, const Graph &graph,
-                                   Location current, Location next,
-                                   Location goal) {
+                                   Frontier &frontier, const Map &map,
+                                   TileCoords current, TileCoords next,
+                                   TileCoords goal) {
   // Compute cost to reach next from current
   const Cost newCost =
-      costSoFar[current.row][current.column] + cost(graph, current, next);
+      costSoFar[current.row][current.column] + cost(map, current, next);
 
   // Is the new route to next more expensive than an existing route?
   Cost &existingCost = costSoFar[next.row][next.column];
@@ -124,55 +122,55 @@ static constexpr void addNeighbour(CameFrom &cameFrom, CostSoFar &costSoFar,
 
   // Add next to frontier with heuristic to goal
   const Cost priority = newCost + heuristic(next, goal);
-  put(frontier, next, priority);
+  push(frontier, next, priority);
 
   // Fix up the path with the lower cost route
   cameFrom[next.row][next.column] = current;
 }
 
 static constexpr void aStarSearch(CameFrom &cameFrom, CostSoFar &costSoFar,
-                                  Frontier &frontier, const Graph &graph,
-                                  Location start, Location goal) {
-  put(frontier, start, 0);
+                                  Frontier &frontier, const Map &map,
+                                  TileCoords start, TileCoords goal) {
+  push(frontier, start, 0);
 
   cameFrom[start.row][start.column] = start;
   costSoFar[start.row][start.column] = 0;
 
   while (!empty(frontier)) {
-    const Location current = get(frontier);
+    const TileCoords current = pop(frontier);
 
     if (current == goal) {
       break;
     }
 
-    const Neighbours neighbours = findNeighbours(graph, current);
+    const Neighbours neighbours = findNeighbours(map, current);
     if (neighbours.north) {
-      const Location next{
+      const TileCoords next{
           .column = current.column,
           .row = static_cast<u8>(current.row - 1),
       };
-      addNeighbour(cameFrom, costSoFar, frontier, graph, current, next, goal);
+      addNeighbour(cameFrom, costSoFar, frontier, map, current, next, goal);
     }
     if (neighbours.east) {
-      const Location next{
+      const TileCoords next{
           .column = static_cast<u8>(current.column + 1),
           .row = current.row,
       };
-      addNeighbour(cameFrom, costSoFar, frontier, graph, current, next, goal);
+      addNeighbour(cameFrom, costSoFar, frontier, map, current, next, goal);
     }
     if (neighbours.south) {
-      const Location next{
+      const TileCoords next{
           .column = current.column,
           .row = static_cast<u8>(current.row + 1),
       };
-      addNeighbour(cameFrom, costSoFar, frontier, graph, current, next, goal);
+      addNeighbour(cameFrom, costSoFar, frontier, map, current, next, goal);
     }
     if (neighbours.west) {
-      const Location next{
+      const TileCoords next{
           .column = static_cast<u8>(current.column - 1),
           .row = current.row,
       };
-      addNeighbour(cameFrom, costSoFar, frontier, graph, current, next, goal);
+      addNeighbour(cameFrom, costSoFar, frontier, map, current, next, goal);
     }
   }
 }
