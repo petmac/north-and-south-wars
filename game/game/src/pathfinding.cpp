@@ -96,23 +96,20 @@ static constexpr Cost heuristic(TileCoords a, TileCoords b) {
 }
 
 static constexpr void addNeighbour(Pathfinding &pathfinding, TileCoords current,
-                                   TileCoords next, TileCoords goal) {
-  // Compute cost to reach next from current
-  // TODO Take unit and terrain into account
-  const Cost newCost = pathfinding.costSoFar[current.row][current.column] + 1;
-
+                                   TileCoords next, TileCoords goal,
+                                   Cost costToNext) {
   // Is the new route to next more expensive than an existing route?
   Cost &existingCost = pathfinding.costSoFar[next.row][next.column];
-  if (existingCost <= newCost) {
+  if (existingCost <= costToNext) {
     // Don't visit this neighbour again
     return;
   }
 
   // Store the new lower cost
-  existingCost = newCost;
+  existingCost = costToNext;
 
   // Add next to frontier with heuristic to goal
-  const Cost priority = newCost + heuristic(next, goal);
+  const Cost priority = costToNext + heuristic(next, goal);
   push(pathfinding.frontier, next, priority);
 
   // Fix up the path with the lower cost route
@@ -120,53 +117,69 @@ static constexpr void addNeighbour(Pathfinding &pathfinding, TileCoords current,
 }
 
 static constexpr void aStarSearch(Pathfinding &pathfinding, const Map &map,
-                                  TileCoords start, TileCoords goal) {
+                                  TileCoords start, TileCoords goal,
+                                  Cost unitMovementPoints) {
   push(pathfinding.frontier, start, 0);
 
   pathfinding.cameFrom[start.row][start.column] = start;
   pathfinding.costSoFar[start.row][start.column] = 0;
 
   while (pathfinding.frontier.count > 0) {
+    // What's the current best location to explore?
     const TileCoords current = pop(pathfinding.frontier);
 
+    // Update the "end" of the path
+    pathfinding.end = current;
+
+    // Found the goal?
     if (current == goal) {
       break;
     }
 
+    // Can we move to a neighbour?
+    // TODO Take unit and terrain into account
+    const Cost costToCurrent =
+        pathfinding.costSoFar[current.row][current.column];
+    const Cost costToNext = costToCurrent + 1;
+    if (costToNext > unitMovementPoints) {
+      break;
+    }
+
+    // Where can we move to?
     const Neighbours neighbours = findNeighbours(map, current);
     if (neighbours.north) {
       const TileCoords next{
           .column = current.column,
           .row = static_cast<u8>(current.row - 1),
       };
-      addNeighbour(pathfinding, current, next, goal);
+      addNeighbour(pathfinding, current, next, goal, costToNext);
     }
     if (neighbours.east) {
       const TileCoords next{
           .column = static_cast<u8>(current.column + 1),
           .row = current.row,
       };
-      addNeighbour(pathfinding, current, next, goal);
+      addNeighbour(pathfinding, current, next, goal, costToNext);
     }
     if (neighbours.south) {
       const TileCoords next{
           .column = current.column,
           .row = static_cast<u8>(current.row + 1),
       };
-      addNeighbour(pathfinding, current, next, goal);
+      addNeighbour(pathfinding, current, next, goal, costToNext);
     }
     if (neighbours.west) {
       const TileCoords next{
           .column = static_cast<u8>(current.column - 1),
           .row = current.row,
       };
-      addNeighbour(pathfinding, current, next, goal);
+      addNeighbour(pathfinding, current, next, goal, costToNext);
     }
   }
 }
 
 void findPath(Pathfinding &pathfinding, const Map &map, TileCoords start,
-              TileCoords goal) {
+              TileCoords goal, u16 unitMovementPoints) {
   // Clear data structure
   for (u16 rowIndex = 0; rowIndex < maxMapHeight; ++rowIndex) {
     Cost(&row)[maxMapWidth] = pathfinding.costSoFar[rowIndex];
@@ -180,5 +193,5 @@ void findPath(Pathfinding &pathfinding, const Map &map, TileCoords start,
 
   // https://www.redblobgames.com/pathfinding/a-star/introduction.html
   // https://www.redblobgames.com/pathfinding/a-star/implementation.html
-  aStarSearch(pathfinding, map, start, goal);
+  aStarSearch(pathfinding, map, start, goal, unitMovementPoints);
 }
