@@ -3,7 +3,7 @@
 #include "game/callbacks.h" // KPrintF, TODO Remove
 #include "game/pathfinding.h"
 
-constexpr void push(Frontier &frontier, TileCoords coords, Cost priority) {
+static void push(Frontier &frontier, TileCoords coords, Cost priority) {
   // Is the location is already in the queue?
   for (u16 existingLocationIndex = 0; existingLocationIndex < frontier.count;
        ++existingLocationIndex) {
@@ -32,7 +32,7 @@ constexpr void push(Frontier &frontier, TileCoords coords, Cost priority) {
   frontier.locations[frontier.count++] = location;
 }
 
-constexpr TileCoords pop(Frontier &frontier) {
+static TileCoords pop(Frontier &frontier) {
   Cost bestPriority = frontier.locations[0].priority;
   u16 bestLocationIndex = 0;
 
@@ -61,9 +61,9 @@ static constexpr Cost heuristic(TileCoords a, TileCoords b) {
   return (y * y) + (x * x);
 }
 
-static void addNeighbour(Pathfinding &pathfinding, TileCoords current,
-                         u16 nextColumn, u16 nextRow, TileCoords goal,
-                         Cost costToNext) {
+static void considerNeighbour(Pathfinding &pathfinding, TileCoords current,
+                              u16 nextColumn, u16 nextRow, TileCoords goal,
+                              Cost costToNext) {
   // Is the new route to next more expensive than an existing route?
   Cost &existingCost = pathfinding.costSoFar[nextRow][nextColumn];
   if (existingCost <= costToNext) {
@@ -86,9 +86,9 @@ static void addNeighbour(Pathfinding &pathfinding, TileCoords current,
   pathfinding.cameFrom[nextRow][nextColumn] = current;
 }
 
-static constexpr void aStarSearch(Pathfinding &pathfinding, const Map &map,
-                                  TileCoords start, TileCoords goal,
-                                  Cost unitMovementPoints) {
+static void aStarSearch(Pathfinding &pathfinding, const Map &map,
+                        TileCoords start, TileCoords goal,
+                        Cost unitMovementPoints) {
   push(pathfinding.frontier, start, 0);
 
   pathfinding.cameFrom[start.row][start.column] = start;
@@ -117,20 +117,20 @@ static constexpr void aStarSearch(Pathfinding &pathfinding, const Map &map,
 
     // Where can we move to?
     if (current.row > 0) {
-      addNeighbour(pathfinding, current, current.column, current.row - 1, goal,
-                   costToNext);
+      considerNeighbour(pathfinding, current, current.column, current.row - 1,
+                        goal, costToNext);
     }
     if (current.column < (map.width - 1)) {
-      addNeighbour(pathfinding, current, current.column + 1, current.row, goal,
-                   costToNext);
+      considerNeighbour(pathfinding, current, current.column + 1, current.row,
+                        goal, costToNext);
     }
     if (current.row < (map.height - 1)) {
-      addNeighbour(pathfinding, current, current.column, current.row + 1, goal,
-                   costToNext);
+      considerNeighbour(pathfinding, current, current.column, current.row + 1,
+                        goal, costToNext);
     }
     if (current.column > 0) {
-      addNeighbour(pathfinding, current, current.column - 1, current.row, goal,
-                   costToNext);
+      considerNeighbour(pathfinding, current, current.column - 1, current.row,
+                        goal, costToNext);
     }
   }
 }
