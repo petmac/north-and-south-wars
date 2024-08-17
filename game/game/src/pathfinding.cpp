@@ -139,6 +139,7 @@ static void aStarSearch(Pathfinding &pathfinding, const Map &map,
 void findPath(Pathfinding &pathfinding, const Map &map, TileCoords start,
               TileCoords goal, u16 unitMovementPoints) {
   // Clear data structure
+  // TODO No need to clear the whole map, just the area around the start
   for (u16 rowIndex = 0; rowIndex < maxMapHeight; ++rowIndex) {
     Cost(&row)[maxMapWidth] = pathfinding.costSoFar[rowIndex];
     for (u16 columnIndex = 0; columnIndex < maxMapWidth; ++columnIndex) {
