@@ -3,40 +3,6 @@
 #include "game/callbacks.h" // KPrintF, TODO Remove
 #include "game/pathfinding.h"
 
-struct Neighbours {
-  bool north;
-  bool east;
-  bool south;
-  bool west;
-};
-
-static constexpr Neighbours findNeighbours(const Map &map, TileCoords coords) {
-  Neighbours n{};
-
-  // Is north possible?
-  // TODO Handle water and bridge directions
-  if (coords.row > 0) {
-    n.north = true;
-  }
-
-  // Is east possible?
-  if (coords.column < (map.width - 1)) {
-    n.east = true;
-  }
-
-  // Is south possible?
-  if (coords.row < (map.height - 1)) {
-    n.south = true;
-  }
-
-  // Is west possible?
-  if (coords.column > 0) {
-    n.west = true;
-  }
-
-  return n;
-}
-
 constexpr void push(Frontier &frontier, TileCoords coords, Cost priority) {
   // Is the location is already in the queue?
   for (u16 existingLocationIndex = 0; existingLocationIndex < frontier.count;
@@ -95,11 +61,11 @@ static constexpr Cost heuristic(TileCoords a, TileCoords b) {
   return (y * y) + (x * x);
 }
 
-static constexpr void addNeighbour(Pathfinding &pathfinding, TileCoords current,
-                                   TileCoords next, TileCoords goal,
-                                   Cost costToNext) {
+static void addNeighbour(Pathfinding &pathfinding, TileCoords current,
+                         u16 nextColumn, u16 nextRow, TileCoords goal,
+                         Cost costToNext) {
   // Is the new route to next more expensive than an existing route?
-  Cost &existingCost = pathfinding.costSoFar[next.row][next.column];
+  Cost &existingCost = pathfinding.costSoFar[nextRow][nextColumn];
   if (existingCost <= costToNext) {
     // Don't visit this neighbour again
     return;
@@ -109,11 +75,15 @@ static constexpr void addNeighbour(Pathfinding &pathfinding, TileCoords current,
   existingCost = costToNext;
 
   // Add next to frontier with heuristic to goal
+  const TileCoords next = {
+      .column = static_cast<u8>(nextColumn),
+      .row = static_cast<u8>(nextRow),
+  };
   const Cost priority = costToNext + heuristic(next, goal);
   push(pathfinding.frontier, next, priority);
 
   // Fix up the path with the lower cost route
-  pathfinding.cameFrom[next.row][next.column] = current;
+  pathfinding.cameFrom[nextRow][nextColumn] = current;
 }
 
 static constexpr void aStarSearch(Pathfinding &pathfinding, const Map &map,
@@ -146,34 +116,21 @@ static constexpr void aStarSearch(Pathfinding &pathfinding, const Map &map,
     }
 
     // Where can we move to?
-    const Neighbours neighbours = findNeighbours(map, current);
-    if (neighbours.north) {
-      const TileCoords next{
-          .column = current.column,
-          .row = static_cast<u8>(current.row - 1),
-      };
-      addNeighbour(pathfinding, current, next, goal, costToNext);
+    if (current.row > 0) {
+      addNeighbour(pathfinding, current, current.column, current.row - 1, goal,
+                   costToNext);
     }
-    if (neighbours.east) {
-      const TileCoords next{
-          .column = static_cast<u8>(current.column + 1),
-          .row = current.row,
-      };
-      addNeighbour(pathfinding, current, next, goal, costToNext);
+    if (current.column < (map.width - 1)) {
+      addNeighbour(pathfinding, current, current.column + 1, current.row, goal,
+                   costToNext);
     }
-    if (neighbours.south) {
-      const TileCoords next{
-          .column = current.column,
-          .row = static_cast<u8>(current.row + 1),
-      };
-      addNeighbour(pathfinding, current, next, goal, costToNext);
+    if (current.row < (map.height - 1)) {
+      addNeighbour(pathfinding, current, current.column, current.row + 1, goal,
+                   costToNext);
     }
-    if (neighbours.west) {
-      const TileCoords next{
-          .column = static_cast<u8>(current.column - 1),
-          .row = current.row,
-      };
-      addNeighbour(pathfinding, current, next, goal, costToNext);
+    if (current.column > 0) {
+      addNeighbour(pathfinding, current, current.column - 1, current.row, goal,
+                   costToNext);
     }
   }
 }
