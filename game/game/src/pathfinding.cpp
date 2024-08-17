@@ -63,7 +63,15 @@ static constexpr Cost heuristic(TileCoords a, TileCoords b) {
 
 static void considerNeighbour(Pathfinding &pathfinding, TileCoords current,
                               u16 nextColumn, u16 nextRow, TileCoords goal,
-                              Cost costToNext) {
+                              Cost costToCurrent, Cost unitMovementPoints) {
+  // Does the unit have enough movement points to move to this location?
+  // TODO Take unit and terrain into account
+  const Cost costToEnterNext = 1;
+  const Cost costToNext = costToCurrent + costToEnterNext;
+  if (costToNext > unitMovementPoints) {
+    return;
+  }
+
   // Is the new route to next more expensive than an existing route?
   Cost &existingCost = pathfinding.costSoFar[nextRow][nextColumn];
   if (existingCost <= costToNext) {
@@ -98,39 +106,32 @@ static void aStarSearch(Pathfinding &pathfinding, const Map &map,
     // What's the current best location to explore?
     const TileCoords current = pop(pathfinding.frontier);
 
-    // Update the "end" of the path
-    pathfinding.end = current;
-
     // Found the goal?
     if (current == goal) {
+      pathfinding.end = current;
       break;
     }
 
     // Can we move to a neighbour?
-    // TODO Take unit and terrain into account
     const Cost costToCurrent =
         pathfinding.costSoFar[current.row][current.column];
-    const Cost costToNext = costToCurrent + 1;
-    if (costToNext > unitMovementPoints) {
-      break;
-    }
 
     // Where can we move to?
     if (current.row > 0) {
       considerNeighbour(pathfinding, current, current.column, current.row - 1,
-                        goal, costToNext);
+                        goal, costToCurrent, unitMovementPoints);
     }
     if (current.column < (map.width - 1)) {
       considerNeighbour(pathfinding, current, current.column + 1, current.row,
-                        goal, costToNext);
+                        goal, costToCurrent, unitMovementPoints);
     }
     if (current.row < (map.height - 1)) {
       considerNeighbour(pathfinding, current, current.column, current.row + 1,
-                        goal, costToNext);
+                        goal, costToCurrent, unitMovementPoints);
     }
     if (current.column > 0) {
       considerNeighbour(pathfinding, current, current.column - 1, current.row,
-                        goal, costToNext);
+                        goal, costToCurrent, unitMovementPoints);
     }
   }
 }
@@ -146,7 +147,7 @@ void findPath(Pathfinding &pathfinding, const Map &map, TileCoords start,
   }
   pathfinding.frontier.count = 0;
   pathfinding.start = start;
-  pathfinding.end = goal; // TODO Replace with shorter path
+  pathfinding.end = start; // Default to not finding the goal
 
   // https://www.redblobgames.com/pathfinding/a-star/introduction.html
   // https://www.redblobgames.com/pathfinding/a-star/implementation.html
