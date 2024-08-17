@@ -102,16 +102,15 @@ static constexpr Cost heuristic(TileCoords a, TileCoords b) {
   return (y * y) + (x * x);
 }
 
-static constexpr void addNeighbour(CameFrom &cameFrom, CostSoFar &costSoFar,
-                                   Frontier &frontier, const Map &map,
+static constexpr void addNeighbour(Pathfinding &pathfinding, const Map &map,
                                    TileCoords current, TileCoords next,
                                    TileCoords goal) {
   // Compute cost to reach next from current
-  const Cost newCost =
-      costSoFar[current.row][current.column] + cost(map, current, next);
+  const Cost newCost = pathfinding.costSoFar[current.row][current.column] +
+                       cost(map, current, next);
 
   // Is the new route to next more expensive than an existing route?
-  Cost &existingCost = costSoFar[next.row][next.column];
+  Cost &existingCost = pathfinding.costSoFar[next.row][next.column];
   if (existingCost <= newCost) {
     // Don't visit this neighbour again
     return;
@@ -122,22 +121,21 @@ static constexpr void addNeighbour(CameFrom &cameFrom, CostSoFar &costSoFar,
 
   // Add next to frontier with heuristic to goal
   const Cost priority = newCost + heuristic(next, goal);
-  push(frontier, next, priority);
+  push(pathfinding.frontier, next, priority);
 
   // Fix up the path with the lower cost route
-  cameFrom[next.row][next.column] = current;
+  pathfinding.cameFrom[next.row][next.column] = current;
 }
 
-static constexpr void aStarSearch(CameFrom &cameFrom, CostSoFar &costSoFar,
-                                  Frontier &frontier, const Map &map,
+static constexpr void aStarSearch(Pathfinding &pathfinding, const Map &map,
                                   TileCoords start, TileCoords goal) {
-  push(frontier, start, 0);
+  push(pathfinding.frontier, start, 0);
 
-  cameFrom[start.row][start.column] = start;
-  costSoFar[start.row][start.column] = 0;
+  pathfinding.cameFrom[start.row][start.column] = start;
+  pathfinding.costSoFar[start.row][start.column] = 0;
 
-  while (!empty(frontier)) {
-    const TileCoords current = pop(frontier);
+  while (!empty(pathfinding.frontier)) {
+    const TileCoords current = pop(pathfinding.frontier);
 
     if (current == goal) {
       break;
@@ -149,28 +147,28 @@ static constexpr void aStarSearch(CameFrom &cameFrom, CostSoFar &costSoFar,
           .column = current.column,
           .row = static_cast<u8>(current.row - 1),
       };
-      addNeighbour(cameFrom, costSoFar, frontier, map, current, next, goal);
+      addNeighbour(pathfinding, map, current, next, goal);
     }
     if (neighbours.east) {
       const TileCoords next{
           .column = static_cast<u8>(current.column + 1),
           .row = current.row,
       };
-      addNeighbour(cameFrom, costSoFar, frontier, map, current, next, goal);
+      addNeighbour(pathfinding, map, current, next, goal);
     }
     if (neighbours.south) {
       const TileCoords next{
           .column = current.column,
           .row = static_cast<u8>(current.row + 1),
       };
-      addNeighbour(cameFrom, costSoFar, frontier, map, current, next, goal);
+      addNeighbour(pathfinding, map, current, next, goal);
     }
     if (neighbours.west) {
       const TileCoords next{
           .column = static_cast<u8>(current.column - 1),
           .row = current.row,
       };
-      addNeighbour(cameFrom, costSoFar, frontier, map, current, next, goal);
+      addNeighbour(pathfinding, map, current, next, goal);
     }
   }
 }
@@ -190,6 +188,5 @@ void findPath(Pathfinding &pathfinding, const Map &map, TileCoords start,
 
   // https://www.redblobgames.com/pathfinding/a-star/introduction.html
   // https://www.redblobgames.com/pathfinding/a-star/implementation.html
-  aStarSearch(pathfinding.cameFrom, pathfinding.costSoFar, pathfinding.frontier,
-              map, start, goal);
+  aStarSearch(pathfinding, map, start, goal);
 }
