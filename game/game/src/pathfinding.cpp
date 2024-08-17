@@ -37,13 +37,6 @@ static constexpr Neighbours findNeighbours(const Map &map, TileCoords coords) {
   return n;
 }
 
-static constexpr Cost cost(const Map &, TileCoords, TileCoords) {
-  // TODO Take terrain and unit into account
-  return 1;
-}
-
-constexpr bool empty(const Frontier &frontier) { return frontier.count == 0; }
-
 constexpr void push(Frontier &frontier, TileCoords coords, Cost priority) {
   // Is the location is already in the queue?
   for (u16 existingLocationIndex = 0; existingLocationIndex < frontier.count;
@@ -102,12 +95,11 @@ static constexpr Cost heuristic(TileCoords a, TileCoords b) {
   return (y * y) + (x * x);
 }
 
-static constexpr void addNeighbour(Pathfinding &pathfinding, const Map &map,
-                                   TileCoords current, TileCoords next,
-                                   TileCoords goal) {
+static constexpr void addNeighbour(Pathfinding &pathfinding, TileCoords current,
+                                   TileCoords next, TileCoords goal) {
   // Compute cost to reach next from current
-  const Cost newCost = pathfinding.costSoFar[current.row][current.column] +
-                       cost(map, current, next);
+  // TODO Take unit and terrain into account
+  const Cost newCost = pathfinding.costSoFar[current.row][current.column] + 1;
 
   // Is the new route to next more expensive than an existing route?
   Cost &existingCost = pathfinding.costSoFar[next.row][next.column];
@@ -134,7 +126,7 @@ static constexpr void aStarSearch(Pathfinding &pathfinding, const Map &map,
   pathfinding.cameFrom[start.row][start.column] = start;
   pathfinding.costSoFar[start.row][start.column] = 0;
 
-  while (!empty(pathfinding.frontier)) {
+  while (pathfinding.frontier.count > 0) {
     const TileCoords current = pop(pathfinding.frontier);
 
     if (current == goal) {
@@ -147,28 +139,28 @@ static constexpr void aStarSearch(Pathfinding &pathfinding, const Map &map,
           .column = current.column,
           .row = static_cast<u8>(current.row - 1),
       };
-      addNeighbour(pathfinding, map, current, next, goal);
+      addNeighbour(pathfinding, current, next, goal);
     }
     if (neighbours.east) {
       const TileCoords next{
           .column = static_cast<u8>(current.column + 1),
           .row = current.row,
       };
-      addNeighbour(pathfinding, map, current, next, goal);
+      addNeighbour(pathfinding, current, next, goal);
     }
     if (neighbours.south) {
       const TileCoords next{
           .column = current.column,
           .row = static_cast<u8>(current.row + 1),
       };
-      addNeighbour(pathfinding, map, current, next, goal);
+      addNeighbour(pathfinding, current, next, goal);
     }
     if (neighbours.west) {
       const TileCoords next{
           .column = static_cast<u8>(current.column - 1),
           .row = current.row,
       };
-      addNeighbour(pathfinding, map, current, next, goal);
+      addNeighbour(pathfinding, current, next, goal);
     }
   }
 }
