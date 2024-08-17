@@ -10,6 +10,7 @@ add_library(
     include/game/mission.h
     include/game/pathfinding.h
     include/game/screen.h
+    include/game/terrain.h
     include/game/title.h
     include/game/units.h
     src/campaign_map.cpp
@@ -22,6 +23,7 @@ add_library(
     src/mission.h
     src/pathfinding.cpp
     src/pathfinding.h
+    src/terrain.cpp
     src/title.cpp
     src/title.h
     )
