@@ -97,7 +97,7 @@ constexpr Location get(Frontier &frontier) {
   return bestLocation;
 }
 
-static constexpr Cost heuristic(const Location &a, const Location &b) {
+static constexpr Cost heuristic(Location a, Location b) {
   const s16 y = static_cast<s16>(a.row) - static_cast<s16>(b.row);
   const s16 x = static_cast<s16>(a.column) - static_cast<s16>(b.column);
 
@@ -177,8 +177,8 @@ static constexpr void aStarSearch(CameFrom &cameFrom, CostSoFar &costSoFar,
   }
 }
 
-void findPath(Pathfinding &pathfinding, const Map &map, const TileCoords &start,
-              const TileCoords &goal) {
+void findPath(Pathfinding &pathfinding, const Map &map, TileCoords start,
+              TileCoords goal) {
   // Clear data structure
   for (u16 rowIndex = 0; rowIndex < maxMapHeight; ++rowIndex) {
     Cost(&row)[maxMapWidth] = pathfinding.costSoFar[rowIndex];
