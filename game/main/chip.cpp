@@ -1,5 +1,7 @@
 #include "chip.h"
 
+#include "gcc8_c_support.h" // KPrintF
+
 Chip chip __attribute__((section(".MEMF_CHIP")));
 
 static void initFrameChip(FrameChip &frameChip) {
@@ -21,6 +23,8 @@ static void initFrameChip(FrameChip &frameChip) {
 }
 
 void initChip() {
+  KPrintF("Size of chip = %lu", sizeof(chip));
+
   for (u16 frameIndex = 0; frameIndex < 2; ++frameIndex) {
     FrameChip &frameChip = chip.frames[frameIndex];
     initFrameChip(frameChip);

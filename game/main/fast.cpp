@@ -3,6 +3,8 @@
 #include "amiga/custom.h"
 #include "game/screen.h"
 
+#include "gcc8_c_support.h" // KPrintF
+
 static void initFrameFast(FrameFast &frameFast) {
   frameFast.state = FrameState::cleared;
   frameFast.intro.linesDrawn = 0;
@@ -10,6 +12,8 @@ static void initFrameFast(FrameFast &frameFast) {
 }
 
 void initFast(Fast &fast) {
+  KPrintF("Size of fast = %lu", sizeof(fast));
+
   const u16 mouseData = custom.joy0dat;
 
   fast.game = initGame();
