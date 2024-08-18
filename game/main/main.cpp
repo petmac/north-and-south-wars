@@ -5,6 +5,7 @@
 #include "amiga/libs.h"
 #include "amiga/mouse.h"
 #include "amiga/system.h"
+#include "gcc8_c_support.h"
 
 #include <hardware/dmabits.h>
 #include <hardware/intbits.h>
@@ -106,6 +107,12 @@ int main() {
   fast.interrupt.is_Code = &verticalBlankInterruptHandler;
 
   AddIntServer(INTB_VERTB, &fast.interrupt);
+
+  const u32 freeChipRAM = AvailMem(MEMF_CHIP | MEMF_LARGEST);
+  const u32 freeFastRAM = AvailMem(MEMF_FAST | MEMF_LARGEST);
+
+  KPrintF("Free chip RAM = %lu", freeChipRAM);
+  KPrintF("Free fast RAM = %lu", freeFastRAM);
 
   for (;;) {
     runFrame();
