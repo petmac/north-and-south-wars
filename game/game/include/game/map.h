@@ -14,7 +14,7 @@ struct TileCoords {
   u8 row;
 };
 
-constexpr bool operator==(const TileCoords a, const TileCoords b) {
+constexpr bool operator==(TileCoords a, TileCoords b) {
   return (a.column == b.column) && (a.row == b.row);
 }
 
