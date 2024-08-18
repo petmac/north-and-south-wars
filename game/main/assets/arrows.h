@@ -19,6 +19,7 @@ enum class ArrowType : u8 {
   eastToSouth,
   southToWest,
   westToNorth,
+  reachable,
   count,
 };
 

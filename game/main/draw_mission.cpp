@@ -98,9 +98,14 @@ static void drawPath(Background &background, DirtyTileList &dirtyTiles,
                      const Pathfinding &pathfinding, TileCoords start,
                      TileCoords goal) {
   // Draw reachable tiles
+  const ArrowBitmap &reachableBitmap =
+      chip.arrows.bitmaps[static_cast<u16>(ArrowType::reachable)];
   for (u16 reachableTileIndex = 0;
        reachableTileIndex < pathfinding.reachable.count; ++reachableTileIndex) {
-    const TileCoords reachableTile = nullptr;
+    const TileCoords coords =
+        pathfinding.reachable.locations[reachableTileIndex];
+    drawBobOnTile(background, dirtyTiles, coords.column, coords.row,
+                  reachableBitmap);
   }
 
   // Draw path to goal
@@ -144,7 +149,6 @@ void drawMission(Background &background, FrameFast &frameFast,
     const TileCoords start = selectedUnit.coords;
     const TileCoords goal = mission.unitDestination;
     drawPath(background, dirtyTiles, mission.pathfinding, start, goal);
-    drawMissionText(background, dirtyTiles, "Select unit destination");
   } break;
   case MissionState::movingUnit:
     drawMissionText(background, dirtyTiles, "Moving unit");
