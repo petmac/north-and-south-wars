@@ -7,7 +7,7 @@
 // https://www.redblobgames.com/pathfinding/a-star/introduction.html
 // https://www.redblobgames.com/pathfinding/a-star/implementation.html
 
-static void push(Frontier &frontier, TileCoords coords) {
+static void insert(Frontier &frontier, TileCoords coords) {
   // Is the location is already in the queue?
   for (u16 existingLocationIndex = 0; existingLocationIndex < frontier.count;
        ++existingLocationIndex) {
@@ -50,15 +50,20 @@ static void considerNeighbour(Pathfinding &pathfinding, TileCoords current,
     return;
   }
 
-  // Store the new lower cost
-  existingCost = costToNext;
-
-  // Add next to frontier
+  // Not yet visited the next location?
   const TileCoords next = {
       .column = static_cast<u8>(nextColumn),
       .row = static_cast<u8>(nextRow),
   };
-  push(pathfinding.frontier, next);
+  if (existingCost == maxCost) {
+    pathfinding.reachable.locations[pathfinding.reachable.count++] = next;
+  }
+
+  // Store the new lower cost
+  existingCost = costToNext;
+
+  // Add next to frontier
+  insert(pathfinding.frontier, next);
 
   // Fix up the path with the lower cost route
   pathfinding.cameFrom[nextRow][nextColumn] = current;
@@ -77,7 +82,8 @@ void findPaths(Pathfinding &pathfinding, const Map &map, TileCoords start,
   pathfinding.cameFrom[start.row][start.column] = start;
   pathfinding.costSoFar[start.row][start.column] = 0;
   pathfinding.frontier.count = 0;
-  push(pathfinding.frontier, start);
+  insert(pathfinding.frontier, start);
+  pathfinding.reachable.count = 0;
 
   while (pathfinding.frontier.count > 0) {
     // What's the current best location to explore?

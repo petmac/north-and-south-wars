@@ -97,11 +97,17 @@ static void drawUnit(Background &background, DirtyTileList &dirtyTiles,
 static void drawPath(Background &background, DirtyTileList &dirtyTiles,
                      const Pathfinding &pathfinding, TileCoords start,
                      TileCoords goal) {
-  const ArrowBitmap &src =
-      chip.arrows.bitmaps[static_cast<u16>(ArrowType::pointEast)];
+  // Draw reachable tiles
+  for (u16 reachableTileIndex = 0;
+       reachableTileIndex < pathfinding.reachable.count; ++reachableTileIndex) {
+    const TileCoords reachableTile = nullptr;
+  }
 
+  // Draw path to goal
   for (TileCoords coords = goal; coords != start;
        coords = pathfinding.cameFrom[coords.row][coords.column]) {
+    const ArrowBitmap &src =
+        chip.arrows.bitmaps[static_cast<u16>(ArrowType::pointEast)];
     drawBobOnTile(background, dirtyTiles, coords.column, coords.row, src);
   }
 }
