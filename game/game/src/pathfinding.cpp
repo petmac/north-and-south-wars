@@ -3,6 +3,10 @@
 #include "game/callbacks.h" // KPrintF, TODO Remove
 #include "game/pathfinding.h"
 
+// Algorithm based on:
+// https://www.redblobgames.com/pathfinding/a-star/introduction.html
+// https://www.redblobgames.com/pathfinding/a-star/implementation.html
+
 static void push(Frontier &frontier, TileCoords coords, Cost priority) {
   // Is the location is already in the queue?
   for (u16 existingLocationIndex = 0; existingLocationIndex < frontier.count;
@@ -94,13 +98,22 @@ static void considerNeighbour(Pathfinding &pathfinding, TileCoords current,
   pathfinding.cameFrom[nextRow][nextColumn] = current;
 }
 
-static void aStarSearch(Pathfinding &pathfinding, const Map &map,
-                        TileCoords start, TileCoords goal,
-                        Cost unitMovementPoints) {
+void findPath(Pathfinding &pathfinding, const Map &map, TileCoords start,
+              TileCoords goal, u16 unitMovementPoints) {
+  // Clear data structure
+  // TODO No need to clear the whole map, just the area around the start
+  for (u16 rowIndex = 0; rowIndex < maxMapHeight; ++rowIndex) {
+    Cost(&row)[maxMapWidth] = pathfinding.costSoFar[rowIndex];
+    for (u16 columnIndex = 0; columnIndex < maxMapWidth; ++columnIndex) {
+      row[columnIndex] = ~0;
+    }
+  }
+  pathfinding.frontier.count = 0;
   push(pathfinding.frontier, start, 0);
-
   pathfinding.cameFrom[start.row][start.column] = start;
   pathfinding.costSoFar[start.row][start.column] = 0;
+  pathfinding.start = start;
+  pathfinding.end = start; // Default to not finding the goal
 
   while (pathfinding.frontier.count > 0) {
     // What's the current best location to explore?
@@ -134,23 +147,4 @@ static void aStarSearch(Pathfinding &pathfinding, const Map &map,
                         goal, costToCurrent, unitMovementPoints);
     }
   }
-}
-
-void findPath(Pathfinding &pathfinding, const Map &map, TileCoords start,
-              TileCoords goal, u16 unitMovementPoints) {
-  // Clear data structure
-  // TODO No need to clear the whole map, just the area around the start
-  for (u16 rowIndex = 0; rowIndex < maxMapHeight; ++rowIndex) {
-    Cost(&row)[maxMapWidth] = pathfinding.costSoFar[rowIndex];
-    for (u16 columnIndex = 0; columnIndex < maxMapWidth; ++columnIndex) {
-      row[columnIndex] = ~0;
-    }
-  }
-  pathfinding.frontier.count = 0;
-  pathfinding.start = start;
-  pathfinding.end = start; // Default to not finding the goal
-
-  // https://www.redblobgames.com/pathfinding/a-star/introduction.html
-  // https://www.redblobgames.com/pathfinding/a-star/implementation.html
-  aStarSearch(pathfinding, map, start, goal, unitMovementPoints);
 }
