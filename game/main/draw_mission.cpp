@@ -11,7 +11,7 @@ static void addDirtyTile(DirtyTileList &dirtyTiles, u16 column, u16 row) {
   // Dirty tile already in list?
   for (u16 existingIndex = 0; existingIndex < dirtyTiles.count;
        ++existingIndex) {
-    const TileCoords &existing = dirtyTiles.coords[existingIndex];
+    const TileCoords existing = dirtyTiles.coords[existingIndex];
     if ((existing.column == column) && (existing.row == row)) {
       return;
     }
@@ -53,7 +53,7 @@ static void restoreDirtyTiles(Background &background, DirtyTileList &dirtyTiles,
                               const Map &map) {
   for (u16 dirtyTileIndex = 0; dirtyTileIndex < dirtyTiles.count;
        ++dirtyTileIndex) {
-    const TileCoords &coords = dirtyTiles.coords[dirtyTileIndex];
+    const TileCoords coords = dirtyTiles.coords[dirtyTileIndex];
     drawTile(background, coords.column, coords.row, map);
   }
 

@@ -11,7 +11,7 @@ static void insert(Frontier &frontier, TileCoords coords) {
   // Is the location is already in the queue?
   for (u16 existingLocationIndex = 0; existingLocationIndex < frontier.count;
        ++existingLocationIndex) {
-    const TileCoords &existingLocation =
+    const TileCoords existingLocation =
         frontier.locations[existingLocationIndex];
     if (existingLocation == coords) {
       return;
