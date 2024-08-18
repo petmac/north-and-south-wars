@@ -41,8 +41,8 @@ static void selectUnitUnderMouse(Mission &mission, u16 mouseX, u16 mouseY) {
 
     // Initialise pathfinding
     const UnitDef &unitDef = unitDefs[static_cast<u16>(mapUnit.type)];
-    findPath(mission.pathfinding, mission.map, mouseCoords, mouseCoords,
-             unitDef.movement);
+    findPaths(mission.pathfinding, mission.map, mouseCoords, unitDef.movement);
+    mission.unitDestination = mouseCoords;
     break;
   }
 }
@@ -66,11 +66,11 @@ void updateMission(Mission &mission, u16 mouseX, u16 mouseY) {
   case MissionState::selectUnit:
     break;
   case MissionState::selectUnitDestination: {
-    const MapUnit &selectedUnit = mission.map.units[mission.selectedUnitIndex];
-    const UnitDef &unitDef = unitDefs[static_cast<u16>(selectedUnit.type)];
     const TileCoords mouseCoords = mouseTileCoords(mouseX, mouseY);
-    findPath(mission.pathfinding, mission.map, selectedUnit.coords, mouseCoords,
-             unitDef.movement);
+    if (mission.pathfinding.costSoFar[mouseCoords.row][mouseCoords.column] <
+        maxCost) {
+      mission.unitDestination = mouseCoords;
+    }
   } break;
   case MissionState::movingUnit:
     break;

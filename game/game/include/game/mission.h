@@ -19,4 +19,5 @@ struct Mission {
   MissionState state;
   u16 selectedUnitIndex;
   Pathfinding pathfinding;
+  TileCoords unitDestination;
 };

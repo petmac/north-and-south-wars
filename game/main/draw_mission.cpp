@@ -95,11 +95,12 @@ static void drawUnit(Background &background, DirtyTileList &dirtyTiles,
 }
 
 static void drawPath(Background &background, DirtyTileList &dirtyTiles,
-                     const Pathfinding &pathfinding) {
+                     const Pathfinding &pathfinding, TileCoords start,
+                     TileCoords goal) {
   const ArrowBitmap &src =
       chip.arrows.bitmaps[static_cast<u16>(ArrowType::pointEast)];
 
-  for (TileCoords coords = pathfinding.end; coords != pathfinding.start;
+  for (TileCoords coords = goal; coords != start;
        coords = pathfinding.cameFrom[coords.row][coords.column]) {
     drawBobOnTile(background, dirtyTiles, coords.column, coords.row, src);
   }
@@ -132,10 +133,13 @@ void drawMission(Background &background, FrameFast &frameFast,
   case MissionState::selectUnit:
     drawMissionText(background, dirtyTiles, "Select unit");
     break;
-  case MissionState::selectUnitDestination:
-    drawPath(background, dirtyTiles, mission.pathfinding);
+  case MissionState::selectUnitDestination: {
+    const MapUnit &selectedUnit = map.units[mission.selectedUnitIndex];
+    const TileCoords start = selectedUnit.coords;
+    const TileCoords goal = mission.unitDestination;
+    drawPath(background, dirtyTiles, mission.pathfinding, start, goal);
     drawMissionText(background, dirtyTiles, "Select unit destination");
-    break;
+  } break;
   case MissionState::movingUnit:
     drawMissionText(background, dirtyTiles, "Moving unit");
     break;

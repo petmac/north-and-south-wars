@@ -6,22 +6,17 @@ using CameFrom = TileCoords[maxMapHeight][maxMapWidth];
 using Cost = u16;
 using CostSoFar = Cost[maxMapHeight][maxMapWidth];
 
+constexpr Cost maxCost = 65535;
+
 struct Frontier {
   static constexpr u16 capacity = maxMapWidth + maxMapHeight;
 
-  struct Location {
-    TileCoords coords;
-    Cost priority; // Lower is better
-  };
-
   u16 count;
-  Location locations[capacity];
+  TileCoords locations[capacity];
 };
 
 struct Pathfinding {
   CameFrom cameFrom;
   CostSoFar costSoFar;
   Frontier frontier;
-  TileCoords start;
-  TileCoords end;
 };
