@@ -7,11 +7,11 @@
 // https://www.redblobgames.com/pathfinding/a-star/introduction.html
 // https://www.redblobgames.com/pathfinding/a-star/implementation.html
 
-static void insert(Frontier &frontier, TileCoords coords) {
+static void insert(Frontier &frontier, const TileCoords &coords) {
   // Is the location is already in the queue?
   for (u16 existingLocationIndex = 0; existingLocationIndex < frontier.count;
        ++existingLocationIndex) {
-    const TileCoords existingLocation =
+    const TileCoords &existingLocation =
         frontier.locations[existingLocationIndex];
     if (existingLocation == coords) {
       return;
@@ -32,8 +32,9 @@ static TileCoords pop(Frontier &frontier) {
   return frontier.locations[--frontier.count];
 }
 
-static void considerNeighbour(Pathfinding &pathfinding, TileCoords current,
-                              u16 nextColumn, u16 nextRow, Cost costToCurrent,
+static void considerNeighbour(Pathfinding &pathfinding,
+                              const TileCoords &current, u16 nextColumn,
+                              u16 nextRow, Cost costToCurrent,
                               Cost unitMovementPoints) {
   // Does the unit have enough movement points to move to this location?
   // TODO Take unit and terrain into account
@@ -69,8 +70,8 @@ static void considerNeighbour(Pathfinding &pathfinding, TileCoords current,
   pathfinding.cameFrom[nextRow][nextColumn] = current;
 }
 
-void findPaths(Pathfinding &pathfinding, const Map &map, TileCoords start,
-               u16 unitMovementPoints) {
+void findPaths(Pathfinding &pathfinding, const Map &map,
+               const TileCoords &start, u16 unitMovementPoints) {
   // Clear data structure
   // TODO No need to clear the whole map, just the area around the start
   for (u16 rowIndex = 0; rowIndex < maxMapHeight; ++rowIndex) {

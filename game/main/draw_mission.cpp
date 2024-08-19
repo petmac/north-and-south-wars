@@ -11,7 +11,7 @@ static void addDirtyTile(DirtyTileList &dirtyTiles, u16 column, u16 row) {
   // Dirty tile already in list?
   for (u16 existingIndex = 0; existingIndex < dirtyTiles.count;
        ++existingIndex) {
-    const TileCoords existing = dirtyTiles.coords[existingIndex];
+    const TileCoords &existing = dirtyTiles.coords[existingIndex];
     if ((existing.column == column) && (existing.row == row)) {
       return;
     }
@@ -53,7 +53,7 @@ static void restoreDirtyTiles(Background &background, DirtyTileList &dirtyTiles,
                               const Map &map) {
   for (u16 dirtyTileIndex = 0; dirtyTileIndex < dirtyTiles.count;
        ++dirtyTileIndex) {
-    const TileCoords coords = dirtyTiles.coords[dirtyTileIndex];
+    const TileCoords &coords = dirtyTiles.coords[dirtyTileIndex];
     drawTile(background, coords.column, coords.row, map);
   }
 
@@ -95,14 +95,14 @@ static void drawUnit(Background &background, DirtyTileList &dirtyTiles,
 }
 
 static void drawPath(Background &background, DirtyTileList &dirtyTiles,
-                     const Pathfinding &pathfinding, TileCoords start,
-                     TileCoords goal) {
+                     const Pathfinding &pathfinding, const TileCoords &start,
+                     const TileCoords &goal) {
   // Draw reachable tiles
   const ArrowBitmap &reachableBitmap =
       chip.arrows.bitmaps[static_cast<u16>(ArrowType::reachable)];
   for (u16 reachableTileIndex = 0;
        reachableTileIndex < pathfinding.reachable.count; ++reachableTileIndex) {
-    const TileCoords coords =
+    const TileCoords &coords =
         pathfinding.reachable.locations[reachableTileIndex];
     drawBobOnTile(background, dirtyTiles, coords.column, coords.row,
                   reachableBitmap);
@@ -146,8 +146,8 @@ void drawMission(Background &background, FrameFast &frameFast,
     break;
   case MissionState::selectUnitDestination: {
     const MapUnit &selectedUnit = map.units[mission.selectedUnitIndex];
-    const TileCoords start = selectedUnit.coords;
-    const TileCoords goal = mission.unitDestination;
+    const TileCoords &start = selectedUnit.coords;
+    const TileCoords &goal = mission.unitDestination;
     drawPath(background, dirtyTiles, mission.pathfinding, start, goal);
   } break;
   case MissionState::movingUnit:

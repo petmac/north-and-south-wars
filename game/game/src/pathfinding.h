@@ -6,5 +6,5 @@ struct Map;
 struct Pathfinding;
 struct TileCoords;
 
-void findPaths(Pathfinding &pathfinding, const Map &map, TileCoords start,
-               u16 unitMovementPoints);
+void findPaths(Pathfinding &pathfinding, const Map &map,
+               const TileCoords &start, u16 unitMovementPoints);
