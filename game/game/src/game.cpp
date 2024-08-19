@@ -7,15 +7,7 @@
 
 #include "game/callbacks.h"
 
-Game initGame() {
-  return (Game){
-      .state = GameState::loadingFontAndPalette,
-      .intro = {},
-      .title = {},
-      .campaignMap = {},
-      .mission = {},
-  };
-}
+void initGame(Game &game) { game.state = GameState::loadingFontAndPalette; }
 
 void updateGame(Game &game, u16 mouseX, u16 mouseY) {
   switch (game.state) {

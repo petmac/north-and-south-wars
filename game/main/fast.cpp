@@ -16,7 +16,7 @@ void initFast(Fast &fast) {
 
   const u16 mouseData = custom.joy0dat;
 
-  fast.game = initGame();
+  initGame(fast.game);
   fast.backBufferIndex = 0;
   fast.mouseX = screenWidth / 2;
   fast.mouseY = screenHeight / 2;
