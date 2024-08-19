@@ -94,9 +94,63 @@ static void drawUnit(Background &background, DirtyTileList &dirtyTiles,
   drawBobOnTile(background, dirtyTiles, column, row, src);
 }
 
+static constexpr ArrowType computeArrowTip(const TileCoords &current,
+                                           const TileCoords &goal) {
+  if (current.column < goal.column) {
+    return ArrowType::pointEast;
+  } else if (current.column > goal.column) {
+    return ArrowType::pointWest;
+  } else if (current.row < goal.row) {
+    return ArrowType::pointSouth;
+  } else {
+    return ArrowType::pointNorth;
+  }
+}
+
+static constexpr ArrowType computeArrowTrunk(const TileCoords &prev,
+                                             const TileCoords &current,
+                                             const TileCoords &next) {
+  if (prev.column < current.column) {
+    // From west to...
+    if (next.row < current.row) {
+      return ArrowType::westToNorth;
+    } else if (next.row > current.row) {
+      return ArrowType::southToWest;
+    } else {
+      return ArrowType::horizontal;
+    }
+  } else if (prev.column > current.column) {
+    // From east to...
+    if (next.row < current.row) {
+      return ArrowType::northToEast;
+    } else if (next.row > current.row) {
+      return ArrowType::eastToSouth;
+    } else {
+      return ArrowType::horizontal;
+    }
+  } else if (prev.row < current.row) {
+    // From north to...
+    if (next.column < current.column) {
+      return ArrowType::westToNorth;
+    } else if (next.column > current.column) {
+      return ArrowType::northToEast;
+    } else {
+      return ArrowType::vertical;
+    }
+  } else {
+    // From south to...
+    if (next.column < current.column) {
+      return ArrowType::southToWest;
+    } else if (next.column > current.column) {
+      return ArrowType::eastToSouth;
+    } else {
+      return ArrowType::vertical;
+    }
+  }
+}
+
 static void drawPath(Background &background, DirtyTileList &dirtyTiles,
-                     const Pathfinding &pathfinding, const TileCoords &start,
-                     const TileCoords &goal) {
+                     const Pathfinding &pathfinding, const TileCoords &goal) {
   // Draw reachable tiles
   const ArrowBitmap &reachableBitmap =
       chip.arrows.bitmaps[static_cast<u16>(ArrowType::reachable)];
@@ -108,12 +162,30 @@ static void drawPath(Background &background, DirtyTileList &dirtyTiles,
                   reachableBitmap);
   }
 
-  // Draw path to goal
-  for (TileCoords coords = goal; coords != start;
-       coords = pathfinding.cameFrom[coords.row][coords.column]) {
-    const ArrowBitmap &src =
-        chip.arrows.bitmaps[static_cast<u16>(ArrowType::pointEast)];
-    drawBobOnTile(background, dirtyTiles, coords.column, coords.row, src);
+  // Draw the tip of the arrow
+  TileCoords current = pathfinding.cameFrom[goal.row][goal.column];
+  if (current == goal) {
+    return;
+  }
+  const ArrowType arrowTipType = computeArrowTip(current, goal);
+  const ArrowBitmap &arrowTipBitmap =
+      chip.arrows.bitmaps[static_cast<u16>(arrowTipType)];
+  drawBobOnTile(background, dirtyTiles, goal.column, goal.row, arrowTipBitmap);
+
+  // Draw the trunk of the arrow
+  TileCoords next = goal;
+  TileCoords prev = pathfinding.cameFrom[current.row][current.column];
+  while (prev != current) {
+    const ArrowType arrowTrunkType = computeArrowTrunk(prev, current, next);
+    const ArrowBitmap &arrowTrunkBitmap =
+        chip.arrows.bitmaps[static_cast<u16>(arrowTrunkType)];
+    drawBobOnTile(background, dirtyTiles, current.column, current.row,
+                  arrowTrunkBitmap);
+
+    // Step towards the start of the arrow
+    next = current;
+    current = prev;
+    prev = pathfinding.cameFrom[current.row][current.column];
   }
 }
 
@@ -144,12 +216,10 @@ void drawMission(Background &background, FrameFast &frameFast,
   case MissionState::selectUnit:
     drawMissionText(background, dirtyTiles, "Select unit");
     break;
-  case MissionState::selectUnitDestination: {
-    const MapUnit &selectedUnit = map.units[mission.selectedUnitIndex];
-    const TileCoords &start = selectedUnit.coords;
-    const TileCoords &goal = mission.unitDestination;
-    drawPath(background, dirtyTiles, mission.pathfinding, start, goal);
-  } break;
+  case MissionState::selectUnitDestination:
+    drawPath(background, dirtyTiles, mission.pathfinding,
+             mission.unitDestination);
+    break;
   case MissionState::movingUnit:
     drawMissionText(background, dirtyTiles, "Moving unit");
     break;
