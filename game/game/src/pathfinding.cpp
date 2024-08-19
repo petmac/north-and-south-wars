@@ -57,7 +57,9 @@ static void considerNeighbour(Pathfinding &pathfinding,
       .row = static_cast<u8>(nextRow),
   };
   if (existingCost == maxCost) {
-    pathfinding.reachable.locations[pathfinding.reachable.count++] = next;
+    if (pathfinding.reachable.count < Frontier::capacity) {
+      pathfinding.reachable.locations[pathfinding.reachable.count++] = next;
+    }
   }
 
   // Store the new lower cost
