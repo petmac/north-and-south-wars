@@ -97,3 +97,20 @@ void missionMouseClicked(Mission &mission, u16 mouseX, u16 mouseY) {
     break;
   }
 }
+
+void missionMouseRightClicked(Mission &mission) {
+  switch (mission.state) {
+  case MissionState::intro:
+  case MissionState::startOfTurn:
+  case MissionState::resupply:
+  case MissionState::selectUnit:
+    break;
+  case MissionState::selectUnitDestination:
+    mission.state = MissionState::selectUnit;
+    break;
+  case MissionState::movingUnit:
+  case MissionState::selectUnitAction:
+  case MissionState::selectTarget:
+    break;
+  }
+}

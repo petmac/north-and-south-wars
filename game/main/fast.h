@@ -17,11 +17,13 @@ struct Fast {
   u16 mouseX;
   u16 mouseY;
   bool mouseClicked;
+  bool mouseRightClicked;
 
   // Read and written during vertical blank interrupt
   u8 lastMouseDataX;
   u8 lastMouseDataY;
   bool lastMouseLeftButton;
+  bool lastMouseRightButton;
 };
 
 void initFast(Fast &fast);

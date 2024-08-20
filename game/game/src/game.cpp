@@ -107,6 +107,27 @@ void mouseClicked(Game &game, u16 mouseX, u16 mouseY) {
   }
 }
 
+void mouseRightClicked(Game &game) {
+  switch (game.state) {
+  case GameState::loadingFontAndPalette:
+  case GameState::loadingIntro:
+  case GameState::intro:
+  case GameState::loadingTitle:
+  case GameState::title:
+  case GameState::loadingCampaignMap:
+  case GameState::campaignMap:
+  case GameState::loadingMission:
+    break;
+
+  case GameState::playingMission:
+    missionMouseRightClicked(game.mission);
+    break;
+
+  case GameState::error:
+    break;
+  }
+}
+
 // Intro callbacks
 void loadTitleScreen(Game &game) { game.state = GameState::loadingTitle; }
 

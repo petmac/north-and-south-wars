@@ -120,6 +120,20 @@ constexpr u16 BPAGEM = 1 << 1;
 constexpr u16 BLP32 = 1 << 0;
 } // namespace FMODE
 
+// http://amigadev.elowar.com/read/ADCD_2.1/Hardware_Manual_guide/node018B.html
+namespace POTGO {
+constexpr u16 OUTRY = 1 << 15; // Output enable for bit 14 (1=output)
+constexpr u16 DATRY = 1 << 14; // data for port 2, pin 9
+constexpr u16 OUTRX = 1 << 13; // Output enable for bit 12
+constexpr u16 DATRX = 1 << 12; // data for port 2, pin 5
+constexpr u16 OUTLY = 1 << 11; // Output enable for bit 10
+constexpr u16 DATLY = 1 << 10; // data for port 1, pin 9 (right  mouse button )
+constexpr u16 OUTLX = 1 < 9;   // Output enable for bit 8
+constexpr u16 DATLX = 1 << 8;  // data for port 1, pin 5 (middle  mouse button )
+                               // 07 - 01 X chip revision identification number
+constexpr u16 START = 1 << 0;  // Start pots (dump capacitors, start counters)
+} // namespace POTGO
+
 inline volatile Custom &custom =
     *reinterpret_cast<volatile Custom *>(0xdff000UL);
 

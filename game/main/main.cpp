@@ -18,7 +18,9 @@ static void updateMousePointerPosition() {
   // Read the input and update the game mouse coords
   const u16 mouseData = custom.joy0dat;
   const bool mouseLeftButton = mouseLeft();
+  const bool mouseRightButton = mouseRight();
   const bool mouseClicked = mouseLeftButton && !fast.lastMouseLeftButton;
+  const bool mouseRightClicked = mouseRightButton && !fast.lastMouseRightButton;
   const u8 mouseDataX = mouseData & 0xff;
   const u8 mouseDataY = (mouseData >> 8) & 0xff;
   const s8 mouseDX = mouseDataX - fast.lastMouseDataX;
@@ -38,10 +40,12 @@ static void updateMousePointerPosition() {
   fast.lastMouseDataX = mouseDataX;
   fast.lastMouseDataY = mouseDataY;
   fast.lastMouseLeftButton = mouseLeftButton;
+  fast.lastMouseRightButton = mouseRightButton;
 
   fast.mouseX = mouseX;
   fast.mouseY = mouseY;
   fast.mouseClicked |= mouseClicked;
+  fast.mouseRightClicked |= mouseRightClicked;
 
   // Update the sprite position
   const u16 hStart = 128 + fast.mouseX;
@@ -71,6 +75,10 @@ static void runFrame() {
   if (fast.mouseClicked) {
     fast.mouseClicked = false;
     mouseClicked(fast.game, fast.mouseX, fast.mouseY);
+  }
+  if (fast.mouseRightClicked) {
+    fast.mouseRightClicked = false;
+    mouseRightClicked(fast.game);
   }
 
   // Update game while drawing finishes
