@@ -74,10 +74,16 @@ void updateMission(Mission &mission, u16 mouseX, u16 mouseY) {
     mission.unitDestination = mouseCoords;
   } break;
   case MissionState::movingUnit:
+    // TODO Animate and move smoothly
+    mission.map.units[mission.selectedUnitIndex].coords =
+        mission.unitDestination;
+    mission.state = MissionState::selectUnitAction;
     break;
   case MissionState::selectUnitAction:
+    mission.state = MissionState::selectTarget;
     break;
   case MissionState::selectTarget:
+    mission.state = MissionState::startOfTurn;
     break;
   }
 }
@@ -91,7 +97,14 @@ void missionMouseClicked(Mission &mission, u16 mouseX, u16 mouseY) {
   case MissionState::selectUnit:
     selectUnitUnderMouse(mission, mouseX, mouseY);
     break;
-  case MissionState::selectUnitDestination:
+  case MissionState::selectUnitDestination: {
+    // Clicked somewhere other than the destination?
+    const TileCoords mouseCoords = mouseTileCoords(mouseX, mouseY);
+    if (mouseCoords != mission.unitDestination) {
+      break;
+    }
+    mission.state = MissionState::movingUnit;
+  } break;
   case MissionState::movingUnit:
   case MissionState::selectUnitAction:
   case MissionState::selectTarget:
