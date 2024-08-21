@@ -1,7 +1,6 @@
 #pragma once
 
-#include "forces.h"
-#include "units.h"
+#include "util/types.h"
 
 constexpr u16 maxMapWidth = 30;
 constexpr u16 maxMapHeight = 20;
@@ -9,7 +8,9 @@ constexpr u16 tileWidth = 16;
 constexpr u16 tileHeight = 16;
 constexpr u16 maxMapUnits = 32;
 
+enum class Force : u8;
 enum class TileIndex : u8;
+enum class UnitType : u8;
 
 struct TileCoords {
   u8 column;

@@ -1,6 +1,8 @@
 #include "mission.h"
 
+#include "game/forces.h"
 #include "game/mission.h"
+#include "game/units.h"
 
 #include "pathfinding.h"
 
