@@ -1,6 +1,6 @@
 #pragma once
 
-#include "map.h" // TileCoords
+#include "map.h" // maxMapHeight, etc.
 
 using CameFrom = TileCoords[maxMapHeight][maxMapWidth];
 using Cost = u16;

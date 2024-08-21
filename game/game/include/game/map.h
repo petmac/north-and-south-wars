@@ -1,6 +1,6 @@
 #pragma once
 
-#include "util/types.h"
+#include "tile_coords.h"
 
 constexpr u16 maxMapWidth = 30;
 constexpr u16 maxMapHeight = 20;
@@ -11,15 +11,6 @@ constexpr u16 maxMapUnits = 32;
 enum class Force : u8;
 enum class TileIndex : u8;
 enum class UnitType : u8;
-
-struct TileCoords {
-  u8 column;
-  u8 row;
-};
-
-constexpr bool operator==(const TileCoords &a, const TileCoords &b) {
-  return (a.column == b.column) && (a.row == b.row);
-}
 
 struct MapUnit {
   TileCoords coords;

@@ -12,6 +12,7 @@ add_library(
     include/game/screen.h
     include/game/terrain.h
     include/game/tile.h
+    include/game/tile_coords.h
     include/game/title.h
     include/game/unit_defs.h
     include/game/unit_types.h
