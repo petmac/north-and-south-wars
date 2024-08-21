@@ -5,13 +5,12 @@
 // https://advancewars.fandom.com/wiki/Terrain
 enum class Terrain : u8 {
   // Terrains
-  road,
-  plain,
-  woods,
-  mountain,
-  river,
   bridge,
+  mountain,
+  plain,
+  road,
   sea,
+  woods,
 
   // TODO Buildings
 
