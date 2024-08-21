@@ -9,6 +9,42 @@ constexpr u16 tileWidth = 16;
 constexpr u16 tileHeight = 16;
 constexpr u16 maxMapUnits = 32;
 
+enum class TileIndex : u8 {
+  plain,
+  smallMountain,
+  largeMountain,
+  woods,
+  roadNorthToEast,
+  verticalRoad,
+  roadWestToNorth,
+  roadEastToSouth,
+  horizontalRoad,
+  roadSouthToWest,
+  horizontalBridge,
+  verticalBridge,
+  unused1,
+  unused2,
+  unused3,
+  unused4,
+  water,
+  cliffsNorth,
+  cliffsNorthEast,
+  cliffsEast,
+  cliffsEastSouth,
+  cliffsSouth,
+  cliffsSouthWest,
+  cliffsWest,
+  cliffsWestNorth,
+  cliffsNorthEastCorner,
+  cliffsSouthEastCorner,
+  cliffsSouthWestCorner,
+  cliffsNorthWestCorner,
+  unused5,
+  unused6,
+  unused7,
+  count,
+};
+
 struct TileCoords {
   u8 column;
   u8 row;
@@ -27,7 +63,7 @@ struct MapUnit {
 struct Map {
   u8 width;
   u8 height;
-  u8 tiles[maxMapHeight][maxMapWidth];
+  TileIndex tiles[maxMapHeight][maxMapWidth];
   u8 unitCount;
   MapUnit units[maxMapUnits];
 };

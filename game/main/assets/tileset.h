@@ -5,10 +5,8 @@
 #include "amiga/bitmap.h"
 #include "game/map.h"
 
-constexpr u16 tileCount = 256;
-
 using TileBitmap = InterleavedBitmap<tileWidth, tileHeight, playfieldDepth>;
 
 struct Tileset {
-  TileBitmap tiles[tileCount];
+  TileBitmap tiles[static_cast<u16>(TileIndex::count)];
 };

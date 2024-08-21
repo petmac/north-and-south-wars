@@ -44,8 +44,8 @@ static void drawMissionText(Background &background, DirtyTileList &dirtyTiles,
 
 static void drawTile(Background &background, u16 column, u16 row,
                      const Map &map) {
-  const u16 tileIndex = map.tiles[row][column];
-  const TileBitmap &tile = chip.tileset.tiles[tileIndex];
+  const TileIndex tileIndex = map.tiles[row][column];
+  const TileBitmap &tile = chip.tileset.tiles[static_cast<u16>(tileIndex)];
   blitFast(background, tile, column, row * tileHeight);
 }
 
