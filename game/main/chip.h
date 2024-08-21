@@ -4,7 +4,7 @@
 #include "assets/small_font.h"
 #include "assets/sprite_images.h"
 #include "assets/tileset.h"
-#include "assets/units.h"
+#include "assets/unit_bitmaps.h"
 #include "frame_chip.h"
 
 struct Chip {

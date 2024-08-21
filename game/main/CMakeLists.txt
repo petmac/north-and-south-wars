@@ -5,7 +5,7 @@ add_executable(
     assets/small_font.h
     assets/sprite_images.h
     assets/tileset.h
-    assets/units.h
+    assets/unit_bitmaps.h
     background.h
     blit.h
     chip.cpp
