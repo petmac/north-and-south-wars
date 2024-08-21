@@ -27,6 +27,7 @@ add_library(
     src/tile.cpp
     src/title.cpp
     src/title.h
+    src/units.cpp
     )
 
 target_include_directories(
