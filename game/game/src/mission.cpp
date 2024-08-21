@@ -67,10 +67,11 @@ void updateMission(Mission &mission, u16 mouseX, u16 mouseY) {
     break;
   case MissionState::selectUnitDestination: {
     const TileCoords mouseCoords = mouseTileCoords(mouseX, mouseY);
-    if (mission.pathfinding.costSoFar[mouseCoords.row][mouseCoords.column] <
+    if (mission.pathfinding.costSoFar[mouseCoords.row][mouseCoords.column] >=
         maxCost) {
-      mission.unitDestination = mouseCoords;
+      break;
     }
+    mission.unitDestination = mouseCoords;
   } break;
   case MissionState::movingUnit:
     break;
