@@ -2,6 +2,8 @@
 
 #include "game/callbacks.h" // KPrintF, TODO Remove
 #include "game/pathfinding.h"
+#include "game/terrain.h" // Terrain
+#include "game/tile.h"    // TileIndex
 
 // Algorithm based on:
 // https://www.redblobgames.com/pathfinding/a-star/introduction.html
@@ -32,10 +34,33 @@ static TileCoords pop(Frontier &frontier) {
   return frontier.locations[--frontier.count];
 }
 
-static void considerNeighbour(Pathfinding &pathfinding,
+static void considerNeighbour(Pathfinding &pathfinding, const Map &map,
                               const TileCoords &current, u16 nextColumn,
                               u16 nextRow, Cost costToCurrent,
                               Cost unitMovementPoints) {
+  // Skip impassable tiles
+  const TileIndex tileIndex = map.tiles[nextRow][nextColumn];
+  const Terrain terrain = tileTerrain[static_cast<u16>(tileIndex)];
+  switch (terrain) {
+  case Terrain::sea:
+  case Terrain::invalid:
+    return;
+  default:
+    break;
+  }
+
+  // Skip tiles with units on
+  const TileCoords next = {
+      .column = static_cast<u8>(nextColumn),
+      .row = static_cast<u8>(nextRow),
+  };
+  for (u16 unitIndex = 0; unitIndex < map.unitCount; ++unitIndex) {
+    const MapUnit &unit = map.units[unitIndex];
+    if (next == unit.coords) {
+      return;
+    }
+  }
+
   // Does the unit have enough movement points to move to this location?
   // TODO Take unit and terrain into account
   const Cost costToEnterNext = 1;
@@ -52,10 +77,6 @@ static void considerNeighbour(Pathfinding &pathfinding,
   }
 
   // Not yet visited the next location?
-  const TileCoords next = {
-      .column = static_cast<u8>(nextColumn),
-      .row = static_cast<u8>(nextRow),
-  };
   if (existingCost == maxCost) {
     if (pathfinding.reachable.count < Frontier::capacity) {
       pathfinding.reachable.locations[pathfinding.reachable.count++] = next;
@@ -98,20 +119,20 @@ void findPaths(Pathfinding &pathfinding, const Map &map,
 
     // Where can we move to?
     if (current.row > 0) {
-      considerNeighbour(pathfinding, current, current.column, current.row - 1,
-                        costToCurrent, unitMovementPoints);
+      considerNeighbour(pathfinding, map, current, current.column,
+                        current.row - 1, costToCurrent, unitMovementPoints);
     }
     if (current.column < (map.width - 1)) {
-      considerNeighbour(pathfinding, current, current.column + 1, current.row,
-                        costToCurrent, unitMovementPoints);
+      considerNeighbour(pathfinding, map, current, current.column + 1,
+                        current.row, costToCurrent, unitMovementPoints);
     }
     if (current.row < (map.height - 1)) {
-      considerNeighbour(pathfinding, current, current.column, current.row + 1,
-                        costToCurrent, unitMovementPoints);
+      considerNeighbour(pathfinding, map, current, current.column,
+                        current.row + 1, costToCurrent, unitMovementPoints);
     }
     if (current.column > 0) {
-      considerNeighbour(pathfinding, current, current.column - 1, current.row,
-                        costToCurrent, unitMovementPoints);
+      considerNeighbour(pathfinding, map, current, current.column - 1,
+                        current.row, costToCurrent, unitMovementPoints);
     }
   }
 }
