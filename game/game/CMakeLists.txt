@@ -13,7 +13,8 @@ add_library(
     include/game/terrain.h
     include/game/tile.h
     include/game/title.h
-    include/game/units.h
+    include/game/unit_defs.h
+    include/game/unit_types.h
     src/campaign_map.cpp
     src/campaign_map.h
     src/dev.h
@@ -27,7 +28,7 @@ add_library(
     src/tile.cpp
     src/title.cpp
     src/title.h
-    src/units.cpp
+    src/unit_defs.cpp
     )
 
 target_include_directories(

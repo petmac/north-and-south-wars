@@ -1,4 +1,4 @@
-#include "game/units.h"
+#include "game/unit_defs.h"
 
 // https://warswiki.org/wiki/Advance_Wars#Units
 const UnitDef unitDefs[static_cast<u16>(UnitType::count)] = {

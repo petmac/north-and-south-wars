@@ -2,7 +2,7 @@
 
 #include "game/forces.h"
 #include "game/mission.h"
-#include "game/units.h"
+#include "game/unit_defs.h"
 
 #include "pathfinding.h"
 
