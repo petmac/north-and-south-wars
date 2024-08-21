@@ -24,7 +24,7 @@ add_library(
     src/mission.h
     src/pathfinding.cpp
     src/pathfinding.h
-    src/terrain.cpp
+    src/tile.cpp
     src/title.cpp
     src/title.h
     )

@@ -18,5 +18,3 @@ enum class Terrain : u8 {
   // Misc
   invalid,
 };
-
-extern const Terrain tileTerrain[256];

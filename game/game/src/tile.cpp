@@ -1,6 +1,8 @@
+#include "game/tile.h"
+
 #include "game/terrain.h"
 
-const Terrain tileTerrain[256] = {
+const Terrain tileTerrain[static_cast<u16>(TileIndex::count)] = {
     // Row 0
     Terrain::plain,
     Terrain::mountain,

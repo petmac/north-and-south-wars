@@ -2,6 +2,8 @@
 
 #include "util/types.h"
 
+enum class Terrain : u8;
+
 enum class TileIndex : u8 {
   plain,
   smallMountain,
@@ -37,3 +39,5 @@ enum class TileIndex : u8 {
   unused7,
   count,
 };
+
+extern const Terrain tileTerrain[static_cast<u16>(TileIndex::count)];
