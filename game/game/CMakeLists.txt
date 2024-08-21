@@ -11,6 +11,7 @@ add_library(
     include/game/pathfinding.h
     include/game/screen.h
     include/game/terrain.h
+    include/game/tile.h
     include/game/title.h
     include/game/units.h
     src/campaign_map.cpp
