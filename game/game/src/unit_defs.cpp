@@ -7,22 +7,22 @@ static constexpr UnitDef unitDefs[static_cast<u16>(UnitType::count)] = {
     // Infantry
     // https://warswiki.org/wiki/Infantry_(unit)
     {
-        .movement = 3,
+        .movementPoints = 3,
     },
     // Mech
     // https://warswiki.org/wiki/Mechanised_Infantry
     {
-        .movement = 2,
+        .movementPoints = 2,
     },
     // Light tank
     // https://warswiki.org/wiki/Tank
     {
-        .movement = 6,
+        .movementPoints = 6,
     },
     // Medium tank
     // https://warswiki.org/wiki/Medium_Tank
     {
-        .movement = 5,
+        .movementPoints = 5,
     },
 };
 

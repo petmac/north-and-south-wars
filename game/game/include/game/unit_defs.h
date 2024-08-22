@@ -5,7 +5,7 @@
 enum class UnitType : u8;
 
 struct UnitDef {
-  u8 movement;
+  u8 movementPoints;
 };
 
 const UnitDef &unitDefForType(UnitType unitType);
