@@ -1,9 +1,11 @@
 #pragma once
 
-#include "unit_types.h"
+#include "util/types.h"
+
+enum class UnitType : u8;
 
 struct UnitDef {
   u8 movement;
 };
 
-extern const UnitDef unitDefs[static_cast<u16>(UnitType::count)];
+const UnitDef &unitDefForType(UnitType unitType);

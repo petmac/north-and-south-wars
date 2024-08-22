@@ -40,4 +40,4 @@ enum class TileIndex : u8 {
   count,
 };
 
-extern const Terrain tileTerrain[static_cast<u16>(TileIndex::count)];
+Terrain tileTerrain(TileIndex tileIndex);

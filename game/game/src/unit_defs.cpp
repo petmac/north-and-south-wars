@@ -1,7 +1,9 @@
 #include "game/unit_defs.h"
 
+#include "game/unit_types.h"
+
 // https://warswiki.org/wiki/Advance_Wars#Units
-const UnitDef unitDefs[static_cast<u16>(UnitType::count)] = {
+static constexpr UnitDef unitDefs[static_cast<u16>(UnitType::count)] = {
     // Infantry
     // https://warswiki.org/wiki/Infantry_(unit)
     {
@@ -23,3 +25,7 @@ const UnitDef unitDefs[static_cast<u16>(UnitType::count)] = {
         .movement = 5,
     },
 };
+
+const UnitDef &unitDefForType(UnitType unitType) {
+  return unitDefs[static_cast<u16>(unitType)];
+}

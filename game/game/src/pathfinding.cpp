@@ -40,7 +40,7 @@ static void considerNeighbour(Pathfinding &pathfinding, const Map &map,
                               Cost unitMovementPoints) {
   // Skip impassable tiles
   const TileIndex tileIndex = map.tiles[nextRow][nextColumn];
-  const Terrain terrain = tileTerrain[static_cast<u16>(tileIndex)];
+  const Terrain terrain = tileTerrain(tileIndex);
   switch (terrain) {
   case Terrain::sea:
   case Terrain::invalid:
