@@ -50,19 +50,6 @@ static void considerNeighbour(Pathfinding &pathfinding, const Map &map,
     break;
   }
 
-  // Skip tiles with units on
-  // TODO Move this check to after cost checks
-  const TileCoords next = {
-      .column = static_cast<u8>(nextColumn),
-      .row = static_cast<u8>(nextRow),
-  };
-  for (u16 unitIndex = 0; unitIndex < map.unitCount; ++unitIndex) {
-    const MapUnit &unit = map.units[unitIndex];
-    if (next == unit.coords) {
-      return;
-    }
-  }
-
   // Does the unit have enough movement points to move to this location?
   // TODO Take unit and terrain into account
   const Cost costToEnterNext = 1;
@@ -78,8 +65,21 @@ static void considerNeighbour(Pathfinding &pathfinding, const Map &map,
     return;
   }
 
+  // Skip tiles with units on
+  const TileCoords next = {
+      .column = static_cast<u8>(nextColumn),
+      .row = static_cast<u8>(nextRow),
+  };
+  for (u16 unitIndex = 0; unitIndex < map.unitCount; ++unitIndex) {
+    const MapUnit &unit = map.units[unitIndex];
+    if (next == unit.coords) {
+      return;
+    }
+  }
+
   // Not yet visited the next location?
   if (existingCost == maxCost) {
+    // Add to the list of reachable locations
     if (pathfinding.reachable.count < Frontier::capacity) {
       pathfinding.reachable.locations[pathfinding.reachable.count++] = next;
     }
