@@ -8,6 +8,7 @@ add_library(
     include/game/intro.h
     include/game/map.h
     include/game/mission.h
+    include/game/movement_cost.h
     include/game/pathfinding.h
     include/game/screen.h
     include/game/terrain.h
@@ -24,6 +25,7 @@ add_library(
     src/intro.h
     src/mission.cpp
     src/mission.h
+    src/movement_cost.cpp
     src/pathfinding.cpp
     src/pathfinding.h
     src/tile.cpp

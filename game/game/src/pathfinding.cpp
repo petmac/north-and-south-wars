@@ -1,6 +1,7 @@
 #include "pathfinding.h"
 
-#include "game/callbacks.h" // KPrintF, TODO Remove
+#include "game/callbacks.h"     // KPrintF, TODO Remove
+#include "game/movement_cost.h" // calculateMovementCost
 #include "game/pathfinding.h"
 #include "game/terrain.h"   // Terrain
 #include "game/tile.h"      // TileIndex
@@ -42,18 +43,15 @@ static void considerNeighbour(Pathfinding &pathfinding, const Map &map,
   // Skip impassable tiles
   const TileIndex tileIndex = map.tiles[nextRow][nextColumn];
   const Terrain terrain = tileTerrain(tileIndex);
-  switch (terrain) {
-  case Terrain::sea:
-  case Terrain::invalid:
+  const Cost movementCost =
+      calculateMovementCost(terrain, unitDef.movementType);
+  if (movementCost == maxCost) {
     return;
-  default:
-    break;
   }
 
   // Does the unit have enough movement points to move to this location?
   // TODO Take unit and terrain into account
-  const Cost costToEnterNext = 1;
-  const Cost costToNext = costToCurrent + costToEnterNext;
+  const Cost costToNext = costToCurrent + movementCost;
   if (costToNext > unitDef.movementPoints) {
     return;
   }

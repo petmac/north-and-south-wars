@@ -2,6 +2,7 @@
 
 #include "game/forces.h"
 #include "game/mission.h"
+#include "game/movement_cost.h" // maxCost
 #include "game/unit_defs.h"
 
 #include "pathfinding.h"
