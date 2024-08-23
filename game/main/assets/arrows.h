@@ -3,7 +3,6 @@
 #include "../playfield.h"
 
 #include "amiga/bitmap.h"
-#include "game/map.h"
 
 using ArrowBitmap =
     MaskedInterleavedBitmap<tileWidth, tileHeight, playfieldDepth>;
