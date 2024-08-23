@@ -9,6 +9,7 @@ add_library(
     include/game/map.h
     include/game/mission.h
     include/game/movement_cost.h
+    include/game/movement_types.h
     include/game/pathfinding.h
     include/game/screen.h
     include/game/terrain.h
