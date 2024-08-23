@@ -23,7 +23,7 @@ static void initFrameChip(FrameChip &frameChip) {
 }
 
 void initChip() {
-  KPrintF("Size of chip = %lu", sizeof(chip));
+  KPrintF("Size of chip = %ld", sizeof(chip));
 
   for (u16 frameIndex = 0; frameIndex < 2; ++frameIndex) {
     FrameChip &frameChip = chip.frames[frameIndex];

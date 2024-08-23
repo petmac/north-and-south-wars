@@ -119,8 +119,8 @@ int main() {
   const u32 freeChipRAM = AvailMem(MEMF_CHIP | MEMF_LARGEST);
   const u32 freeFastRAM = AvailMem(MEMF_FAST | MEMF_LARGEST);
 
-  KPrintF("Free chip RAM = %lu", freeChipRAM);
-  KPrintF("Free fast RAM = %lu", freeFastRAM);
+  KPrintF("Free chip RAM = %ld", freeChipRAM);
+  KPrintF("Free fast RAM = %ld", freeFastRAM);
 
   for (;;) {
     runFrame();

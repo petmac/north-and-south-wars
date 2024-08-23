@@ -11,18 +11,18 @@ template <typename T> static bool load(T &dst, const char *path) {
   constexpr u16 size = sizeof(T);
 
   KPrintF("Loading \"%s\"", reinterpret_cast<u32>(path));
-  KPrintF("Size = %lu", size);
+  KPrintF("Size = %ld", size);
   u32 file = Open(path, MODE_OLDFILE);
-  KPrintF("Open result = %lu", file);
+  KPrintF("Open result = %ld", file);
   if (file == 0) {
     KPrintF("Could not open file");
     return false;
   }
 
   const u32 bytesRead = Read(file, &dst, size);
-  KPrintF("Read %lu bytes", bytesRead);
+  KPrintF("Read %ld bytes", bytesRead);
   if (bytesRead != size) {
-    KPrintF("Bytes read %lu does not match buffer size %lu", bytesRead, size);
+    KPrintF("Bytes read %ld does not match buffer size %ld", bytesRead, size);
   }
 
   Close(file);

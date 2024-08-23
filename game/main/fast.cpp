@@ -12,7 +12,7 @@ static void initFrameFast(FrameFast &frameFast) {
 }
 
 void initFast(Fast &fast) {
-  KPrintF("Size of fast = %lu", sizeof(fast));
+  KPrintF("Size of fast = %ld", sizeof(fast));
 
   const u16 mouseData = custom.joy0dat;
 
