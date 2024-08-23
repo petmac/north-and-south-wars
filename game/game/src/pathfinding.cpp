@@ -2,8 +2,9 @@
 
 #include "game/callbacks.h" // KPrintF, TODO Remove
 #include "game/pathfinding.h"
-#include "game/terrain.h" // Terrain
-#include "game/tile.h"    // TileIndex
+#include "game/terrain.h"   // Terrain
+#include "game/tile.h"      // TileIndex
+#include "game/unit_defs.h" // UnitDef
 
 // Algorithm based on:
 // https://www.redblobgames.com/pathfinding/a-star/introduction.html
@@ -37,7 +38,7 @@ static TileCoords pop(Frontier &frontier) {
 static void considerNeighbour(Pathfinding &pathfinding, const Map &map,
                               const TileCoords &current, u16 nextColumn,
                               u16 nextRow, Cost costToCurrent,
-                              Cost unitMovementPoints) {
+                              const UnitDef &unitDef) {
   // Skip impassable tiles
   const TileIndex tileIndex = map.tiles[nextRow][nextColumn];
   const Terrain terrain = tileTerrain(tileIndex);
@@ -50,6 +51,7 @@ static void considerNeighbour(Pathfinding &pathfinding, const Map &map,
   }
 
   // Skip tiles with units on
+  // TODO Move this check to after cost checks
   const TileCoords next = {
       .column = static_cast<u8>(nextColumn),
       .row = static_cast<u8>(nextRow),
@@ -65,7 +67,7 @@ static void considerNeighbour(Pathfinding &pathfinding, const Map &map,
   // TODO Take unit and terrain into account
   const Cost costToEnterNext = 1;
   const Cost costToNext = costToCurrent + costToEnterNext;
-  if (costToNext > unitMovementPoints) {
+  if (costToNext > unitDef.movementPoints) {
     return;
   }
 
@@ -94,7 +96,7 @@ static void considerNeighbour(Pathfinding &pathfinding, const Map &map,
 }
 
 void findPaths(Pathfinding &pathfinding, const Map &map,
-               const TileCoords &start, u16 unitMovementPoints) {
+               const TileCoords &start, const UnitDef &unitDef) {
   // Clear data structure
   // TODO No need to clear the whole map, just the area around the start
   for (u16 rowIndex = 0; rowIndex < maxMapHeight; ++rowIndex) {
@@ -120,19 +122,19 @@ void findPaths(Pathfinding &pathfinding, const Map &map,
     // Where can we move to?
     if (current.row > 0) {
       considerNeighbour(pathfinding, map, current, current.column,
-                        current.row - 1, costToCurrent, unitMovementPoints);
+                        current.row - 1, costToCurrent, unitDef);
     }
     if (current.column < (map.width - 1)) {
       considerNeighbour(pathfinding, map, current, current.column + 1,
-                        current.row, costToCurrent, unitMovementPoints);
+                        current.row, costToCurrent, unitDef);
     }
     if (current.row < (map.height - 1)) {
       considerNeighbour(pathfinding, map, current, current.column,
-                        current.row + 1, costToCurrent, unitMovementPoints);
+                        current.row + 1, costToCurrent, unitDef);
     }
     if (current.column > 0) {
       considerNeighbour(pathfinding, map, current, current.column - 1,
-                        current.row, costToCurrent, unitMovementPoints);
+                        current.row, costToCurrent, unitDef);
     }
   }
 }
