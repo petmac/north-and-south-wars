@@ -189,6 +189,33 @@ static void drawPath(Background &background, DirtyTileList &dirtyTiles,
   }
 }
 
+template <u16 buttonCount>
+static void drawMenu(Background &background, DirtyTileList &dirtyTiles,
+                     const MenuButtonBitmapIndex (&buttons)[buttonCount]) {
+  // Draw buttons
+  constexpr u16 menuXWords = menuX / 16;
+
+  for (u16 buttonIndex = 0; buttonIndex < buttonCount; ++buttonIndex) {
+    const MenuButtonBitmap &src =
+        chip.menu.buttons[static_cast<u16>(buttons[buttonIndex])];
+    const u16 y = menuY + (buttonIndex * menuButtonHeight);
+    blitFast(background, src, menuXWords, y);
+  }
+
+  // Add dirty tiles
+  constexpr u16 menuX1Tiles = menuX / tileWidth;
+  constexpr u16 menuY1Tiles = menuY / tileHeight;
+  constexpr u16 menuX2Tiles = (menuX + menuButtonWidth) / tileWidth;
+  constexpr u16 menuY2Tiles =
+      (menuY + (buttonCount * menuButtonWidth)) / tileHeight;
+
+  for (u16 tileRow = menuY1Tiles; tileRow < menuY2Tiles; ++tileRow) {
+    for (u16 tileColumn = menuX1Tiles; tileColumn < menuX2Tiles; ++tileColumn) {
+      addDirtyTile(dirtyTiles, tileColumn, tileRow);
+    }
+  }
+}
+
 void drawMission(Background &background, FrameFast &frameFast,
                  const Mission &mission) {
   const Map &map = mission.map;
@@ -223,9 +250,13 @@ void drawMission(Background &background, FrameFast &frameFast,
   case MissionState::movingUnit:
     drawMissionText(background, dirtyTiles, "Moving unit");
     break;
-  case MissionState::selectUnitAction:
-    drawMissionText(background, dirtyTiles, "Select unit action");
-    break;
+  case MissionState::selectUnitAction: {
+    // TODO is attack possible?
+    const MenuButtonBitmapIndex buttons[] = {
+        MenuButtonBitmapIndex::wait,
+    };
+    drawMenu(background, dirtyTiles, buttons);
+  } break;
   case MissionState::selectTarget:
     drawMissionText(background, dirtyTiles, "Select target");
     break;

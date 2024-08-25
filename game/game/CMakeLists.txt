@@ -7,6 +7,7 @@ add_library(
     include/game/game.h
     include/game/intro.h
     include/game/map.h
+    include/game/menu.h
     include/game/mission.h
     include/game/movement_cost.h
     include/game/movement_types.h

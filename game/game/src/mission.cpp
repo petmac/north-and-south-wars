@@ -85,7 +85,6 @@ void updateMission(Mission &mission, u16 mouseX, u16 mouseY) {
     mission.state = MissionState::selectUnitAction;
     break;
   case MissionState::selectUnitAction:
-    mission.state = MissionState::selectTarget;
     break;
   case MissionState::selectTarget:
     mission.state = MissionState::startOfTurn;

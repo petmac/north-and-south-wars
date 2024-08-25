@@ -1,6 +1,7 @@
 #pragma once
 
 #include "assets/arrows.h"
+#include "assets/menu_bitmaps.h"
 #include "assets/small_font.h"
 #include "assets/sprite_images.h"
 #include "assets/tileset.h"
@@ -15,6 +16,7 @@ struct Chip {
   ArrowBitmaps arrows;
   Tileset tileset;
   UnitBitmaps units;
+  MenuBitmaps menu;
 };
 
 extern Chip chip;

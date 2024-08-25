@@ -1,6 +1,7 @@
 add_executable(
     a.elf
     assets/arrows.h
+    assets/menu_bitmaps.h
     assets/palette.h
     assets/small_font.h
     assets/sprite_images.h
