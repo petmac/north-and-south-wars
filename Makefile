@@ -6,6 +6,7 @@ TMX := assets/map.tmx
 TSX := assets/tiles.tsx
 
 MAP := $(DATA_DIR)/map.map
+BPL_ASSET_NAMES := arrows menu small_font units
 TILES_BPL := $(DATA_DIR)/tiles.bpl
 
 TMX2MAP := tools/target/release/tmx2map
@@ -17,7 +18,7 @@ FREEIMAGE_PREFIX := $(shell brew --prefix freeimage)
 KINGCON := external/kingcon/build/kingcon
 
 .PHONY: all
-all: cmake-build $(DATA_DIR)/mouse.SPR $(DATA_DIR)/palette.PAL $(DATA_DIR)/small_font.BPL $(TILES_BPL) $(MAP) $(DATA_DIR)/arrows.BPL $(DATA_DIR)/units.BPL
+all: cmake-build $(DATA_DIR)/mouse.SPR $(DATA_DIR)/palette.PAL $(TILES_BPL) $(foreach name,$(BPL_ASSET_NAMES),$(DATA_DIR)/$(name).BPL)
 
 .PHONY: clean
 clean:
