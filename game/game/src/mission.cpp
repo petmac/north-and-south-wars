@@ -48,6 +48,8 @@ static void selectUnitUnderMouse(Mission &mission, u16 mouseX, u16 mouseY) {
     mission.unitDestination = mouseCoords;
     break;
   }
+
+  // TODO Show "End Turn" menu
 }
 
 void startMission(Mission &mission) {
