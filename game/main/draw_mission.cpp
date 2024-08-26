@@ -253,6 +253,7 @@ void drawMission(Background &background, FrameFast &frameFast,
   case MissionState::selectUnitAction: {
     // TODO is attack possible?
     const MenuButtonBitmapIndex buttons[] = {
+        MenuButtonBitmapIndex::attack,
         MenuButtonBitmapIndex::wait,
     };
     drawMenu(background, dirtyTiles, buttons);

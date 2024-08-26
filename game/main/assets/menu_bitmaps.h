@@ -6,6 +6,7 @@
 #include "game/menu.h"
 
 enum class MenuButtonBitmapIndex : u8 {
+  attack,
   wait,
   endTurn,
   count,
