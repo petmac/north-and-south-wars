@@ -8,9 +8,11 @@ enum class MissionState : u8 {
   startOfTurn,
   resupply,
   selectUnit,
+  selectEndTurn,
   selectUnitDestination,
   movingUnit,
-  selectUnitAction,
+  selectAttackOrWait,
+  selectWait,
   selectTarget,
 };
 

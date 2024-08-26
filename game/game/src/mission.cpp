@@ -46,10 +46,11 @@ static void selectUnitUnderMouse(Mission &mission, u16 mouseX, u16 mouseY) {
     const UnitDef &unitDef = unitDefForType(mapUnit.type);
     findPaths(mission.pathfinding, mission.map, mouseCoords, unitDef);
     mission.unitDestination = mouseCoords;
-    break;
+    return;
   }
 
-  // TODO Show "End Turn" menu
+  // Show "End Turn" menu
+  mission.state = MissionState::selectEndTurn;
 }
 
 void startMission(Mission &mission) {
@@ -70,6 +71,8 @@ void updateMission(Mission &mission, u16 mouseX, u16 mouseY) {
     break;
   case MissionState::selectUnit:
     break;
+  case MissionState::selectEndTurn:
+    break;
   case MissionState::selectUnitDestination: {
     const TileCoords mouseCoords = mouseTileCoords(mouseX, mouseY);
     if (mission.pathfinding.costSoFar[mouseCoords.row][mouseCoords.column] >=
@@ -82,9 +85,12 @@ void updateMission(Mission &mission, u16 mouseX, u16 mouseY) {
     // TODO Animate and move smoothly
     mission.map.units[mission.selectedUnitIndex].coords =
         mission.unitDestination;
-    mission.state = MissionState::selectUnitAction;
+    // TODO Can the player attack?
+    mission.state = MissionState::selectAttackOrWait;
     break;
-  case MissionState::selectUnitAction:
+  case MissionState::selectAttackOrWait:
+    break;
+  case MissionState::selectWait:
     break;
   case MissionState::selectTarget:
     mission.state = MissionState::startOfTurn;
@@ -101,6 +107,8 @@ void missionMouseClicked(Mission &mission, u16 mouseX, u16 mouseY) {
   case MissionState::selectUnit:
     selectUnitUnderMouse(mission, mouseX, mouseY);
     break;
+  case MissionState::selectEndTurn:
+    break;
   case MissionState::selectUnitDestination: {
     // Clicked somewhere other than the destination?
     const TileCoords mouseCoords = mouseTileCoords(mouseX, mouseY);
@@ -110,7 +118,8 @@ void missionMouseClicked(Mission &mission, u16 mouseX, u16 mouseY) {
     mission.state = MissionState::movingUnit;
   } break;
   case MissionState::movingUnit:
-  case MissionState::selectUnitAction:
+  case MissionState::selectAttackOrWait:
+  case MissionState::selectWait:
   case MissionState::selectTarget:
     break;
   }
@@ -123,12 +132,21 @@ void missionMouseRightClicked(Mission &mission) {
   case MissionState::resupply:
   case MissionState::selectUnit:
     break;
+  case MissionState::selectEndTurn:
+    mission.state = MissionState::selectUnit;
+    break;
   case MissionState::selectUnitDestination:
     mission.state = MissionState::selectUnit;
     break;
   case MissionState::movingUnit:
-  case MissionState::selectUnitAction:
+    break;
+  case MissionState::selectAttackOrWait:
+  case MissionState::selectWait:
+    // TODO Move unit back
+    mission.state = MissionState::selectUnitDestination;
+    break;
   case MissionState::selectTarget:
+    mission.state = MissionState::selectAttackOrWait;
     break;
   }
 }

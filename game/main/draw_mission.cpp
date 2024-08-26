@@ -243,6 +243,12 @@ void drawMission(Background &background, FrameFast &frameFast,
   case MissionState::selectUnit:
     drawMissionText(background, dirtyTiles, "Select unit");
     break;
+  case MissionState::selectEndTurn: {
+    const MenuButtonBitmapIndex buttons[] = {
+        MenuButtonBitmapIndex::endTurn,
+    };
+    drawMenu(background, dirtyTiles, buttons);
+  } break;
   case MissionState::selectUnitDestination:
     drawPath(background, dirtyTiles, mission.pathfinding,
              mission.unitDestination);
@@ -250,10 +256,15 @@ void drawMission(Background &background, FrameFast &frameFast,
   case MissionState::movingUnit:
     drawMissionText(background, dirtyTiles, "Moving unit");
     break;
-  case MissionState::selectUnitAction: {
-    // TODO is attack possible?
+  case MissionState::selectAttackOrWait: {
     const MenuButtonBitmapIndex buttons[] = {
         MenuButtonBitmapIndex::attack,
+        MenuButtonBitmapIndex::wait,
+    };
+    drawMenu(background, dirtyTiles, buttons);
+  } break;
+  case MissionState::selectWait: {
+    const MenuButtonBitmapIndex buttons[] = {
         MenuButtonBitmapIndex::wait,
     };
     drawMenu(background, dirtyTiles, buttons);
