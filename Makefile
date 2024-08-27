@@ -2,12 +2,12 @@ TEMP_DIR := temp
 OUT_DIR := $(TEMP_DIR)/game/main
 DATA_DIR := $(OUT_DIR)/data
 
-TMX := assets/map.tmx
-TSX := assets/tiles.tsx
+TMX := assets/mission/map.tmx
+TSX := assets/mission/tiles.tsx
 
-MAP := $(DATA_DIR)/map.map
-BPL_ASSET_NAMES := arrows menu small_font units
-TILES_BPL := $(DATA_DIR)/tiles.bpl
+MAP := $(DATA_DIR)/mission/map.map
+BPL_ASSET_NAMES := mission/arrows mission/menu mission/units small_font
+TILES_BPL := $(DATA_DIR)/mission/tiles.bpl
 
 TMX2MAP := tools/target/release/tmx2map
 TSX2BPL := tools/target/release/tsx2bpl
@@ -32,7 +32,7 @@ cmake-build: $(TEMP_DIR)/build.ninja
 $(TEMP_DIR)/build.ninja: CMakeLists.txt CMakePresets.json
 	cmake --preset amiga
 
-$(TILES_BPL): $(TSX) $(TSX2BPL) assets/tiles.png
+$(TILES_BPL): $(TSX) $(TSX2BPL) assets/mission/tiles.png
 	mkdir -p $(dir $@)
 	$(TSX2BPL) $< $@
 
