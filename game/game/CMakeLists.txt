@@ -19,21 +19,21 @@ add_library(
     include/game/intro.h
     include/game/screen.h
     include/game/title.h
+    src/mission/mission.cpp
+    src/mission/mission.h
+    src/mission/movement_cost.cpp
+    src/mission/pathfinding.cpp
+    src/mission/pathfinding.h
+    src/mission/tile.cpp
+    src/mission/unit_defs.cpp
     src/campaign_map.cpp
     src/campaign_map.h
     src/dev.h
     src/game.cpp
     src/intro.cpp
     src/intro.h
-    src/mission.cpp
-    src/mission.h
-    src/movement_cost.cpp
-    src/pathfinding.cpp
-    src/pathfinding.h
-    src/tile.cpp
     src/title.cpp
     src/title.h
-    src/unit_defs.cpp
     )
 
 target_include_directories(
