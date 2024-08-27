@@ -45,6 +45,7 @@ static void selectUnitUnderMouse(Mission &mission, u16 mouseX, u16 mouseY) {
     // Initialise pathfinding
     const UnitDef &unitDef = unitDefForType(mapUnit.type);
     findPaths(mission.pathfinding, mission.map, mouseCoords, unitDef);
+    mission.unitSource = mouseCoords;
     mission.unitDestination = mouseCoords;
     return;
   }
@@ -141,10 +142,12 @@ void missionMouseRightClicked(Mission &mission) {
   case MissionState::movingUnit:
     break;
   case MissionState::selectAttackOrWait:
-  case MissionState::selectWait:
-    // TODO Move unit back
+  case MissionState::selectWait: {
     mission.state = MissionState::selectUnitDestination;
-    break;
+    // Move unit back
+    MapUnit &selectedUnit = mission.map.units[mission.selectedUnitIndex];
+    selectedUnit.coords = mission.unitSource;
+  } break;
   case MissionState::selectTarget:
     mission.state = MissionState::selectAttackOrWait;
     break;
