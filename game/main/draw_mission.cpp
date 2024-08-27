@@ -205,9 +205,9 @@ static void drawMenu(Background &background, DirtyTileList &dirtyTiles,
   // Add dirty tiles
   constexpr u16 menuX1Tiles = menuX / tileWidth;
   constexpr u16 menuY1Tiles = menuY / tileHeight;
-  constexpr u16 menuX2Tiles = (menuX + menuButtonWidth) / tileWidth;
+  constexpr u16 menuX2Tiles = ((menuX + menuButtonWidth - 1) / tileWidth) + 1;
   constexpr u16 menuY2Tiles =
-      (menuY + (buttonCount * menuButtonWidth)) / tileHeight;
+      ((menuY + (buttonCount * menuButtonHeight) - 1) / tileHeight) + 1;
 
   for (u16 tileRow = menuY1Tiles; tileRow < menuY2Tiles; ++tileRow) {
     for (u16 tileColumn = menuX1Tiles; tileColumn < menuX2Tiles; ++tileColumn) {
