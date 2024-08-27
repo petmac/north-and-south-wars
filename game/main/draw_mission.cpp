@@ -45,7 +45,8 @@ static void drawMissionText(Background &background, DirtyTileList &dirtyTiles,
 static void drawTile(Background &background, u16 column, u16 row,
                      const Map &map) {
   const TileIndex tileIndex = map.tiles[row][column];
-  const TileBitmap &tile = chip.tileset.tiles[static_cast<u16>(tileIndex)];
+  const TileBitmap &tile =
+      chip.mission.tileset.tiles[static_cast<u16>(tileIndex)];
   blitFast(background, tile, column, row * tileHeight);
 }
 
@@ -88,7 +89,8 @@ static void drawBobOnTile(
 
 static void drawUnit(Background &background, DirtyTileList &dirtyTiles,
                      u16 column, u16 row, Force force, UnitType unit) {
-  const ForceBitmaps &forceBitmaps = chip.units.forces[static_cast<u16>(force)];
+  const ForceBitmaps &forceBitmaps =
+      chip.mission.units.forces[static_cast<u16>(force)];
   const UnitBitmap &src = forceBitmaps.units[static_cast<u16>(unit)];
 
   drawBobOnTile(background, dirtyTiles, column, row, src);
@@ -153,7 +155,7 @@ static void drawPath(Background &background, DirtyTileList &dirtyTiles,
                      const Pathfinding &pathfinding, const TileCoords &goal) {
   // Draw reachable tiles
   const ArrowBitmap &reachableBitmap =
-      chip.arrows.bitmaps[static_cast<u16>(ArrowType::reachable)];
+      chip.mission.arrows.bitmaps[static_cast<u16>(ArrowType::reachable)];
   for (u16 reachableTileIndex = 0;
        reachableTileIndex < pathfinding.reachable.count; ++reachableTileIndex) {
     const TileCoords &coords =
@@ -169,7 +171,7 @@ static void drawPath(Background &background, DirtyTileList &dirtyTiles,
   }
   const ArrowType arrowTipType = computeArrowTip(current, goal);
   const ArrowBitmap &arrowTipBitmap =
-      chip.arrows.bitmaps[static_cast<u16>(arrowTipType)];
+      chip.mission.arrows.bitmaps[static_cast<u16>(arrowTipType)];
   drawBobOnTile(background, dirtyTiles, goal.column, goal.row, arrowTipBitmap);
 
   // Draw the trunk of the arrow
@@ -178,7 +180,7 @@ static void drawPath(Background &background, DirtyTileList &dirtyTiles,
   while (prev != current) {
     const ArrowType arrowTrunkType = computeArrowTrunk(prev, current, next);
     const ArrowBitmap &arrowTrunkBitmap =
-        chip.arrows.bitmaps[static_cast<u16>(arrowTrunkType)];
+        chip.mission.arrows.bitmaps[static_cast<u16>(arrowTrunkType)];
     drawBobOnTile(background, dirtyTiles, current.column, current.row,
                   arrowTrunkBitmap);
 
@@ -197,7 +199,7 @@ static void drawMenu(Background &background, DirtyTileList &dirtyTiles,
 
   for (u16 buttonIndex = 0; buttonIndex < buttonCount; ++buttonIndex) {
     const MenuButtonBitmap &src =
-        chip.menu.buttons[static_cast<u16>(buttons[buttonIndex])];
+        chip.mission.menu.buttons[static_cast<u16>(buttons[buttonIndex])];
     const u16 y = menuY + (buttonIndex * menuButtonHeight);
     blitFast(background, src, menuXWords, y);
   }

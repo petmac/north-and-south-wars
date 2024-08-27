@@ -8,15 +8,19 @@
 #include "assets/sprite_images.h"
 #include "frame_chip.h"
 
+struct MissionChip {
+  ArrowBitmaps arrows;
+  Tileset tileset;
+  UnitBitmaps units;
+  MenuBitmaps menu;
+};
+
 struct Chip {
   FrameChip frames[2];
   u16 zeroes[2]; // Dummy sprite
   MousePointerSpriteImage mousePointer;
   SmallFont smallFont;
-  ArrowBitmaps arrows;
-  Tileset tileset;
-  UnitBitmaps units;
-  MenuBitmaps menu;
+  MissionChip mission;
 };
 
 extern Chip chip;

@@ -34,10 +34,10 @@ template <typename T> static bool load(T &dst, const char *path) {
 bool loadMap(Map &map) { return load(map, "data/mission/map.map"); }
 
 bool loadMissionAssets() {
-  return load(chip.arrows, "data/mission/arrows.BPL") &&
-         load(chip.menu, "data/mission/menu.BPL") &&
-         load(chip.tileset, "data/mission/tiles.bpl") &&
-         load(chip.units, "data/mission/units.BPL");
+  return load(chip.mission.arrows, "data/mission/arrows.BPL") &&
+         load(chip.mission.menu, "data/mission/menu.BPL") &&
+         load(chip.mission.tileset, "data/mission/tiles.bpl") &&
+         load(chip.mission.units, "data/mission/units.BPL");
 }
 
 bool loadMousePointer() { return load(chip.mousePointer, "data/mouse.SPR"); }
