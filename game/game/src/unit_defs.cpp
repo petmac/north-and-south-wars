@@ -1,7 +1,7 @@
-#include "game/unit_defs.h"
+#include "game/mission/unit_defs.h"
 
-#include "game/movement_types.h"
-#include "game/unit_types.h"
+#include "game/mission/movement_types.h"
+#include "game/mission/unit_types.h"
 
 // https://warswiki.org/wiki/Advance_Wars#Units
 static constexpr UnitDef unitDefs[static_cast<u16>(UnitType::count)] = {

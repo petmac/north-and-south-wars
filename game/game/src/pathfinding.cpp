@@ -1,11 +1,11 @@
 #include "pathfinding.h"
 
-#include "game/callbacks.h"     // KPrintF, TODO Remove
-#include "game/movement_cost.h" // calculateMovementCost
-#include "game/pathfinding.h"
-#include "game/terrain.h"   // Terrain
-#include "game/tile.h"      // TileIndex
-#include "game/unit_defs.h" // UnitDef
+#include "game/callbacks.h"             // KPrintF, TODO Remove
+#include "game/mission/movement_cost.h" // calculateMovementCost
+#include "game/mission/pathfinding.h"
+#include "game/mission/terrain.h"   // Terrain
+#include "game/mission/tile.h"      // TileIndex
+#include "game/mission/unit_defs.h" // UnitDef
 
 // Algorithm based on:
 // https://www.redblobgames.com/pathfinding/a-star/introduction.html

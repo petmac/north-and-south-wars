@@ -3,7 +3,7 @@
 #include "../../playfield.h"
 
 #include "amiga/bitmap.h"
-#include "game/menu.h"
+#include "game/mission/menu.h"
 
 enum class MenuButtonBitmapIndex : u8 {
   attack,

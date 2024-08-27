@@ -5,7 +5,7 @@
 #include "frame_fast.h"
 #include "text.h"
 
-#include "game/mission.h"
+#include "game/mission/mission.h"
 
 static void addDirtyTile(DirtyTileList &dirtyTiles, u16 column, u16 row) {
   // Dirty tile already in list?

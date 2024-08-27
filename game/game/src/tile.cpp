@@ -1,6 +1,6 @@
-#include "game/tile.h"
+#include "game/mission/tile.h"
 
-#include "game/terrain.h"
+#include "game/mission/terrain.h"
 
 static constexpr Terrain tileTerrainTable[static_cast<u16>(TileIndex::count)] =
     {

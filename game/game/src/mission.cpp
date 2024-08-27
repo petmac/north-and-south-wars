@@ -1,9 +1,9 @@
 #include "mission.h"
 
-#include "game/forces.h"
-#include "game/mission.h"
-#include "game/movement_cost.h" // maxCost
-#include "game/unit_defs.h"
+#include "game/mission/forces.h"
+#include "game/mission/mission.h"
+#include "game/mission/movement_cost.h" // maxCost
+#include "game/mission/unit_defs.h"
 
 #include "pathfinding.h"
 

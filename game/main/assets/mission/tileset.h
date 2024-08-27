@@ -3,7 +3,7 @@
 #include "../../playfield.h"
 
 #include "amiga/bitmap.h"
-#include "game/tile.h"
+#include "game/mission/tile.h"
 
 using TileBitmap = InterleavedBitmap<tileWidth, tileHeight, playfieldDepth>;
 

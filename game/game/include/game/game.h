@@ -2,7 +2,7 @@
 
 #include "campaign_map.h"
 #include "intro.h"
-#include "mission.h"
+#include "mission/mission.h"
 #include "title.h"
 
 enum class GameState : u8 {

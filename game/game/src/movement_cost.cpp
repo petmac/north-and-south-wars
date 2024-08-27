@@ -1,7 +1,7 @@
-#include "game/movement_cost.h"
+#include "game/mission/movement_cost.h"
 
-#include "game/movement_types.h"
-#include "game/terrain.h"
+#include "game/mission/movement_types.h"
+#include "game/mission/terrain.h"
 
 Cost calculateMovementCost(Terrain terrain, MovementType movementType) {
   switch (terrain) {

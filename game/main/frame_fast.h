@@ -1,6 +1,6 @@
 #pragma once
 
-#include "game/map.h" // TileCoords, maxMapWidth, maxMapHeight
+#include "game/mission/map.h" // TileCoords, maxMapWidth, maxMapHeight
 
 constexpr u16 maxDirtyTiles = maxMapWidth * maxMapHeight;
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "game/map.h"
+#include "game/mission/map.h"
 
 constexpr u16 playfieldWidth = maxMapWidth * tileWidth;
 constexpr u16 playfieldHeight = maxMapHeight * tileHeight;

@@ -1,24 +1,24 @@
 add_library(
     game
     OBJECT
+    include/game/mission/forces.h
+    include/game/mission/map.h
+    include/game/mission/menu.h
+    include/game/mission/mission.h
+    include/game/mission/movement_cost.h
+    include/game/mission/movement_types.h
+    include/game/mission/pathfinding.h
+    include/game/mission/terrain.h
+    include/game/mission/tile_coords.h
+    include/game/mission/tile.h
+    include/game/mission/unit_defs.h
+    include/game/mission/unit_types.h
     include/game/callbacks.h
     include/game/campaign_map.h
-    include/game/forces.h
     include/game/game.h
     include/game/intro.h
-    include/game/map.h
-    include/game/menu.h
-    include/game/mission.h
-    include/game/movement_cost.h
-    include/game/movement_types.h
-    include/game/pathfinding.h
     include/game/screen.h
-    include/game/terrain.h
-    include/game/tile.h
-    include/game/tile_coords.h
     include/game/title.h
-    include/game/unit_defs.h
-    include/game/unit_types.h
     src/campaign_map.cpp
     src/campaign_map.h
     src/dev.h
