@@ -1,12 +1,12 @@
 add_executable(
     a.elf
-    assets/arrows.h
-    assets/menu_bitmaps.h
+    assets/mission/arrows.h
+    assets/mission/menu_bitmaps.h
+    assets/mission/tileset.h
+    assets/mission/unit_bitmaps.h
     assets/palette.h
     assets/small_font.h
     assets/sprite_images.h
-    assets/tileset.h
-    assets/unit_bitmaps.h
     background.h
     blit.h
     chip.cpp

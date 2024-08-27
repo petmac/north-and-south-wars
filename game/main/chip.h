@@ -1,11 +1,11 @@
 #pragma once
 
-#include "assets/arrows.h"
-#include "assets/menu_bitmaps.h"
+#include "assets/mission/arrows.h"
+#include "assets/mission/menu_bitmaps.h"
+#include "assets/mission/tileset.h"
+#include "assets/mission/unit_bitmaps.h"
 #include "assets/small_font.h"
 #include "assets/sprite_images.h"
-#include "assets/tileset.h"
-#include "assets/unit_bitmaps.h"
 #include "frame_chip.h"
 
 struct Chip {

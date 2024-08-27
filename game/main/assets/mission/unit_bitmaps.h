@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../playfield.h"
+#include "../../playfield.h"
 
 #include "amiga/bitmap.h"
 #include "game/forces.h"
