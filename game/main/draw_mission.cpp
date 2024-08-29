@@ -243,7 +243,6 @@ void drawMission(Background &background, FrameFast &frameFast,
     drawMissionText(background, dirtyTiles, "Resupply");
     break;
   case MissionState::selectUnit:
-    drawMissionText(background, dirtyTiles, "Select unit");
     break;
   case MissionState::selectEndTurn: {
     const MenuButtonBitmapIndex buttons[] = {
