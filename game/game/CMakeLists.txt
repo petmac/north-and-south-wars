@@ -19,6 +19,8 @@ add_library(
     include/game/intro.h
     include/game/screen.h
     include/game/title.h
+    src/mission/menu.cpp
+    src/mission/menu.h
     src/mission/mission.cpp
     src/mission/mission.h
     src/mission/movement_cost.cpp

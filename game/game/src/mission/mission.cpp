@@ -1,11 +1,12 @@
 #include "mission.h"
 
+#include "menu.h"
+#include "pathfinding.h"
+
 #include "game/mission/forces.h"
 #include "game/mission/mission.h"
 #include "game/mission/movement_cost.h" // maxCost
 #include "game/mission/unit_defs.h"
-
-#include "pathfinding.h"
 
 static TileCoords mouseTileCoords(u16 mouseX, u16 mouseY) {
   const u16 tileColumn = mouseX / tileWidth;
@@ -52,6 +53,13 @@ static void selectUnitUnderMouse(Mission &mission, u16 mouseX, u16 mouseY) {
 
   // Show "End Turn" menu
   mission.state = MissionState::selectEndTurn;
+}
+
+static void cancelMove(Mission &mission) {
+  mission.state = MissionState::selectUnitDestination;
+  // Move unit back
+  MapUnit &selectedUnit = mission.map.units[mission.selectedUnitIndex];
+  selectedUnit.coords = mission.unitSource;
 }
 
 void startMission(Mission &mission) {
@@ -109,18 +117,52 @@ void missionMouseClicked(Mission &mission, u16 mouseX, u16 mouseY) {
     selectUnitUnderMouse(mission, mouseX, mouseY);
     break;
   case MissionState::selectEndTurn:
+    switch (menuButtonAtCoords(mouseX, mouseY, 1)) {
+    case 0:
+      // TODO Start opponent's turn
+      mission.state = MissionState::resupply;
+      break;
+    default:
+      mission.state = MissionState::selectUnit;
+      break;
+    }
     break;
   case MissionState::selectUnitDestination: {
     // Clicked somewhere other than the destination?
     const TileCoords mouseCoords = mouseTileCoords(mouseX, mouseY);
     if (mouseCoords != mission.unitDestination) {
+      mission.state = MissionState::selectUnit;
       break;
     }
     mission.state = MissionState::movingUnit;
   } break;
   case MissionState::movingUnit:
+    break;
   case MissionState::selectAttackOrWait:
+    switch (menuButtonAtCoords(mouseX, mouseY, 2)) {
+    case 0:
+      // TODO Perform attack
+      break;
+    case 1:
+      // TODO Start opponent's turn
+      mission.state = MissionState::resupply;
+      break;
+    default:
+      cancelMove(mission);
+      break;
+    }
+    break;
   case MissionState::selectWait:
+    switch (menuButtonAtCoords(mouseX, mouseY, 1)) {
+    case 0:
+      // TODO Start opponent's turn
+      mission.state = MissionState::resupply;
+      break;
+    default:
+      cancelMove(mission);
+      break;
+    }
+    break;
   case MissionState::selectTarget:
     break;
   }
@@ -142,12 +184,9 @@ void missionMouseRightClicked(Mission &mission) {
   case MissionState::movingUnit:
     break;
   case MissionState::selectAttackOrWait:
-  case MissionState::selectWait: {
-    mission.state = MissionState::selectUnitDestination;
-    // Move unit back
-    MapUnit &selectedUnit = mission.map.units[mission.selectedUnitIndex];
-    selectedUnit.coords = mission.unitSource;
-  } break;
+  case MissionState::selectWait:
+    cancelMove(mission);
+    break;
   case MissionState::selectTarget:
     mission.state = MissionState::selectAttackOrWait;
     break;
