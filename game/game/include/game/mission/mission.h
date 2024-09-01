@@ -1,5 +1,6 @@
 #pragma once
 
+#include "attackable.h"
 #include "map.h"
 #include "pathfinding.h"
 
@@ -23,4 +24,5 @@ struct Mission {
   Pathfinding pathfinding;
   TileCoords unitSource;
   TileCoords unitDestination;
+  Attackable attackable;
 };

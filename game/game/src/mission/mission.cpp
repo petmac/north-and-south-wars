@@ -1,5 +1,6 @@
 #include "mission.h"
 
+#include "attackable.h"
 #include "menu.h"
 #include "pathfinding.h"
 
@@ -95,7 +96,13 @@ void updateMission(Mission &mission, u16 mouseX, u16 mouseY) {
     mission.map.units[mission.selectedUnitIndex].coords =
         mission.unitDestination;
     // TODO Can the player attack?
-    mission.state = MissionState::selectAttackOrWait;
+    findAttackableUnits(mission.attackable, mission.selectedUnitIndex,
+                        mission.map);
+    if (mission.attackable.unitCount > 0) {
+      mission.state = MissionState::selectAttackOrWait;
+    } else {
+      mission.state = MissionState::selectWait;
+    }
     break;
   case MissionState::selectAttackOrWait:
     break;
