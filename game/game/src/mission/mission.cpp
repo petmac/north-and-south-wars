@@ -109,7 +109,6 @@ void updateMission(Mission &mission, u16 mouseX, u16 mouseY) {
   case MissionState::selectWait:
     break;
   case MissionState::selectTarget:
-    mission.state = MissionState::startOfTurn;
     break;
   }
 }
@@ -148,7 +147,7 @@ void missionMouseClicked(Mission &mission, u16 mouseX, u16 mouseY) {
   case MissionState::selectAttackOrWait:
     switch (menuButtonAtCoords(mouseX, mouseY, 2)) {
     case 0:
-      // TODO Perform attack
+      mission.state = MissionState::selectTarget;
       break;
     case 1:
       // TODO Start opponent's turn
