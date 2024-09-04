@@ -53,7 +53,7 @@ static void selectUnitUnderMouse(Mission &mission, u16 mouseX, u16 mouseY) {
   }
 
   // Show "End Turn" menu
-  mission.state = MissionState::selectEndTurn;
+  mission.state = MissionState::confirmEndTurn;
 }
 
 static void cancelMove(Mission &mission) {
@@ -103,7 +103,7 @@ void updateMission(Mission &mission, u16 mouseX, u16 mouseY) {
     break;
   case MissionState::selectUnit:
     break;
-  case MissionState::selectEndTurn:
+  case MissionState::confirmEndTurn:
     break;
   case MissionState::selectUnitDestination: {
     const TileCoords mouseCoords = mouseTileCoords(mouseX, mouseY);
@@ -144,7 +144,7 @@ void missionMouseClicked(Mission &mission, u16 mouseX, u16 mouseY) {
   case MissionState::selectUnit:
     selectUnitUnderMouse(mission, mouseX, mouseY);
     break;
-  case MissionState::selectEndTurn:
+  case MissionState::confirmEndTurn:
     switch (menuButtonAtCoords(mouseX, mouseY, 1)) {
     case 0:
       // TODO Start opponent's turn
@@ -204,7 +204,7 @@ void missionMouseRightClicked(Mission &mission) {
   case MissionState::resupply:
   case MissionState::selectUnit:
     break;
-  case MissionState::selectEndTurn:
+  case MissionState::confirmEndTurn:
     mission.state = MissionState::selectUnit;
     break;
   case MissionState::selectUnitDestination:

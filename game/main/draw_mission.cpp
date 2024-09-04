@@ -270,7 +270,7 @@ void drawMission(Background &background, FrameFast &frameFast,
     break;
   case MissionState::selectUnit:
     break;
-  case MissionState::selectEndTurn: {
+  case MissionState::confirmEndTurn: {
     const MenuButtonBitmapIndex buttons[] = {
         MenuButtonBitmapIndex::endTurn,
     };
