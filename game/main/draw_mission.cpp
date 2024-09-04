@@ -242,19 +242,11 @@ void drawMission(Background &background, FrameFast &frameFast,
   // Draw state-specific stuff under units
   DirtyTileList &dirtyTiles = frameFast.mission.dirtyTiles;
   switch (mission.state) {
-  case MissionState::intro:
-  case MissionState::startOfTurn:
-  case MissionState::resupply:
-  case MissionState::selectUnit:
-  case MissionState::selectEndTurn:
-  case MissionState::selectUnitDestination:
-  case MissionState::movingUnit:
-    break;
   case MissionState::selectAttackOrWait:
+  case MissionState::selectTarget:
     drawAttackableUnits(background, dirtyTiles, mission.attackable, map.units);
     break;
-  case MissionState::selectWait:
-  case MissionState::selectTarget:
+  default:
     break;
   }
 
