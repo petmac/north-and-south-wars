@@ -239,15 +239,33 @@ void drawMission(Background &background, FrameFast &frameFast,
   const Map &map = mission.map;
   makeBackgroundPristine(background, frameFast, map);
 
-  // Draw units
+  // Draw state-specific stuff under units
   DirtyTileList &dirtyTiles = frameFast.mission.dirtyTiles;
+  switch (mission.state) {
+  case MissionState::intro:
+  case MissionState::startOfTurn:
+  case MissionState::resupply:
+  case MissionState::selectUnit:
+  case MissionState::selectEndTurn:
+  case MissionState::selectUnitDestination:
+  case MissionState::movingUnit:
+    break;
+  case MissionState::selectAttackOrWait:
+    drawAttackableUnits(background, dirtyTiles, mission.attackable, map.units);
+    break;
+  case MissionState::selectWait:
+  case MissionState::selectTarget:
+    break;
+  }
+
+  // Draw units
   for (u16 unitIndex = 0; unitIndex < map.unitCount; ++unitIndex) {
     const MapUnit &unit = map.units[unitIndex];
     drawUnit(background, dirtyTiles, unit.coords.column, unit.coords.row,
              unit.force, unit.type);
   }
 
-  // Draw state-specific stuff
+  // Draw state-specific stuff on top of units
   switch (mission.state) {
   case MissionState::intro:
     drawMissionText(background, dirtyTiles, "Intro");
@@ -278,8 +296,6 @@ void drawMission(Background &background, FrameFast &frameFast,
         MenuButtonBitmapIndex::attack,
         MenuButtonBitmapIndex::wait,
     };
-    drawAttackableUnits(background, dirtyTiles, mission.attackable,
-                        mission.map.units);
     drawMenu(background, dirtyTiles, buttons);
   } break;
   case MissionState::selectWait: {
