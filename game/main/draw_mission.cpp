@@ -191,6 +191,22 @@ static void drawPath(Background &background, DirtyTileList &dirtyTiles,
   }
 }
 
+static void drawAttackableUnits(Background &background,
+                                DirtyTileList &dirtyTiles,
+                                const Attackable &attackable,
+                                const MapUnit (&units)[maxMapUnits]) {
+  const ArrowBitmap &attackableBitmap =
+      chip.mission.arrows.bitmaps[static_cast<u16>(ArrowType::attackable)];
+
+  for (u16 attackableUnitIndex = 0; attackableUnitIndex < attackable.unitCount;
+       ++attackableUnitIndex) {
+    const u16 unitIndex = attackable.unitIndices[attackableUnitIndex];
+    const MapUnit &unit = units[unitIndex];
+    drawBobOnTile(background, dirtyTiles, unit.coords.column, unit.coords.row,
+                  attackableBitmap);
+  }
+}
+
 template <u16 buttonCount>
 static void drawMenu(Background &background, DirtyTileList &dirtyTiles,
                      const MenuButtonBitmapIndex (&buttons)[buttonCount]) {
@@ -262,6 +278,8 @@ void drawMission(Background &background, FrameFast &frameFast,
         MenuButtonBitmapIndex::attack,
         MenuButtonBitmapIndex::wait,
     };
+    drawAttackableUnits(background, dirtyTiles, mission.attackable,
+                        mission.map.units);
     drawMenu(background, dirtyTiles, buttons);
   } break;
   case MissionState::selectWait: {

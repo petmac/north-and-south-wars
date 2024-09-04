@@ -95,7 +95,7 @@ void updateMission(Mission &mission, u16 mouseX, u16 mouseY) {
     // TODO Animate and move smoothly
     mission.map.units[mission.selectedUnitIndex].coords =
         mission.unitDestination;
-    // TODO Can the player attack?
+    // Can the player attack?
     findAttackableUnits(mission.attackable, mission.selectedUnitIndex,
                         mission.map);
     if (mission.attackable.unitCount > 0) {
