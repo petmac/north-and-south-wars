@@ -16,6 +16,10 @@ add_executable(
     draw_campaign_map.h
     draw_intro.cpp
     draw_intro.h
+    draw_mission_attack.cpp
+    draw_mission_attack.h
+    draw_mission_tiles.cpp
+    draw_mission_tiles.h
     draw_mission.cpp
     draw_mission.h
     draw_title.cpp
