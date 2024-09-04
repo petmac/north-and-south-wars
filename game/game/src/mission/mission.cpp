@@ -79,8 +79,8 @@ static void selectTargetUnderMouse(Mission &mission, u16 mouseX, u16 mouseY) {
       continue;
     }
 
-    // TODO Change state to close up attack
-    mission.state = MissionState::startOfTurn;
+    // Change state to close up attack
+    mission.state = MissionState::attack;
     return;
   }
 }
@@ -131,6 +131,8 @@ void updateMission(Mission &mission, u16 mouseX, u16 mouseY) {
   case MissionState::selectWait:
     break;
   case MissionState::selectTarget:
+    break;
+  case MissionState::attack:
     break;
   }
 }
@@ -194,6 +196,8 @@ void missionMouseClicked(Mission &mission, u16 mouseX, u16 mouseY) {
   case MissionState::selectTarget:
     selectTargetUnderMouse(mission, mouseX, mouseY);
     break;
+  case MissionState::attack:
+    break;
   }
 }
 
@@ -218,6 +222,8 @@ void missionMouseRightClicked(Mission &mission) {
     break;
   case MissionState::selectTarget:
     mission.state = MissionState::selectAttackOrWait;
+    break;
+  case MissionState::attack:
     break;
   }
 }

@@ -299,5 +299,7 @@ void drawMission(Background &background, FrameFast &frameFast,
   case MissionState::selectTarget:
     drawMissionText(background, dirtyTiles, "Select target");
     break;
+  case MissionState::attack:
+    break;
   }
 }

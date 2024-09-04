@@ -15,6 +15,7 @@ enum class MissionState : u8 {
   selectAttackOrWait,
   selectWait,
   selectTarget,
+  attack,
 };
 
 struct Mission {
