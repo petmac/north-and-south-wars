@@ -63,6 +63,28 @@ static void cancelMove(Mission &mission) {
   selectedUnit.coords = mission.unitSource;
 }
 
+static void selectTargetUnderMouse(Mission &mission, u16 mouseX, u16 mouseY) {
+  // Which tile is the mouse over?
+  const TileCoords mouseCoords = mouseTileCoords(mouseX, mouseY);
+
+  // Look for an attackable unit in the tile the mouse is over
+  for (u16 attackableUnitIndex = 0;
+       attackableUnitIndex < mission.attackable.unitCount;
+       ++attackableUnitIndex) {
+    const u16 unitIndex = mission.attackable.unitIndices[attackableUnitIndex];
+    const MapUnit &mapUnit = mission.map.units[unitIndex];
+
+    // Skip enemies which are not under the mouse cursor
+    if (mapUnit.coords != mouseCoords) {
+      continue;
+    }
+
+    // TODO Change state to close up attack
+    mission.state = MissionState::startOfTurn;
+    return;
+  }
+}
+
 void startMission(Mission &mission) {
   mission.state = MissionState::intro;
   mission.selectedUnitIndex = 0;
@@ -170,6 +192,7 @@ void missionMouseClicked(Mission &mission, u16 mouseX, u16 mouseY) {
     }
     break;
   case MissionState::selectTarget:
+    selectTargetUnderMouse(mission, mouseX, mouseY);
     break;
   }
 }
