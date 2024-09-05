@@ -9,8 +9,8 @@ struct Cli {
     output_map_path: PathBuf,
 }
 
-const MAX_MAP_WIDTH: usize = 30;
-const MAX_MAP_HEIGHT: usize = 20;
+const MAX_MAP_WIDTH: usize = 20;
+const MAX_MAP_HEIGHT: usize = 16;
 const MAX_UNITS: usize = 32;
 
 #[derive(Clone, Copy)]

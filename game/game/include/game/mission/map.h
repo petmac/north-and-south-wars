@@ -2,8 +2,8 @@
 
 #include "tile_coords.h"
 
-constexpr u16 maxMapWidth = 30;
-constexpr u16 maxMapHeight = 20;
+constexpr u16 maxMapWidth = 20;
+constexpr u16 maxMapHeight = 16;
 constexpr u16 tileWidth = 16;
 constexpr u16 tileHeight = 16;
 constexpr u16 maxMapUnits = 32;
