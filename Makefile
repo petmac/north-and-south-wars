@@ -6,7 +6,16 @@ TMX := assets/mission/map.tmx
 TSX := assets/mission/tiles.tsx
 
 MAP := $(DATA_DIR)/mission/map.map
-BPL_ASSET_NAMES := mission/arrows mission/menu mission/units small_font
+BPL_ASSET_NAMES := \
+	mission/attack/bg_bridge \
+	mission/attack/bg_mountain \
+	mission/attack/bg_plain \
+	mission/attack/bg_road \
+	mission/attack/bg_woods \
+	mission/arrows \
+	mission/menu \
+	mission/units \
+	small_font
 TILES_BPL := $(DATA_DIR)/mission/tiles.bpl
 
 TMX2MAP := tools/target/release/tmx2map
@@ -45,6 +54,12 @@ $(TMX2MAP) $(TSX2BPL): tools
 .PHONY: tools
 tools:
 	cd tools && cargo build --release
+
+# Convert background image from .png to .BPL
+# https://github.com/grahambates/kingcon/blob/master/README.md#image-conversion-output-format
+$(DATA_DIR)/mission/attack/bg_%.BPL: $(TEMP_DIR)/assets/mission/attack/bg_%.png $(KINGCON)
+	mkdir -p $(dir $@)
+	$(KINGCON) $< $(basename $@) -Format=5 -Interleaved
 
 # Convert image from .png to .BPL
 # https://github.com/grahambates/kingcon/blob/master/README.md#image-conversion-output-format
