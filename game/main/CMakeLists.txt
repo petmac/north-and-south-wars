@@ -1,5 +1,6 @@
 add_executable(
     a.elf
+    assets/mission/attack/bg.h
     assets/mission/arrows.h
     assets/mission/menu_bitmaps.h
     assets/mission/tileset.h
