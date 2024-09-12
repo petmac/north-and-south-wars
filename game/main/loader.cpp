@@ -45,6 +45,7 @@ bool loadMissionAssets() {
          load(mc.attack.backgrounds.road, "data/mission/attack/bg_road.BPL") &&
          load(mc.attack.backgrounds.woods,
               "data/mission/attack/bg_woods.BPL") &&
+         load(mc.attack.units, "data/mission/attack/units.BPL") &&
          load(mc.arrows, "data/mission/arrows.BPL") &&
          load(mc.menu, "data/mission/menu.BPL") &&
          load(mc.tileset, "data/mission/tiles.bpl") &&

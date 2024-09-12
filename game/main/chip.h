@@ -2,6 +2,7 @@
 
 #include "assets/mission/arrows.h"
 #include "assets/mission/attack/bg.h"
+#include "assets/mission/attack/units.h"
 #include "assets/mission/menu_bitmaps.h"
 #include "assets/mission/tileset.h"
 #include "assets/mission/unit_bitmaps.h"
@@ -11,6 +12,7 @@
 
 struct MissionAttackChip {
   AttackBackgrounds backgrounds;
+  AttackUnitBitmaps units;
 };
 
 struct MissionChip {
