@@ -12,6 +12,7 @@ BPL_ASSET_NAMES := \
 	mission/attack/bg_plain \
 	mission/attack/bg_road \
 	mission/attack/bg_woods \
+	mission/attack/units \
 	mission/arrows \
 	mission/menu \
 	mission/units \
