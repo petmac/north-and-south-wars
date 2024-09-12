@@ -27,6 +27,8 @@ void drawMissionAttack(Background &background, FrameFast &frameFast,
     drawBackground(background, chip.mission.attack.backgrounds.mountain,
                    screenWidth >> 5);
     frameFast.state = FrameState::drawnMissionAttack;
+    blitFast(background, chip.mission.attack.units.forces[0].units[0], 5, 128);
+    blitFast(background, chip.mission.attack.units.forces[1].units[0], 15, 128);
     break;
   }
 }
