@@ -5,8 +5,10 @@
 #include "amiga/bitmap.h"
 
 constexpr u16 attackBackgroundWidth = 160;
-constexpr u16 attackBackgroundSliceHeight = 128;
-constexpr u16 attackBackgroundSliceCount = 2;
+constexpr u16 attackBackgroundHeight = 256;
+constexpr u16 attackBackgroundSliceHeight = 32;
+constexpr u16 attackBackgroundSliceCount =
+    attackBackgroundHeight / attackBackgroundSliceHeight;
 
 using AttackBackgroundSlice =
     InterleavedBitmap<attackBackgroundWidth, attackBackgroundSliceHeight,
