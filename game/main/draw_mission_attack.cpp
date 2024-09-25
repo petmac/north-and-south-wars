@@ -25,7 +25,7 @@ void drawMissionAttack(Background &background, FrameFast &frameFast,
     // Need to draw the background
     drawBackground(background, chip.mission.attack.backgrounds.plain, 0);
     drawBackground(background, chip.mission.attack.backgrounds.mountain,
-                   screenWidth >> 5);
+                   screenWidthInWords >> 1);
     frameFast.state = FrameState::drawnMissionAttack;
     blitFast(background, chip.mission.attack.units.forces[0].units[0], 5, 128);
     blitFast(background, chip.mission.attack.units.forces[1].units[0], 15, 128);
