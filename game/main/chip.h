@@ -1,8 +1,8 @@
 #pragma once
 
 #include "assets/mission/arrows.h"
-#include "assets/mission/attack/bg.h"
-#include "assets/mission/attack/units.h"
+#include "assets/mission/encounter/bg.h"
+#include "assets/mission/encounter/units.h"
 #include "assets/mission/menu_bitmaps.h"
 #include "assets/mission/tileset.h"
 #include "assets/mission/unit_bitmaps.h"
@@ -10,9 +10,9 @@
 #include "assets/sprite_images.h"
 #include "frame_chip.h"
 
-struct MissionAttackChip {
-  AttackBackgrounds backgrounds;
-  AttackUnitBitmaps units;
+struct MissionEncounterChip {
+  EncounterBackgrounds backgrounds;
+  EncounterUnitBitmaps units;
 };
 
 struct MissionChip {
@@ -20,7 +20,7 @@ struct MissionChip {
   Tileset tileset;
   UnitBitmaps units;
   MenuBitmaps menu;
-  MissionAttackChip attack;
+  MissionEncounterChip encounter;
 };
 
 struct Chip {

@@ -36,16 +36,17 @@ bool loadMap(Map &map) { return load(map, "data/mission/map.map"); }
 bool loadMissionAssets() {
   MissionChip &mc = chip.mission;
 
-  return load(mc.attack.backgrounds.bridge,
-              "data/mission/attack/bg_bridge.BPL") &&
-         load(mc.attack.backgrounds.mountain,
-              "data/mission/attack/bg_mountain.BPL") &&
-         load(mc.attack.backgrounds.plain,
-              "data/mission/attack/bg_plain.BPL") &&
-         load(mc.attack.backgrounds.road, "data/mission/attack/bg_road.BPL") &&
-         load(mc.attack.backgrounds.woods,
-              "data/mission/attack/bg_woods.BPL") &&
-         load(mc.attack.units, "data/mission/attack/units.BPL") &&
+  return load(mc.encounter.backgrounds.bridge,
+              "data/mission/encounter/bg_bridge.BPL") &&
+         load(mc.encounter.backgrounds.mountain,
+              "data/mission/encounter/bg_mountain.BPL") &&
+         load(mc.encounter.backgrounds.plain,
+              "data/mission/encounter/bg_plain.BPL") &&
+         load(mc.encounter.backgrounds.road,
+              "data/mission/encounter/bg_road.BPL") &&
+         load(mc.encounter.backgrounds.woods,
+              "data/mission/encounter/bg_woods.BPL") &&
+         load(mc.encounter.units, "data/mission/encounter/units.BPL") &&
          load(mc.arrows, "data/mission/arrows.BPL") &&
          load(mc.menu, "data/mission/menu.BPL") &&
          load(mc.tileset, "data/mission/tiles.bpl") &&

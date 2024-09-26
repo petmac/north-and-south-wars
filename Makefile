@@ -7,12 +7,12 @@ TSX := assets/mission/tiles.tsx
 
 MAP := $(DATA_DIR)/mission/map.map
 BPL_ASSET_NAMES := \
-	mission/attack/bg_bridge \
-	mission/attack/bg_mountain \
-	mission/attack/bg_plain \
-	mission/attack/bg_road \
-	mission/attack/bg_woods \
-	mission/attack/units \
+	mission/encounter/bg_bridge \
+	mission/encounter/bg_mountain \
+	mission/encounter/bg_plain \
+	mission/encounter/bg_road \
+	mission/encounter/bg_woods \
+	mission/encounter/units \
 	mission/arrows \
 	mission/menu \
 	mission/units \
@@ -58,7 +58,7 @@ tools:
 
 # Convert background image from .png to .BPL
 # https://github.com/grahambates/kingcon/blob/master/README.md#image-conversion-output-format
-$(DATA_DIR)/mission/attack/bg_%.BPL: $(TEMP_DIR)/assets/mission/attack/bg_%.png $(KINGCON)
+$(DATA_DIR)/mission/encounter/bg_%.BPL: $(TEMP_DIR)/assets/mission/encounter/bg_%.png $(KINGCON)
 	mkdir -p $(dir $@)
 	$(KINGCON) $< $(basename $@) -Format=5 -Interleaved
 

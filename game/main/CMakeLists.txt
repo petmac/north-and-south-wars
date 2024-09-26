@@ -1,6 +1,6 @@
 add_executable(
     a.elf
-    assets/mission/attack/bg.h
+    assets/mission/encounter/bg.h
     assets/mission/arrows.h
     assets/mission/menu_bitmaps.h
     assets/mission/tileset.h
@@ -17,8 +17,8 @@ add_executable(
     draw_campaign_map.h
     draw_intro.cpp
     draw_intro.h
-    draw_mission_attack.cpp
-    draw_mission_attack.h
+    draw_mission_encounter.cpp
+    draw_mission_encounter.h
     draw_mission_tiles.cpp
     draw_mission_tiles.h
     draw_mission.cpp
