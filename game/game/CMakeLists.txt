@@ -1,6 +1,7 @@
 add_library(
     game
     OBJECT
+    include/game/mission/encounter/encounter.h
     include/game/mission/attackable.h
     include/game/mission/forces.h
     include/game/mission/map.h
@@ -20,6 +21,8 @@ add_library(
     include/game/intro.h
     include/game/screen.h
     include/game/title.h
+    src/mission/encounter/encounter.cpp
+    src/mission/encounter/encounter.h
     src/mission/attackable.cpp
     src/mission/attackable.h
     src/mission/menu.cpp

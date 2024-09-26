@@ -1,6 +1,7 @@
 #include "mission.h"
 
 #include "attackable.h"
+#include "encounter/encounter.h"
 #include "menu.h"
 #include "pathfinding.h"
 
@@ -81,6 +82,7 @@ static void selectTargetUnderMouse(Mission &mission, u16 mouseX, u16 mouseY) {
 
     // Change state to close up of encounter
     mission.state = MissionState::encounter;
+    startEncounter(mission.encounter);
     return;
   }
 }
@@ -133,6 +135,7 @@ void updateMission(Mission &mission, u16 mouseX, u16 mouseY) {
   case MissionState::selectTarget:
     break;
   case MissionState::encounter:
+    updateEncounter(mission.encounter);
     break;
   }
 }
@@ -227,3 +230,5 @@ void missionMouseRightClicked(Mission &mission) {
     break;
   }
 }
+
+// TODO Encounter callbacks
