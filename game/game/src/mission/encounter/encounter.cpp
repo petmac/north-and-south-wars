@@ -4,11 +4,57 @@
 
 void startEncounter(Encounter &encounter) {
   encounter.state = EncounterState::wait;
+  encounter.frameCounter = 0;
 }
 
 void updateEncounter(Encounter &encounter) {
   switch (encounter.state) {
   case EncounterState::wait:
+    encounter.frameCounter += 1;
+    if (encounter.frameCounter < 50) {
+      break;
+    }
+    encounter.state = EncounterState::attackerAttacking;
+    encounter.frameCounter = 0;
+    break;
+  case EncounterState::attackerAttacking:
+    encounter.frameCounter += 1;
+    if (encounter.frameCounter < 30) {
+      break;
+    }
+    encounter.state = EncounterState::defenderTakingDamage;
+    encounter.frameCounter = 0;
+    break;
+  case EncounterState::defenderTakingDamage:
+    encounter.frameCounter += 1;
+    if (encounter.frameCounter < 50) {
+      break;
+    }
+    encounter.state = EncounterState::defenderAttacking;
+    encounter.frameCounter = 0;
+    break;
+  case EncounterState::defenderAttacking:
+    encounter.frameCounter += 1;
+    if (encounter.frameCounter < 30) {
+      break;
+    }
+    encounter.state = EncounterState::attackerTakingDamage;
+    encounter.frameCounter = 0;
+    break;
+  case EncounterState::attackerTakingDamage:
+    encounter.frameCounter += 1;
+    if (encounter.frameCounter < 50) {
+      break;
+    }
+    encounter.state = EncounterState::done;
+    encounter.frameCounter = 0;
+    break;
+  case EncounterState::done:
+    encounter.frameCounter += 1;
+    if (encounter.frameCounter < 50) {
+      break;
+    }
+    // TODO Call mission back
     break;
   }
 }
