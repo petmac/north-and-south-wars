@@ -7,7 +7,7 @@ void startEncounter(Encounter &encounter) {
   encounter.frameCounter = 0;
 }
 
-void updateEncounter(Encounter &encounter) {
+void updateEncounter(Encounter &encounter, Mission &mission) {
   switch (encounter.state) {
   case EncounterState::wait:
     encounter.frameCounter += 1;
@@ -54,7 +54,7 @@ void updateEncounter(Encounter &encounter) {
     if (encounter.frameCounter < 50) {
       break;
     }
-    // TODO Call mission back
+    encounterFinished(mission);
     break;
   }
 }

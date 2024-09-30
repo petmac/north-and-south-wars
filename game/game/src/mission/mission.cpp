@@ -144,7 +144,7 @@ void updateMission(Mission &mission, u16 mouseX, u16 mouseY) {
   case MissionState::selectTarget:
     break;
   case MissionState::encounter:
-    updateEncounter(mission.encounter);
+    updateEncounter(mission.encounter, mission);
     break;
   }
 }
@@ -240,4 +240,9 @@ void missionMouseRightClicked(Mission &mission) {
   }
 }
 
-// TODO Encounter callbacks
+// Encounter callbacks
+void encounterFinished(Mission &mission) {
+  // TODO Show some kind of death animation?
+  // TODO Check each force for all dead units
+  mission.state = MissionState::selectUnit;
+}
