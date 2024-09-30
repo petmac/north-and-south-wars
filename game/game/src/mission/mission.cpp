@@ -129,7 +129,7 @@ void updateMission(Mission &mission, u16 mouseX, u16 mouseY) {
         mission.unitDestination;
     // Can the player attack?
     findAttackableUnits(mission.attackable, mission.selectedUnitIndex,
-                        mission.map);
+                        mission.map, mission.units);
     if (mission.attackable.unitCount > 0) {
       mission.state = MissionState::selectAttackOrWait;
     } else {
