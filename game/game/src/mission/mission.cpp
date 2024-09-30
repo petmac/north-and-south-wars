@@ -26,9 +26,13 @@ static void selectUnitUnderMouse(Mission &mission, u16 mouseX, u16 mouseY) {
 
   // Look for a unit in the tile the mouse is over
   for (u16 unitIndex = 0; unitIndex < mission.map.unitCount; ++unitIndex) {
+    const UnitInstance &unit = mission.units[unitIndex];
     const MapUnit &mapUnit = mission.map.units[unitIndex];
 
-    // TODO Is the unit dead?
+    // Is the unit dead?
+    if (unit.health == 0) {
+      continue;
+    }
 
     // Is the unit from the wrong force?
     if (mapUnit.force != Force::north) {
