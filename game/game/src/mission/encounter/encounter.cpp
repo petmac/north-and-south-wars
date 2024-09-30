@@ -2,12 +2,20 @@
 
 #include "game/mission/encounter/encounter.h"
 
-void startEncounter(Encounter &encounter) {
+void startEncounter(Encounter &encounter, const UnitInstance &attackingUnit,
+                    const MapUnit &attackingMapUnit,
+                    const UnitInstance &defendingUnit,
+                    const MapUnit &defendingMapUnit) {
   encounter.state = EncounterState::wait;
   encounter.frameCounter = 0;
+
+  // TODO Place units
 }
 
-void updateEncounter(Encounter &encounter, Mission &mission) {
+void updateEncounter(Encounter &encounter, const UnitInstance &attackingUnit,
+                     const MapUnit &attackingMapUnit,
+                     const UnitInstance &defendingUnit,
+                     const MapUnit &defendingMapUnit, Mission &mission) {
   switch (encounter.state) {
   case EncounterState::wait:
     encounter.frameCounter += 1;

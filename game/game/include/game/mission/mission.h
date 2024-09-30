@@ -29,5 +29,6 @@ struct Mission {
   TileCoords unitSource;
   TileCoords unitDestination;
   Attackable attackable;
+  u16 defendingUnitIndex;
   Encounter encounter;
 };
