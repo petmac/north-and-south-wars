@@ -17,7 +17,7 @@ static u16 dist(const TileCoords &a, const TileCoords &b) {
 }
 
 void findAttackableUnits(Attackable &attackable, u16 indexOfAttackingUnit,
-                         const Map &map, UnitInstance units[]) {
+                         const Map &map, const UnitInstance units[]) {
   const MapUnit &attackingUnit = map.units[indexOfAttackingUnit];
 
   attackable.unitCount = 0;
