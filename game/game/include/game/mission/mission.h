@@ -4,6 +4,7 @@
 #include "encounter/encounter.h"
 #include "map.h"
 #include "pathfinding.h"
+#include "unit.h"
 
 enum class MissionState : u8 {
   intro,
@@ -22,6 +23,7 @@ enum class MissionState : u8 {
 struct Mission {
   Map map;
   MissionState state;
+  UnitInstance units[maxMapUnits];
   u16 selectedUnitIndex;
   Pathfinding pathfinding;
   TileCoords unitSource;

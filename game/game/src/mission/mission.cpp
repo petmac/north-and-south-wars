@@ -89,6 +89,10 @@ static void selectTargetUnderMouse(Mission &mission, u16 mouseX, u16 mouseY) {
 
 void startMission(Mission &mission) {
   mission.state = MissionState::intro;
+  for (u16 unitIndex = 0; unitIndex < mission.map.unitCount; ++unitIndex) {
+    UnitInstance *const unit = &mission.units[unitIndex];
+    unit->health = 10;
+  }
   mission.selectedUnitIndex = 0;
 }
 
