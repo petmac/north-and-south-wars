@@ -252,9 +252,16 @@ void drawMissionTiles(Background &background, FrameFast &frameFast,
 
   // Draw units
   for (u16 unitIndex = 0; unitIndex < map.unitCount; ++unitIndex) {
-    const MapUnit &unit = map.units[unitIndex];
-    drawUnit(background, dirtyTiles, unit.coords.column, unit.coords.row,
-             unit.force, unit.type);
+    // Don't draw dead units
+    const UnitInstance &unit = mission.units[unitIndex];
+    if (unit.health == 0) {
+      continue;
+    }
+
+    // Draw unit
+    const MapUnit &mapUnit = map.units[unitIndex];
+    drawUnit(background, dirtyTiles, mapUnit.coords.column, mapUnit.coords.row,
+             mapUnit.force, mapUnit.type);
   }
 
   // Draw state-specific stuff on top of units
