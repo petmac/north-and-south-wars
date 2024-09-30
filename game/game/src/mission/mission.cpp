@@ -51,7 +51,8 @@ static void selectUnitUnderMouse(Mission &mission, u16 mouseX, u16 mouseY) {
 
     // Initialise pathfinding
     const UnitDef &unitDef = unitDefForType(mapUnit.type);
-    findPaths(mission.pathfinding, mission.map, mouseCoords, unitDef);
+    findPaths(mission.pathfinding, mission.map, mission.units, mouseCoords,
+              unitDef);
     mission.unitSource = mouseCoords;
     mission.unitDestination = mouseCoords;
     return;
