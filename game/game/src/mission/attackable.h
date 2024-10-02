@@ -4,7 +4,6 @@
 
 struct Attackable;
 struct Map;
-struct UnitInstance;
 
 void findAttackableUnits(Attackable &attackable, u16 indexOfAttackingUnit,
-                         const Map &map, const UnitInstance units[]);
+                         const Map &map);

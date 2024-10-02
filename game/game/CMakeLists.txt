@@ -15,7 +15,6 @@ add_library(
     include/game/mission/tile.h
     include/game/mission/unit_defs.h
     include/game/mission/unit_types.h
-    include/game/mission/unit.h
     include/game/callbacks.h
     include/game/campaign_map.h
     include/game/game.h

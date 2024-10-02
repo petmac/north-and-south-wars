@@ -26,8 +26,7 @@ static void selectUnitUnderMouse(Mission &mission, u16 mouseX, u16 mouseY) {
 
   // Look for a unit in the tile the mouse is over
   for (u16 unitIndex = 0; unitIndex < mission.map.unitCount; ++unitIndex) {
-    const UnitInstance &unit = mission.units[unitIndex];
-    const MapUnit &mapUnit = mission.map.units[unitIndex];
+    const MapUnit &unit = mission.map.units[unitIndex];
 
     // Is the unit dead?
     if (unit.health == 0) {
@@ -35,13 +34,13 @@ static void selectUnitUnderMouse(Mission &mission, u16 mouseX, u16 mouseY) {
     }
 
     // Is the unit from the wrong force?
-    if (mapUnit.force != Force::north) {
+    if (unit.force != Force::north) {
       continue;
     }
 
     // Is this unit on a different tile?
-    if ((mapUnit.coords.column != mouseCoords.column) ||
-        (mapUnit.coords.row != mouseCoords.row)) {
+    if ((unit.coords.column != mouseCoords.column) ||
+        (unit.coords.row != mouseCoords.row)) {
       continue;
     }
 
@@ -50,9 +49,8 @@ static void selectUnitUnderMouse(Mission &mission, u16 mouseX, u16 mouseY) {
     mission.selectedUnitIndex = unitIndex;
 
     // Initialise pathfinding
-    const UnitDef &unitDef = unitDefForType(mapUnit.type);
-    findPaths(mission.pathfinding, mission.map, mission.units, mouseCoords,
-              unitDef);
+    const UnitDef &unitDef = unitDefForType(unit.type);
+    findPaths(mission.pathfinding, mission.map, mouseCoords, unitDef);
     mission.unitSource = mouseCoords;
     mission.unitDestination = mouseCoords;
     return;
@@ -79,23 +77,19 @@ static void selectTargetUnderMouse(Mission &mission, u16 mouseX, u16 mouseY) {
        attackableUnitIndex < mission.attackable.unitCount;
        ++attackableUnitIndex) {
     const u16 unitIndex = mission.attackable.unitIndices[attackableUnitIndex];
-    const MapUnit &mapUnit = map.units[unitIndex];
+    const MapUnit &unit = map.units[unitIndex];
 
     // Skip enemies which are not under the mouse cursor
-    if (mapUnit.coords != mouseCoords) {
+    if (unit.coords != mouseCoords) {
       continue;
     }
 
     // Change state to close up of encounter
     mission.state = MissionState::encounter;
     mission.defendingUnitIndex = unitIndex;
-    const UnitInstance &attackingUnit =
-        mission.units[mission.selectedUnitIndex];
-    const MapUnit &attackingMapUnit = map.units[mission.selectedUnitIndex];
-    const UnitInstance &defendingUnit = mission.units[unitIndex];
-    const MapUnit &defendingMapUnit = mapUnit;
-    startEncounter(mission.encounter, attackingUnit, attackingMapUnit,
-                   defendingUnit, defendingMapUnit);
+    const MapUnit &attackingUnit = map.units[mission.selectedUnitIndex];
+    const MapUnit &defendingUnit = unit;
+    startEncounter(mission.encounter, attackingUnit, defendingUnit);
     return;
   }
 }
@@ -103,7 +97,7 @@ static void selectTargetUnderMouse(Mission &mission, u16 mouseX, u16 mouseY) {
 void startMission(Mission &mission) {
   mission.state = MissionState::intro;
   for (u16 unitIndex = 0; unitIndex < mission.map.unitCount; ++unitIndex) {
-    UnitInstance *const unit = &mission.units[unitIndex];
+    MapUnit *const unit = &mission.map.units[unitIndex];
     unit->health = 10;
   }
   mission.selectedUnitIndex = 0;
@@ -138,7 +132,7 @@ void updateMission(Mission &mission, u16 mouseX, u16 mouseY) {
         mission.unitDestination;
     // Can the player attack?
     findAttackableUnits(mission.attackable, mission.selectedUnitIndex,
-                        mission.map, mission.units);
+                        mission.map);
     if (mission.attackable.unitCount > 0) {
       mission.state = MissionState::selectAttackOrWait;
     } else {
@@ -152,16 +146,10 @@ void updateMission(Mission &mission, u16 mouseX, u16 mouseY) {
   case MissionState::selectTarget:
     break;
   case MissionState::encounter: {
-    const UnitInstance &attackingUnit =
-        mission.units[mission.selectedUnitIndex];
-    const MapUnit &attackingMapUnit =
-        mission.map.units[mission.selectedUnitIndex];
-    const UnitInstance &defendingUnit =
-        mission.units[mission.defendingUnitIndex];
-    const MapUnit &defendingMapUnit =
+    const MapUnit &attackingUnit = mission.map.units[mission.selectedUnitIndex];
+    const MapUnit &defendingUnit =
         mission.map.units[mission.defendingUnitIndex];
-    updateEncounter(mission.encounter, attackingUnit, attackingMapUnit,
-                    defendingUnit, defendingMapUnit, mission);
+    updateEncounter(mission.encounter, attackingUnit, defendingUnit, mission);
   } break;
   }
 }
@@ -259,12 +247,8 @@ void missionMouseRightClicked(Mission &mission) {
 
 // Encounter callbacks
 void encounterFinished(Mission &mission) {
-  const UnitInstance &attackingUnit = mission.units[mission.selectedUnitIndex];
-  const MapUnit &attackingMapUnit =
-      mission.map.units[mission.selectedUnitIndex];
-  const UnitInstance &defendingUnit = mission.units[mission.defendingUnitIndex];
-  const MapUnit &defendingMapUnit =
-      mission.map.units[mission.defendingUnitIndex];
+  const MapUnit &attackingUnit = mission.map.units[mission.selectedUnitIndex];
+  const MapUnit &defendingUnit = mission.map.units[mission.defendingUnitIndex];
 
   // TODO Show some kind of death animation?
   // TODO Check each force for all dead units

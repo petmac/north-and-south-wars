@@ -2,7 +2,6 @@
 
 #include "game/mission/attackable.h"
 #include "game/mission/map.h"
-#include "game/mission/unit.h"
 
 static u16 dist(u16 a, u16 b) {
   if (a < b) {
@@ -17,7 +16,7 @@ static u16 dist(const TileCoords &a, const TileCoords &b) {
 }
 
 void findAttackableUnits(Attackable &attackable, u16 indexOfAttackingUnit,
-                         const Map &map, const UnitInstance units[]) {
+                         const Map &map) {
   const MapUnit &attackingUnit = map.units[indexOfAttackingUnit];
 
   attackable.unitCount = 0;
@@ -29,19 +28,18 @@ void findAttackableUnits(Attackable &attackable, u16 indexOfAttackingUnit,
     }
 
     // Skip dead units
-    const UnitInstance &unit = units[unitIndex];
+    const MapUnit &unit = map.units[unitIndex];
     if (unit.health == 0) {
       continue;
     }
 
     // Skip units from the same force as the attacking unit
-    const MapUnit &mapUnit = map.units[unitIndex];
-    if (mapUnit.force == attackingUnit.force) {
+    if (unit.force == attackingUnit.force) {
       continue;
     }
 
     // Skip units that are too far away to be attacked
-    if (dist(attackingUnit.coords, mapUnit.coords) > 1) {
+    if (dist(attackingUnit.coords, unit.coords) > 1) {
       continue;
     }
 

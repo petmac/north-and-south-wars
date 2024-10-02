@@ -16,6 +16,7 @@ struct MapUnit {
   TileCoords coords;
   Force force;
   UnitType type;
+  u8 health; // Dead when health is zero
 };
 
 struct Map {

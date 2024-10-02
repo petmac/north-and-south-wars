@@ -3,16 +3,11 @@
 struct Encounter;
 struct MapUnit;
 struct Mission;
-struct UnitInstance;
 
-void startEncounter(Encounter &encounter, const UnitInstance &attackingUnit,
-                    const MapUnit &attackingMapUnit,
-                    const UnitInstance &defendingUnit,
-                    const MapUnit &defendingMapUnit);
-void updateEncounter(Encounter &encounter, const UnitInstance &attackingUnit,
-                     const MapUnit &attackingMapUnit,
-                     const UnitInstance &defendingUnit,
-                     const MapUnit &defendingMapUnit, Mission &mission);
+void startEncounter(Encounter &encounter, const MapUnit &attackingUnit,
+                    const MapUnit &defendingUnit);
+void updateEncounter(Encounter &encounter, const MapUnit &attackingUnit,
+                     const MapUnit &defendingUnit, Mission &mission);
 
 // Callbacks
 void encounterFinished(Mission &mission);

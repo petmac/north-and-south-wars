@@ -12,6 +12,7 @@ struct Cli {
 const MAX_MAP_WIDTH: usize = 20;
 const MAX_MAP_HEIGHT: usize = 16;
 const MAX_UNITS: usize = 32;
+const DEFAULT_HEALTH: u8 = 10;
 
 #[derive(Clone, Copy)]
 struct TileCoords {
@@ -66,6 +67,7 @@ struct MapUnit {
     coords: TileCoords,
     force: Force,
     unit_type: UnitType,
+    health: u8,
 }
 
 struct Map {
@@ -96,6 +98,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         coords: TileCoords { column: 0, row: 0 },
         force: Force::North,
         unit_type: UnitType::Infantry,
+        health: 0,
     }; MAX_UNITS];
     let mut unit_count = 0;
 
@@ -123,6 +126,7 @@ fn main() -> Result<(), Box<dyn Error>> {
                         coords,
                         force,
                         unit_type,
+                        health: DEFAULT_HEALTH,
                     };
                     units[unit_count] = map_unit;
                     unit_count += 1;
@@ -152,6 +156,7 @@ fn main() -> Result<(), Box<dyn Error>> {
             unit.coords.row,
             unit.force as u8,
             unit.unit_type as u8,
+            unit.health,
         ])?;
     }
 

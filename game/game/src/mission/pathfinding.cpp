@@ -5,7 +5,6 @@
 #include "game/mission/pathfinding.h"
 #include "game/mission/terrain.h"   // Terrain
 #include "game/mission/tile.h"      // TileIndex
-#include "game/mission/unit.h"      // UnitInstance
 #include "game/mission/unit_defs.h" // UnitDef
 
 // Algorithm based on:
@@ -38,7 +37,6 @@ static TileCoords pop(Frontier &frontier) {
 }
 
 static void considerNeighbour(Pathfinding &pathfinding, const Map &map,
-                              const UnitInstance units[],
                               const TileCoords &current, u16 nextColumn,
                               u16 nextRow, Cost costToCurrent,
                               const UnitDef &unitDef) {
@@ -71,15 +69,15 @@ static void considerNeighbour(Pathfinding &pathfinding, const Map &map,
       .row = static_cast<u8>(nextRow),
   };
   for (u16 unitIndex = 0; unitIndex < map.unitCount; ++unitIndex) {
+    const MapUnit &unit = map.units[unitIndex];
+
     // Dead units can be passed through
-    const UnitInstance &unit = units[unitIndex];
     if (unit.health == 0) {
       continue;
     }
 
     // If a unit is at this coordinate, stop considering it
-    const MapUnit &mapUnit = map.units[unitIndex];
-    if (next == mapUnit.coords) {
+    if (next == unit.coords) {
       return;
     }
   }
@@ -103,8 +101,7 @@ static void considerNeighbour(Pathfinding &pathfinding, const Map &map,
 }
 
 void findPaths(Pathfinding &pathfinding, const Map &map,
-               const UnitInstance units[], const TileCoords &start,
-               const UnitDef &unitDef) {
+               const TileCoords &start, const UnitDef &unitDef) {
   // Clear data structure
   // TODO No need to clear the whole map, just the area around the start
   for (u16 rowIndex = 0; rowIndex < maxMapHeight; ++rowIndex) {
@@ -129,19 +126,19 @@ void findPaths(Pathfinding &pathfinding, const Map &map,
 
     // Where can we move to?
     if (current.row > 0) {
-      considerNeighbour(pathfinding, map, units, current, current.column,
+      considerNeighbour(pathfinding, map, current, current.column,
                         current.row - 1, costToCurrent, unitDef);
     }
     if (current.column < (map.width - 1)) {
-      considerNeighbour(pathfinding, map, units, current, current.column + 1,
+      considerNeighbour(pathfinding, map, current, current.column + 1,
                         current.row, costToCurrent, unitDef);
     }
     if (current.row < (map.height - 1)) {
-      considerNeighbour(pathfinding, map, units, current, current.column,
+      considerNeighbour(pathfinding, map, current, current.column,
                         current.row + 1, costToCurrent, unitDef);
     }
     if (current.column > 0) {
-      considerNeighbour(pathfinding, map, units, current, current.column - 1,
+      considerNeighbour(pathfinding, map, current, current.column - 1,
                         current.row, costToCurrent, unitDef);
     }
   }
