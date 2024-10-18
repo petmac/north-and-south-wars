@@ -49,15 +49,30 @@ static void drawBackground(Background &dst, const EncounterBackground &src,
   drawBackgroundSlices(dst, src, xWords, 0, encounterBackgroundSliceCount);
 }
 
+static void drawPeople(Background &background,
+                       const EncounterPerson people[maxEncounterPeoplePerSide],
+                       const MapUnit &unit) {
+  for (u16 personIndex = 0; personIndex < maxEncounterPeoplePerSide;
+       ++personIndex) {
+    const EncounterPerson &person = people[personIndex];
+    if (!person.alive) {
+      continue;
+    }
+    blitFast(background,
+             chip.mission.encounter.units.forces[static_cast<u16>(unit.force)]
+                 .units[static_cast<u16>(unit.type)],
+             person.xWords, person.y);
+  }
+}
+
 void drawMissionEncounter(Background &background, FrameFast &frameFast,
                           const Mission &mission) {
   // TODO Refactor into more helper functions
   const MapUnit &attackingUnit = mission.map.units[mission.selectedUnitIndex];
   const MapUnit &defendingUnit = mission.map.units[mission.defendingUnitIndex];
-  const MapUnit &leftUnit =
-      attackingUnit.force == Force::north ? attackingUnit : defendingUnit;
-  const MapUnit &rightUnit =
-      attackingUnit.force == Force::north ? defendingUnit : attackingUnit;
+  const bool attackerIsOnLeft = attackingUnit.force == Force::north;
+  const MapUnit &leftUnit = attackerIsOnLeft ? attackingUnit : defendingUnit;
+  const MapUnit &rightUnit = attackerIsOnLeft ? defendingUnit : attackingUnit;
   const TileIndex leftTileIndex =
       mission.map.tiles[leftUnit.coords.row][leftUnit.coords.column];
   const TileIndex rightTileIndex =
@@ -68,6 +83,11 @@ void drawMissionEncounter(Background &background, FrameFast &frameFast,
   const EncounterBackground &rightBackground = terrainBackground(rightTerrain);
   constexpr u16 leftXWords = 0;
   constexpr u16 rightXWords = screenWidthInWords / 2;
+  const Encounter &encounter = mission.encounter;
+  const EncounterPerson(&leftPeople)[maxEncounterPeoplePerSide] =
+      attackerIsOnLeft ? encounter.attackingPeople : encounter.defendingPeople;
+  const EncounterPerson(&rightPeople)[maxEncounterPeoplePerSide] =
+      attackerIsOnLeft ? encounter.defendingPeople : encounter.attackingPeople;
 
   // Draw the background if needed.
   switch (frameFast.state) {
@@ -89,7 +109,6 @@ void drawMissionEncounter(Background &background, FrameFast &frameFast,
   }
 
   // Draw the units
-  blitFast(background, chip.mission.encounter.units.forces[0].units[0], 5, 128);
-  blitFast(background, chip.mission.encounter.units.forces[1].units[0], 15,
-           128);
+  drawPeople(background, leftPeople, leftUnit);
+  drawPeople(background, rightPeople, rightUnit);
 }
