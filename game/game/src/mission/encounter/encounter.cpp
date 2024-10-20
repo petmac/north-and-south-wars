@@ -4,20 +4,17 @@
 #include "game/mission/forces.h"
 #include "game/mission/map.h"
 
-static constexpr u16 peopleCountForHealth(u16 health) {
-  return (health + 1) / 2;
-}
-
 static void initPeople(EncounterPerson people[maxEncounterPeoplePerSide],
                        u16 peopleCount, u16 baseXWords, s16 xIncrementWords) {
   for (u16 personIndex = 0; personIndex < maxEncounterPeoplePerSide;
        ++personIndex) {
     EncounterPerson *const person = &people[personIndex];
-    person->alive = personIndex < peopleCount;
     person->xWords = baseXWords + (personIndex * xIncrementWords);
     person->y = 128 - (maxEncounterPeoplePerSide / 2) + personIndex;
   }
 }
+
+u16 peopleCountForHealth(u16 health) { return (health + 1) / 2; }
 
 void startEncounter(Encounter &encounter, const MapUnit &attackingUnit,
                     const MapUnit &defendingUnit) {

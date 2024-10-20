@@ -52,12 +52,9 @@ static void drawBackground(Background &dst, const EncounterBackground &src,
 static void drawPeople(Background &background,
                        const EncounterPerson people[maxEncounterPeoplePerSide],
                        const MapUnit &unit) {
-  for (u16 personIndex = 0; personIndex < maxEncounterPeoplePerSide;
-       ++personIndex) {
+  const u16 peopleCount = peopleCountForHealth(unit.health);
+  for (u16 personIndex = 0; personIndex < peopleCount; ++personIndex) {
     const EncounterPerson &person = people[personIndex];
-    if (!person.alive) {
-      continue;
-    }
     blitFast(background,
              chip.mission.encounter.units.forces[static_cast<u16>(unit.force)]
                  .units[static_cast<u16>(unit.type)],

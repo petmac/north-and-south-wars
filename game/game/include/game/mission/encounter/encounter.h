@@ -14,7 +14,7 @@ enum class EncounterState : u8 {
 };
 
 struct EncounterPerson {
-  bool alive;
+  // Alive or dead is computed using unit health
   u16 xWords;
   u16 y;
 };
@@ -25,3 +25,5 @@ struct Encounter {
   EncounterPerson attackingPeople[maxEncounterPeoplePerSide];
   EncounterPerson defendingPeople[maxEncounterPeoplePerSide];
 };
+
+u16 peopleCountForHealth(u16 health);
