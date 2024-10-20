@@ -21,8 +21,8 @@ void startEncounter(Encounter &encounter, const MapUnit &attackingUnit,
   encounter.frameCounter = 0;
 
   const bool attackerIsOnLeft = attackingUnit.force == Force::north;
-  const u16 attackingPeopleCount = attackingUnit.health / 2;
-  const u16 defendingPeopleCount = defendingUnit.health / 2;
+  const u16 attackingPeopleCount = (attackingUnit.health + 1) / 2;
+  const u16 defendingPeopleCount = (defendingUnit.health + 1) / 2;
   const u16 leftPeopleCount =
       attackerIsOnLeft ? attackingPeopleCount : defendingPeopleCount;
   const u16 rightPeopleCount =
