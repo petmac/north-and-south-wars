@@ -4,6 +4,10 @@
 #include "game/mission/forces.h"
 #include "game/mission/map.h"
 
+static constexpr u16 peopleCountForHealth(u16 health) {
+  return (health + 1) / 2;
+}
+
 static void initPeople(EncounterPerson people[maxEncounterPeoplePerSide],
                        u16 peopleCount, u16 baseXWords, s16 xIncrementWords) {
   for (u16 personIndex = 0; personIndex < maxEncounterPeoplePerSide;
@@ -21,8 +25,8 @@ void startEncounter(Encounter &encounter, const MapUnit &attackingUnit,
   encounter.frameCounter = 0;
 
   const bool attackerIsOnLeft = attackingUnit.force == Force::north;
-  const u16 attackingPeopleCount = (attackingUnit.health + 1) / 2;
-  const u16 defendingPeopleCount = (defendingUnit.health + 1) / 2;
+  const u16 attackingPeopleCount = peopleCountForHealth(attackingUnit.health);
+  const u16 defendingPeopleCount = peopleCountForHealth(defendingUnit.health);
   const u16 leftPeopleCount =
       attackerIsOnLeft ? attackingPeopleCount : defendingPeopleCount;
   const u16 rightPeopleCount =
