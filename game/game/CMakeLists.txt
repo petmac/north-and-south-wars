@@ -21,6 +21,8 @@ add_library(
     include/game/intro.h
     include/game/screen.h
     include/game/title.h
+    src/mission/encounter/damage.cpp
+    src/mission/encounter/damage.h
     src/mission/encounter/encounter.cpp
     src/mission/encounter/encounter.h
     src/mission/attackable.cpp
