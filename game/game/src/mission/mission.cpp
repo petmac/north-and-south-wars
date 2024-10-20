@@ -88,8 +88,7 @@ static void selectTargetUnderMouse(Mission &mission, u16 mouseX, u16 mouseY) {
     mission.state = MissionState::encounter;
     mission.defendingUnitIndex = unitIndex;
     const MapUnit &attackingUnit = map.units[mission.selectedUnitIndex];
-    const MapUnit &defendingUnit = unit;
-    startEncounter(mission.encounter, attackingUnit, defendingUnit);
+    startEncounter(mission.encounter, attackingUnit);
     return;
   }
 }
@@ -146,9 +145,8 @@ void updateMission(Mission &mission, u16 mouseX, u16 mouseY) {
   case MissionState::selectTarget:
     break;
   case MissionState::encounter: {
-    const MapUnit &attackingUnit = mission.map.units[mission.selectedUnitIndex];
-    const MapUnit &defendingUnit =
-        mission.map.units[mission.defendingUnitIndex];
+    MapUnit &attackingUnit = mission.map.units[mission.selectedUnitIndex];
+    MapUnit &defendingUnit = mission.map.units[mission.defendingUnitIndex];
     updateEncounter(mission.encounter, attackingUnit, defendingUnit, mission);
   } break;
   }
