@@ -47,5 +47,10 @@ u16 computeDamage(UnitType attackerType, u16 attackerHealth,
     return 0;
   }
 
-  return damage - defence;
+  const u16 damageMinusDefence = damage - defence;
+  if (damageMinusDefence > defenderHealth) {
+    return defenderHealth;
+  }
+
+  return damageMinusDefence;
 }
