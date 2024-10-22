@@ -22,7 +22,8 @@ void TakeSystem() {
   WaitVbl();
   WaitVbl();
 
-  OwnBlitter();
+  // TODO OwnBlitter() breaks disk access on KS1.3
+  // OwnBlitter();
   WaitBlit();
 
   // set all colors black
@@ -46,7 +47,8 @@ void FreeSystem() {
   custom.copjmp1 = 0x7fff; // start coppper
 
   WaitBlit();
-  DisownBlitter();
+  // TODO OwnBlitter breaks disk access on KS1.3
+  // DisownBlitter();
 
   LoadView(ActiView);
   ActiView = nullptr;
