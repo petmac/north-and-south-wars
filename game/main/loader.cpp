@@ -8,7 +8,7 @@
 #include <proto/dos.h>
 
 template <typename T> static bool load(T &dst, const char *path) {
-  constexpr u16 size = sizeof(T);
+  constexpr u32 size = sizeof(T);
 
   KPrintF("Loading \"%s\"", reinterpret_cast<u32>(path));
   KPrintF("Size = %ld", size);
@@ -33,25 +33,7 @@ template <typename T> static bool load(T &dst, const char *path) {
 
 bool loadMap(Map &map) { return load(map, "data/mission/map.map"); }
 
-bool loadMissionAssets() {
-  MissionChip &mc = chip.mission;
-
-  return load(mc.encounter.backgrounds.bridge,
-              "data/mission/encounter/bg_bridge.BPL") &&
-         load(mc.encounter.backgrounds.mountain,
-              "data/mission/encounter/bg_mountain.BPL") &&
-         load(mc.encounter.backgrounds.plain,
-              "data/mission/encounter/bg_plain.BPL") &&
-         load(mc.encounter.backgrounds.road,
-              "data/mission/encounter/bg_road.BPL") &&
-         load(mc.encounter.backgrounds.woods,
-              "data/mission/encounter/bg_woods.BPL") &&
-         load(mc.encounter.units, "data/mission/encounter/units.BPL") &&
-         load(mc.arrows, "data/mission/arrows.BPL") &&
-         load(mc.menu, "data/mission/menu.BPL") &&
-         load(mc.tileset, "data/mission/tiles.bpl") &&
-         load(mc.units, "data/mission/units.BPL");
-}
+bool loadMissionAssets() { return load(chip.mission, "data/mission.chip"); }
 
 bool loadMousePointer() { return load(chip.mousePointer, "data/mouse.SPR"); }
 
