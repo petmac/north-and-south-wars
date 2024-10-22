@@ -4,11 +4,12 @@ DATA_DIR := $(OUT_DIR)/data
 
 # TOP LEVEL
 
+EXE := $(OUT_DIR)/a.exe
 BPL_ASSET_NAMES := small_font
 MAP := $(DATA_DIR)/mission/map.map
 
 .PHONY: all
-all: cmake-build $(DATA_DIR)/mouse.SPR $(DATA_DIR)/palette.PAL $(foreach name,$(BPL_ASSET_NAMES),$(DATA_DIR)/$(name).BPL) $(MAP) $(DATA_DIR)/mission.chip
+all: $(EXE) $(DATA_DIR)/mouse.SPR $(DATA_DIR)/palette.PAL $(foreach name,$(BPL_ASSET_NAMES),$(DATA_DIR)/$(name).BPL) $(MAP) $(DATA_DIR)/mission.chip adf
 
 .PHONY: clean
 clean:
@@ -16,6 +17,8 @@ clean:
 	cd tools && cargo clean
 
 # CODE
+
+$(EXE): cmake-build
 
 .PHONY: cmake-build
 cmake-build: $(TEMP_DIR)/build.ninja
@@ -89,6 +92,30 @@ $(TEMP_DIR)/assets/mission/encounter/bg_%.BPL: $(TEMP_DIR)/assets/mission/encoun
 # Convert image from .aseprite to .png
 $(TEMP_DIR)/assets/%.png: assets/%.aseprite
 	$(ASEPRITE) --batch $< --save-as $@
+
+# ADF
+
+TITLE := PetMacAmiGameJam24
+ZIPPED_ADF := $(TEMP_DIR)/adf/$(TITLE).zip
+SHRINKLED_EXE := $(TEMP_DIR)/shrinkler/exe.fast.shrinkled
+
+.PHONY: adf
+adf: $(ZIPPED_ADF)
+
+$(ZIPPED_ADF): $(TEMP_DIR)/adf/$(TITLE).adf
+	zip -9 -j -v $@ $<
+
+%.adf: $(SHRINKLED_EXE) adf/S/startup-sequence
+	mkdir -p $(dir $@)
+	xdftool $@ format "$(TITLE)" + boot install
+	xdftool $@ write adf/S S
+	xdftool $@ write $(SHRINKLED_EXE) $(TITLE)
+	xdftool $@ write $(OUT_DIR)/data
+	xdftool $@ list
+
+$(SHRINKLED_EXE): $(EXE)
+	mkdir -p $(dir $@)
+	Shrinkler -h -o -1 $(EXE) $@
 
 # TOOLS
 
