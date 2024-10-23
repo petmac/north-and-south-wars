@@ -1,4 +1,5 @@
 TEMP_DIR := temp
+TEMP_ASSETS_DIR := $(TEMP_DIR)/assets
 OUT_DIR := $(TEMP_DIR)/game/main
 DATA_DIR := $(OUT_DIR)/data
 
@@ -8,8 +9,10 @@ EXE := $(OUT_DIR)/a.exe
 BPL_ASSET_NAMES := small_font
 MAP := $(DATA_DIR)/mission/map.map
 
+.SECONDARY:
+
 .PHONY: all
-all: $(EXE) $(DATA_DIR)/mouse.SPR $(DATA_DIR)/palette.PAL $(foreach name,$(BPL_ASSET_NAMES),$(DATA_DIR)/$(name).BPL) $(MAP) $(DATA_DIR)/mission.chip adf
+all: $(EXE) $(DATA_DIR)/mouse.SPR $(DATA_DIR)/palette.PAL $(foreach name,$(BPL_ASSET_NAMES),$(DATA_DIR)/$(name).BPL) $(MAP) $(DATA_DIR)/mission.chip.lz
 
 .PHONY: clean
 clean:
@@ -40,8 +43,10 @@ ASEPRITE := "$(HOME)/Library/Application Support/Steam/steamapps/common/Aseprite
 FREEIMAGE_PREFIX := $(shell brew --prefix freeimage)
 KINGCON := external/kingcon/build/kingcon
 
+LZ := external/doynamite68k/lz
+
 # Convert tileset image from TSX and .png to .bpl
-$(TEMP_DIR)/assets/mission/tiles.bpl: $(TSX) $(TSX2BPL) assets/mission/tiles.png
+$(TEMP_ASSETS_DIR)/mission/tiles.bpl: $(TSX) $(TSX2BPL) assets/mission/tiles.png
 	mkdir -p $(dir $@)
 	$(TSX2BPL) $< $@
 
@@ -50,9 +55,14 @@ $(MAP): $(TMX) $(TMX2MAP)
 	mkdir -p $(dir $@)
 	$(TMX2MAP) $< $@
 
-# Copy file from temp to data
-$(DATA_DIR)/%: $(TEMP_DIR)/assets/%
+# Copy file from temp assets to data
+$(DATA_DIR)/%: $(TEMP_ASSETS_DIR)/%
+	mkdir -p $(dir $@)
 	cp $< $@
+
+# Pack file
+$(TEMP_ASSETS_DIR)/%.lz: $(TEMP_ASSETS_DIR)/% $(LZ)
+	$(LZ) -o $@ $<
 
 # Pack mission data
 MISSION_CHIP_ASSET_NAMES := \
@@ -66,31 +76,31 @@ MISSION_CHIP_ASSET_NAMES := \
 	encounter/bg_road.BPL \
 	encounter/bg_woods.BPL \
 	encounter/units.BPL
-$(DATA_DIR)/mission.chip: $(foreach name,$(MISSION_CHIP_ASSET_NAMES),$(TEMP_DIR)/assets/mission/$(name))
+$(TEMP_ASSETS_DIR)/mission.chip: $(foreach name,$(MISSION_CHIP_ASSET_NAMES),$(TEMP_ASSETS_DIR)/mission/$(name))
 	cat $^ >$@
 
 # Convert background image from .png to .BPL
-$(TEMP_DIR)/assets/mission/encounter/bg_%.BPL: $(TEMP_DIR)/assets/mission/encounter/bg_%.png $(KINGCON)
+$(TEMP_ASSETS_DIR)/mission/encounter/bg_%.BPL: $(TEMP_ASSETS_DIR)/mission/encounter/bg_%.png $(KINGCON)
 	mkdir -p $(dir $@)
 	$(KINGCON) $< $(basename $@) -Format=5 -Interleaved
 
 # Convert image from .png to .BPL
-%.BPL: %.png $(KINGCON)
+$(TEMP_ASSETS_DIR)/%.BPL: $(TEMP_ASSETS_DIR)/%.png $(KINGCON)
 	mkdir -p $(dir $@)
 	$(KINGCON) $< $(basename $@) -Format=5 -Interleaved -Mask
 
 # Convert palette from .png to .PAL
-%.PAL: %.png $(KINGCON)
+$(TEMP_ASSETS_DIR)/%.PAL: $(TEMP_ASSETS_DIR)/%.png $(KINGCON)
 	mkdir -p $(dir $@)
 	$(KINGCON) $< $(basename $@) -Format=5 -RawPalette
 
 # Convert image from .png to .SPR
-%.SPR: %.png $(KINGCON)
+$(TEMP_ASSETS_DIR)/%.SPR: $(TEMP_ASSETS_DIR)/%.png $(KINGCON)
 	mkdir -p $(dir $@)
 	$(KINGCON) $< $(basename $@) -Format=s16
 
 # Convert image from .aseprite to .png
-$(TEMP_DIR)/assets/%.png: assets/%.aseprite
+$(TEMP_ASSETS_DIR)/%.png: assets/%.aseprite
 	$(ASEPRITE) --batch $< --save-as $@
 
 # ADF
@@ -99,9 +109,6 @@ TITLE := PetMacAmiGameJam24
 ADF := $(TEMP_DIR)/adf/$(TITLE).adf
 ZIPPED_ADF := $(TEMP_DIR)/adf/$(TITLE).zip
 SHRINKLED_EXE := $(TEMP_DIR)/shrinkler/exe.fast.shrinkled
-
-.PHONY: adf
-adf: $(ZIPPED_ADF)
 
 $(ZIPPED_ADF): $(ADF)
 	zip -9 -j -v $@ $<
@@ -144,3 +151,7 @@ tools:
 # Kingcon
 $(KINGCON):
 	CPATH="$(FREEIMAGE_PREFIX)/include" LIBRARY_PATH="$(FREEIMAGE_PREFIX)/lib" $(MAKE) --directory external/kingcon
+
+# Doynax packer
+$(LZ): external/doynamite68k/lz.c
+	gcc -O2 $^ -o $@

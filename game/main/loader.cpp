@@ -3,9 +3,12 @@
 #include "assets/palette.h"
 #include "chip.h"
 
+#include "amiga/doynax.h"
 #include "gcc8_c_support.h"
 
 #include <proto/dos.h>
+
+static u8 unpackBuffer[16 * 1024];
 
 template <typename T> static bool load(T &dst, const char *path) {
   constexpr u32 size = sizeof(T);
@@ -31,9 +34,25 @@ template <typename T> static bool load(T &dst, const char *path) {
   return true;
 }
 
+template <typename T> static bool loadAndUnpack(T &dst, const char *path) {
+  if (!load(unpackBuffer, path)) {
+    return false;
+  }
+
+  void *const end = doynaxdepack(unpackBuffer, &dst);
+  if (end != (&dst + 1)) {
+    KPrintF("Unpacked data size does not match destination size");
+    return false;
+  }
+
+  return true;
+}
+
 bool loadMap(Map &map) { return load(map, "data/mission/map.map"); }
 
-bool loadMissionAssets() { return load(chip.mission, "data/mission.chip"); }
+bool loadMissionAssets() {
+  return loadAndUnpack(chip.mission, "data/mission.chip.lz");
+}
 
 bool loadMousePointer() { return load(chip.mousePointer, "data/mouse.SPR"); }
 

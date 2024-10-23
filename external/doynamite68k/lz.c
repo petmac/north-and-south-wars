@@ -45,14 +45,14 @@ typedef enum { false, true } bool;
 #if defined(__MINGW32__) && defined(__STRICT_ANSI__)
 #define __NO_MINGW_LFS
 #endif
-#include <malloc.h>
 #include <io.h>
+#include <malloc.h>
 #ifndef alloca
 #define alloca _alloca
 #endif
 #else
-#include <sys/stat.h>
 #include <alloca.h>
+#include <sys/stat.h>
 #endif
 #if defined(__STRICT_ANSI__) && (defined(__MINGW32__) || defined(__CYGWIN__))
 #ifndef _fileno
@@ -317,7 +317,7 @@ static void read_input(lz_context *ctx, const char *name) {
   {
     struct stat stat;
     stat.st_size = 0;
-    fstat(_fileno(file), &stat);
+    fstat(fileno(file), &stat);
     length = stat.st_size;
   }
 #endif
