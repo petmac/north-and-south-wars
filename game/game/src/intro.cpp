@@ -6,28 +6,40 @@
 #include "game/intro.h"
 
 const char *const introTextLines[] = {
-    // 0000000111111111122222222223333333333
-    // 3456789012345678901234567890123456789
-    "              - Notice -",
-    "",
-    "Lorem ipsum dolor sit amet, consectetur",
-    "adipiscing elit, sed do eiusmod tempor",
-    "incididunt ut labore et dolore magna",
-    "",
-    "aliqua. Ut enim ad minim veniam, quis",
-    "nostrud exercitation ullamco laboris",
-    "nisi ut aliquip ex ea commodo",
-    "",
-    "consequat. Duis aute irure dolor in",
-    "reprehenderit in voluptate velit esse",
-    "cillum dolore eu fugiat nulla pariatur.",
-    "",
-    "Excepteur sint occaecat cupidatat non",
-    "proident, sunt in culpa qui officia",
-    "deserunt mollit anim id est laborum.",
-    "",
-    "",
-    "- Click left mouse button to continue -",
+    // 0000000111111111122222222223333333333", //
+    // 3456789012345678901234567890123456789", //
+    "              - Notice -",                //
+    "",                                        //
+    "This game is an unofficial sequel to",    //
+    "North & South, a parody game based on",   //
+    "the American Civil War.",                 //
+    "",                                        //
+    "This game does not glamourise war, nor",  //
+    "does it seek to trivialise the",          //
+    "suffering war causes.",                   //
+    "",                                        //
+    "The game contains imagery such as the",   //
+    "Confederate flag, but it does not",       //
+    "condone or support the racist beliefs",   //
+    "that the flag is often associated with.", //
+    "",                                        //
+    "There are real wars ongoing in the",      //
+    "world right now, with thousands of",      //
+    "innocent civilians being killed. We",     //
+    "should have courage to discuss war",      //
+    "openly, to criticise governments,",       //
+    "politicians and corporations, in words",  //
+    "and other art forms.",                    //
+    "",                                        //
+    "An 'Advance Wars' style game is",         //
+    "appropriate commentary, as Nintendo",     //
+    "delayed the release of 'Advance Wars",    //
+    "1+2: Re-Boot Camp' following Russia's",   //
+    "invasion of Ukraine.",                    //
+    "",                                        //
+    "- Click left mouse button to continue -", //
+    // 0000000111111111122222222223333333333", //
+    // 3456789012345678901234567890123456789", //
 };
 
 void startIntro(Intro &intro) {
