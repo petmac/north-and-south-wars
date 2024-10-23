@@ -110,6 +110,9 @@ ADF := $(TEMP_DIR)/adf/$(TITLE).adf
 ZIPPED_ADF := $(TEMP_DIR)/adf/$(TITLE).zip
 SHRINKLED_EXE := $(TEMP_DIR)/shrinkler/exe.fast.shrinkled
 
+.PHONY: adf
+adf: $(ZIPPED_ADF)
+
 $(ZIPPED_ADF): $(ADF)
 	zip -9 -j -v $@ $<
 
