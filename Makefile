@@ -96,16 +96,17 @@ $(TEMP_DIR)/assets/%.png: assets/%.aseprite
 # ADF
 
 TITLE := PetMacAmiGameJam24
+ADF := $(TEMP_DIR)/adf/$(TITLE).adf
 ZIPPED_ADF := $(TEMP_DIR)/adf/$(TITLE).zip
 SHRINKLED_EXE := $(TEMP_DIR)/shrinkler/exe.fast.shrinkled
 
 .PHONY: adf
 adf: $(ZIPPED_ADF)
 
-$(ZIPPED_ADF): $(TEMP_DIR)/adf/$(TITLE).adf
+$(ZIPPED_ADF): $(ADF)
 	zip -9 -j -v $@ $<
 
-%.adf: $(SHRINKLED_EXE) adf/S/startup-sequence
+$(ADF): $(SHRINKLED_EXE) adf/S/startup-sequence
 	mkdir -p $(dir $@)
 	xdftool $@ format "$(TITLE)" + boot install
 	xdftool $@ write adf/S S
@@ -116,6 +117,20 @@ $(ZIPPED_ADF): $(TEMP_DIR)/adf/$(TITLE).adf
 $(SHRINKLED_EXE): $(EXE)
 	mkdir -p $(dir $@)
 	Shrinkler -h -o -1 $(EXE) $@
+
+# DISTRIBUTION
+
+README := dist/ReadMe.txt
+DIST_ZIP := $(TEMP_DIR)/dist/$(TITLE).zip
+BUTLER := external/butler-darwin-amd64/butler
+
+.PHONY: itch
+itch: $(DIST_ZIP)
+	$(BUTLER) push $< petmac/north-and-south-wars:dev
+
+$(DIST_ZIP): $(ADF) $(README)
+	mkdir -p $(dir $@)
+	zip -9 -j -v $@ $^
 
 # TOOLS
 

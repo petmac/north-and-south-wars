@@ -67,6 +67,28 @@
       "presentation": {
         "clear": true
       }
+    },
+    {
+      "label": "Distribute to itch.io",
+      "type": "shell",
+      "windows": {
+        "command": "${command:amiga.bin-path}\\gnumake.exe",
+        "options": {
+          "cwd": "${workspaceRoot}",
+          "env": {
+            "PATH": "${env:PATH};${command:amiga.bin-path}\\opt\\bin;${command:amiga.bin-path}"
+          }
+        }
+      },
+      "command": "make",
+      "options": {
+        "cwd": "${workspaceRoot}",
+        "env": {
+          "PATH": "${env:PATH}:${command:amiga.bin-path}/opt/bin:${command:amiga.bin-path}"
+        }
+      },
+      "args": ["itch"],
+      "problemMatcher": []
     }
   ]
 }
