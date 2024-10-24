@@ -7,6 +7,7 @@ shrinkled_exe = temp/shrinkler/exe.fast.shrinkled
 lz = temp/lz/lz
 adf = temp/adf/$title.adf
 zip = temp/dist/$title.zip
+kingcon = external/kingcon/build/kingcon
 
 rule build_adf
   command = xdftool $out format "$title" + boot install && xdftool $out write adf/S S && xdftool $out write $shrinkled_exe $title && xdftool $out write $out_data_dir && xdftool $out list
@@ -22,6 +23,9 @@ rule cmake-build
 
 rule cmake-configure
   command = cmake --preset amiga
+
+rule kingcon-bpl
+  command = $kingcon $in $basename -Format=5 -Interleaved
 
 rule lz
   command = $lz -o $out $in
@@ -43,11 +47,21 @@ build temp/assets/mission/arrows.BPL: make | always
 build temp/assets/mission/tiles.bpl: make | always
 build temp/assets/mission/units.BPL: make | always
 build temp/assets/mission/menu.BPL: make | always
-build temp/assets/mission/encounter/bg_bridge.BPL: make | always
-build temp/assets/mission/encounter/bg_mountain.BPL: make | always
-build temp/assets/mission/encounter/bg_plain.BPL: make | always
-build temp/assets/mission/encounter/bg_road.BPL: make | always
-build temp/assets/mission/encounter/bg_woods.BPL: make | always
+build temp/assets/mission/encounter/bg_bridge.png: make | always
+build temp/assets/mission/encounter/bg_mountain.png: make | always
+build temp/assets/mission/encounter/bg_plain.png: make | always
+build temp/assets/mission/encounter/bg_road.png: make | always
+build temp/assets/mission/encounter/bg_woods.png: make | always
+build temp/assets/mission/encounter/bg_bridge.BPL: kingcon-bpl temp/assets/mission/encounter/bg_bridge.png
+  basename = temp/assets/mission/encounter/bg_bridge
+build temp/assets/mission/encounter/bg_mountain.BPL: kingcon-bpl temp/assets/mission/encounter/bg_mountain.png
+  basename = temp/assets/mission/encounter/bg_mountain
+build temp/assets/mission/encounter/bg_plain.BPL: kingcon-bpl temp/assets/mission/encounter/bg_plain.png
+  basename = temp/assets/mission/encounter/bg_plain
+build temp/assets/mission/encounter/bg_road.BPL: kingcon-bpl temp/assets/mission/encounter/bg_road.png
+  basename = temp/assets/mission/encounter/bg_road
+build temp/assets/mission/encounter/bg_woods.BPL: kingcon-bpl temp/assets/mission/encounter/bg_woods.png
+  basename = temp/assets/mission/encounter/bg_woods
 build temp/assets/mission/encounter/units.BPL: make | always
 build temp/assets/mission.chip: cat temp/assets/mission/arrows.BPL temp/assets/mission/tiles.bpl temp/assets/mission/units.BPL temp/assets/mission/menu.BPL temp/assets/mission/encounter/bg_bridge.BPL temp/assets/mission/encounter/bg_mountain.BPL temp/assets/mission/encounter/bg_plain.BPL temp/assets/mission/encounter/bg_road.BPL temp/assets/mission/encounter/bg_woods.BPL temp/assets/mission/encounter/units.BPL
 build $lz: cc external/doynamite68k/lz.c

@@ -12,11 +12,11 @@ MISSION_CHIP_ASSET_NAMES := \
 	tiles.bpl \
 	units.BPL \
 	menu.BPL \
-	encounter/bg_bridge.BPL \
-	encounter/bg_mountain.BPL \
-	encounter/bg_plain.BPL \
-	encounter/bg_road.BPL \
-	encounter/bg_woods.BPL \
+	encounter/bg_bridge.png \
+	encounter/bg_mountain.png \
+	encounter/bg_plain.png \
+	encounter/bg_road.png \
+	encounter/bg_woods.png \
 	encounter/units.BPL
 
 .SECONDARY:
@@ -61,11 +61,6 @@ $(MAP): $(TMX) $(TMX2MAP)
 $(DATA_DIR)/%: $(TEMP_ASSETS_DIR)/%
 	mkdir -p $(dir $@)
 	cp $< $@
-
-# Convert background image from .png to .BPL
-$(TEMP_ASSETS_DIR)/mission/encounter/bg_%.BPL: $(TEMP_ASSETS_DIR)/mission/encounter/bg_%.png $(KINGCON)
-	mkdir -p $(dir $@)
-	$(KINGCON) $< $(basename $@) -Format=5 -Interleaved
 
 # Convert image from .png to .BPL
 $(TEMP_ASSETS_DIR)/%.BPL: $(TEMP_ASSETS_DIR)/%.png $(KINGCON)
