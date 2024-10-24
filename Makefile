@@ -7,11 +7,26 @@ DATA_DIR := $(OUT_DIR)/data
 
 BPL_ASSET_NAMES := small_font
 MAP := $(DATA_DIR)/mission/map.map
+MISSION_CHIP_ASSET_NAMES := \
+	arrows.BPL \
+	tiles.bpl \
+	units.BPL \
+	menu.BPL \
+	encounter/bg_bridge.BPL \
+	encounter/bg_mountain.BPL \
+	encounter/bg_plain.BPL \
+	encounter/bg_road.BPL \
+	encounter/bg_woods.BPL \
+	encounter/units.BPL
 
 .SECONDARY:
 
 .PHONY: all
-all: $(DATA_DIR)/mouse.SPR $(DATA_DIR)/palette.PAL $(foreach name,$(BPL_ASSET_NAMES),$(DATA_DIR)/$(name).BPL) $(MAP) $(TEMP_ASSETS_DIR)/mission.chip
+all: $(DATA_DIR)/mouse.SPR \
+	$(DATA_DIR)/palette.PAL \
+	$(foreach name,$(BPL_ASSET_NAMES),$(DATA_DIR)/$(name).BPL) \
+	$(MAP) \
+	$(foreach name,$(MISSION_CHIP_ASSET_NAMES),$(TEMP_ASSETS_DIR)/mission/$(name))
 
 .PHONY: clean
 clean:
@@ -46,21 +61,6 @@ $(MAP): $(TMX) $(TMX2MAP)
 $(DATA_DIR)/%: $(TEMP_ASSETS_DIR)/%
 	mkdir -p $(dir $@)
 	cp $< $@
-
-# Pack mission data
-MISSION_CHIP_ASSET_NAMES := \
-	arrows.BPL \
-	tiles.bpl \
-	units.BPL \
-	menu.BPL \
-	encounter/bg_bridge.BPL \
-	encounter/bg_mountain.BPL \
-	encounter/bg_plain.BPL \
-	encounter/bg_road.BPL \
-	encounter/bg_woods.BPL \
-	encounter/units.BPL
-$(TEMP_ASSETS_DIR)/mission.chip: $(foreach name,$(MISSION_CHIP_ASSET_NAMES),$(TEMP_ASSETS_DIR)/mission/$(name))
-	cat $^ >$@
 
 # Convert background image from .png to .BPL
 $(TEMP_ASSETS_DIR)/mission/encounter/bg_%.BPL: $(TEMP_ASSETS_DIR)/mission/encounter/bg_%.png $(KINGCON)
