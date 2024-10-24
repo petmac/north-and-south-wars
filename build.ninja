@@ -27,6 +27,9 @@ rule cmake-configure
 rule kingcon-bpl
   command = $kingcon $in $basename -Format=5 -Interleaved
 
+rule kingcon-bpl-mask
+  command = $kingcon $in $basename -Format=5 -Interleaved -Mask
+
 rule lz
   command = $lz -o $out $in
 
@@ -47,11 +50,14 @@ build temp/assets/mission/arrows.BPL: make | always
 build temp/assets/mission/tiles.bpl: make | always
 build temp/assets/mission/units.BPL: make | always
 build temp/assets/mission/menu.BPL: make | always
+
 build temp/assets/mission/encounter/bg_bridge.png: make | always
 build temp/assets/mission/encounter/bg_mountain.png: make | always
 build temp/assets/mission/encounter/bg_plain.png: make | always
 build temp/assets/mission/encounter/bg_road.png: make | always
 build temp/assets/mission/encounter/bg_woods.png: make | always
+build temp/assets/mission/encounter/units.png: make | always
+
 build temp/assets/mission/encounter/bg_bridge.BPL: kingcon-bpl temp/assets/mission/encounter/bg_bridge.png
   basename = temp/assets/mission/encounter/bg_bridge
 build temp/assets/mission/encounter/bg_mountain.BPL: kingcon-bpl temp/assets/mission/encounter/bg_mountain.png
@@ -62,7 +68,9 @@ build temp/assets/mission/encounter/bg_road.BPL: kingcon-bpl temp/assets/mission
   basename = temp/assets/mission/encounter/bg_road
 build temp/assets/mission/encounter/bg_woods.BPL: kingcon-bpl temp/assets/mission/encounter/bg_woods.png
   basename = temp/assets/mission/encounter/bg_woods
-build temp/assets/mission/encounter/units.BPL: make | always
+build temp/assets/mission/encounter/units.BPL: kingcon-bpl-mask temp/assets/mission/encounter/units.png
+  basename = temp/assets/mission/encounter/units
+
 build temp/assets/mission.chip: cat temp/assets/mission/arrows.BPL temp/assets/mission/tiles.bpl temp/assets/mission/units.BPL temp/assets/mission/menu.BPL temp/assets/mission/encounter/bg_bridge.BPL temp/assets/mission/encounter/bg_mountain.BPL temp/assets/mission/encounter/bg_plain.BPL temp/assets/mission/encounter/bg_road.BPL temp/assets/mission/encounter/bg_woods.BPL temp/assets/mission/encounter/units.BPL
 build $lz: cc external/doynamite68k/lz.c
 build $out_data_dir/mission.chip.lz: lz temp/assets/mission.chip | $lz

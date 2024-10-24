@@ -17,7 +17,7 @@ MISSION_CHIP_ASSET_NAMES := \
 	encounter/bg_plain.png \
 	encounter/bg_road.png \
 	encounter/bg_woods.png \
-	encounter/units.BPL
+	encounter/units.png
 
 .SECONDARY:
 
