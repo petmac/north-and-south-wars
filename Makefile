@@ -23,7 +23,7 @@ MISSION_CHIP_ASSET_NAMES := \
 .PHONY: all
 all: $(TEMP_ASSETS_DIR)/mouse.png \
 	$(DATA_DIR)/palette.PAL \
-	$(DATA_DIR)/small_font.BPL \
+	$(TEMP_ASSETS_DIR)/small_font.png \
 	$(MAP) \
 	$(foreach name,$(MISSION_CHIP_ASSET_NAMES),$(TEMP_ASSETS_DIR)/mission/$(name))
 

@@ -58,6 +58,7 @@ build $mission_dir/units.BPL: make | always
 build $mission_dir/menu.BPL: make | always
 
 build temp/assets/mouse.png: make | always
+build temp/assets/small_font.png: make | always
 build $encounter_dir/bg_bridge.png: make | always
 build $encounter_dir/bg_mountain.png: make | always
 build $encounter_dir/bg_plain.png: make | always
@@ -67,6 +68,8 @@ build $encounter_dir/units.png: make | always
 
 build $out_data_dir/mouse.SPR: kingcon-spr temp/assets/mouse.png
   basename = $out_data_dir/mouse
+build $out_data_dir/small_font.BPL: kingcon-bpl-mask temp/assets/small_font.png
+  basename = $out_data_dir/small_font
 build $encounter_dir/bg_bridge.BPL: kingcon-bpl $encounter_dir/bg_bridge.png
   basename = $encounter_dir/bg_bridge
 build $encounter_dir/bg_mountain.BPL: kingcon-bpl $encounter_dir/bg_mountain.png
