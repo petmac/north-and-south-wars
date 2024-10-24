@@ -24,7 +24,7 @@ rule zip
 
 build always: phony
 build temp/build.ninja: cmake-configure CMakeLists.txt CMakePresets.json
-build $exe: cmake-build | always
+build $exe: cmake-build | always temp/build.ninja
 build $shrinkled_exe: shrinkle $exe
 build $adf: build_adf $shrinkled_exe adf/S/startup-sequence
 build $zip: zip $adf dist/ReadMe.txt
