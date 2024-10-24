@@ -7,11 +7,12 @@ DATA_DIR := $(OUT_DIR)/data
 
 BPL_ASSET_NAMES := small_font
 MAP := $(DATA_DIR)/mission/map.map
+LZ := temp/lz/lz
 
 .SECONDARY:
 
 .PHONY: all
-all: $(DATA_DIR)/mouse.SPR $(DATA_DIR)/palette.PAL $(foreach name,$(BPL_ASSET_NAMES),$(DATA_DIR)/$(name).BPL) $(MAP) $(DATA_DIR)/mission.chip.lz
+all: $(DATA_DIR)/mouse.SPR $(DATA_DIR)/palette.PAL $(foreach name,$(BPL_ASSET_NAMES),$(DATA_DIR)/$(name).BPL) $(MAP) $(TEMP_ASSETS_DIR)/mission.chip $(LZ)
 
 .PHONY: clean
 clean:
@@ -32,8 +33,6 @@ ASEPRITE := "$(HOME)/Library/Application Support/Steam/steamapps/common/Aseprite
 FREEIMAGE_PREFIX := $(shell brew --prefix freeimage)
 KINGCON := external/kingcon/build/kingcon
 
-LZ := temp/lz/lz
-
 # Convert tileset image from TSX and .png to .bpl
 $(TEMP_ASSETS_DIR)/mission/tiles.bpl: $(TSX) $(TSX2BPL) assets/mission/tiles.png
 	mkdir -p $(dir $@)
@@ -48,10 +47,6 @@ $(MAP): $(TMX) $(TMX2MAP)
 $(DATA_DIR)/%: $(TEMP_ASSETS_DIR)/%
 	mkdir -p $(dir $@)
 	cp $< $@
-
-# Pack file
-$(TEMP_ASSETS_DIR)/%.lz: $(TEMP_ASSETS_DIR)/% $(LZ)
-	$(LZ) -o $@ $<
 
 # Pack mission data
 MISSION_CHIP_ASSET_NAMES := \
