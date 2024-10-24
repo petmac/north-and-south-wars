@@ -7,12 +7,11 @@ DATA_DIR := $(OUT_DIR)/data
 
 BPL_ASSET_NAMES := small_font
 MAP := $(DATA_DIR)/mission/map.map
-LZ := temp/lz/lz
 
 .SECONDARY:
 
 .PHONY: all
-all: $(DATA_DIR)/mouse.SPR $(DATA_DIR)/palette.PAL $(foreach name,$(BPL_ASSET_NAMES),$(DATA_DIR)/$(name).BPL) $(MAP) $(TEMP_ASSETS_DIR)/mission.chip $(LZ)
+all: $(DATA_DIR)/mouse.SPR $(DATA_DIR)/palette.PAL $(foreach name,$(BPL_ASSET_NAMES),$(DATA_DIR)/$(name).BPL) $(MAP) $(TEMP_ASSETS_DIR)/mission.chip
 
 .PHONY: clean
 clean:
@@ -109,8 +108,3 @@ tools:
 # Kingcon
 $(KINGCON):
 	CPATH="$(FREEIMAGE_PREFIX)/include" LIBRARY_PATH="$(FREEIMAGE_PREFIX)/lib" $(MAKE) --directory external/kingcon
-
-# Doynax packer
-$(LZ): external/doynamite68k/lz.c
-	mkdir -p $(dir $@)
-	gcc -O2 $^ -o $@

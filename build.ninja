@@ -11,6 +11,9 @@ zip = temp/dist/$title.zip
 rule build_adf
   command = xdftool $out format "$title" + boot install && xdftool $out write adf/S S && xdftool $out write $shrinkled_exe $title && xdftool $out write $out_data_dir && xdftool $out list
 
+rule cc
+  command = gcc -O2 $in -o $out
+
 rule cmake-build
   command = cmake --build --preset amiga
 
@@ -34,7 +37,7 @@ build temp/build.ninja: cmake-configure CMakeLists.txt CMakePresets.json
 build $exe: cmake-build | always temp/build.ninja
 build $shrinkled_exe: shrinkle $exe
 build temp/assets/mission.chip: make | always
-build $lz: make | always
+build $lz: cc external/doynamite68k/lz.c
 build $out_data_dir/mission.chip.lz: lz temp/assets/mission.chip | $lz
 build $adf: build_adf $shrinkled_exe adf/S/startup-sequence $out_data_dir/mission.chip.lz
 build $zip: zip $adf dist/ReadMe.txt
