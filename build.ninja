@@ -32,6 +32,9 @@ rule kingcon-bpl
 rule kingcon-bpl-mask
   command = $kingcon $in $basename -Format=5 -Interleaved -Mask
 
+rule kingcon-spr
+  command = $kingcon $in $basename -Format=s16
+
 rule lz
   command = $lz -o $out $in
 
@@ -54,6 +57,7 @@ build $mission_dir/tiles.bpl: make | always
 build $mission_dir/units.BPL: make | always
 build $mission_dir/menu.BPL: make | always
 
+build temp/assets/mouse.png: make | always
 build $encounter_dir/bg_bridge.png: make | always
 build $encounter_dir/bg_mountain.png: make | always
 build $encounter_dir/bg_plain.png: make | always
@@ -61,6 +65,8 @@ build $encounter_dir/bg_road.png: make | always
 build $encounter_dir/bg_woods.png: make | always
 build $encounter_dir/units.png: make | always
 
+build $out_data_dir/mouse.SPR: kingcon-spr temp/assets/mouse.png
+  basename = $out_data_dir/mouse
 build $encounter_dir/bg_bridge.BPL: kingcon-bpl $encounter_dir/bg_bridge.png
   basename = $encounter_dir/bg_bridge
 build $encounter_dir/bg_mountain.BPL: kingcon-bpl $encounter_dir/bg_mountain.png

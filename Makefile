@@ -21,7 +21,7 @@ MISSION_CHIP_ASSET_NAMES := \
 .SECONDARY:
 
 .PHONY: all
-all: $(DATA_DIR)/mouse.SPR \
+all: $(TEMP_ASSETS_DIR)/mouse.png \
 	$(DATA_DIR)/palette.PAL \
 	$(DATA_DIR)/small_font.BPL \
 	$(MAP) \
@@ -70,11 +70,6 @@ $(TEMP_ASSETS_DIR)/%.BPL: $(TEMP_ASSETS_DIR)/%.png $(KINGCON)
 $(TEMP_ASSETS_DIR)/%.PAL: $(TEMP_ASSETS_DIR)/%.png $(KINGCON)
 	mkdir -p $(dir $@)
 	$(KINGCON) $< $(basename $@) -Format=5 -RawPalette
-
-# Convert image from .png to .SPR
-$(TEMP_ASSETS_DIR)/%.SPR: $(TEMP_ASSETS_DIR)/%.png $(KINGCON)
-	mkdir -p $(dir $@)
-	$(KINGCON) $< $(basename $@) -Format=s16
 
 # Convert image from .aseprite to .png
 $(TEMP_ASSETS_DIR)/%.png: assets/%.aseprite
