@@ -13,6 +13,7 @@ MAP := $(DATA_DIR)/mission/map.map
 
 .PHONY: all
 all: $(EXE) $(DATA_DIR)/mouse.SPR $(DATA_DIR)/palette.PAL $(foreach name,$(BPL_ASSET_NAMES),$(DATA_DIR)/$(name).BPL) $(MAP) $(DATA_DIR)/mission.chip.lz
+	ninja
 
 .PHONY: clean
 clean:
