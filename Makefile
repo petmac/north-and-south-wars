@@ -5,31 +5,20 @@ DATA_DIR := $(OUT_DIR)/data
 
 # TOP LEVEL
 
-EXE := $(OUT_DIR)/a.exe
 BPL_ASSET_NAMES := small_font
 MAP := $(DATA_DIR)/mission/map.map
 
 .SECONDARY:
 
 .PHONY: all
-all: $(EXE) $(DATA_DIR)/mouse.SPR $(DATA_DIR)/palette.PAL $(foreach name,$(BPL_ASSET_NAMES),$(DATA_DIR)/$(name).BPL) $(MAP) $(DATA_DIR)/mission.chip.lz
+all: $(DATA_DIR)/mouse.SPR $(DATA_DIR)/palette.PAL $(foreach name,$(BPL_ASSET_NAMES),$(DATA_DIR)/$(name).BPL) $(MAP) $(DATA_DIR)/mission.chip.lz
 	ninja
 
 .PHONY: clean
 clean:
 	rm -rf $(TEMP_DIR)
 	cd tools && cargo clean
-
-# CODE
-
-$(EXE): cmake-build
-
-.PHONY: cmake-build
-cmake-build: $(TEMP_DIR)/build.ninja
-	cmake --build --preset amiga
-
-$(TEMP_DIR)/build.ninja: CMakeLists.txt CMakePresets.json
-	cmake --preset amiga
+	ninja clean
 
 # DATA
 
@@ -104,34 +93,9 @@ $(TEMP_ASSETS_DIR)/%.SPR: $(TEMP_ASSETS_DIR)/%.png $(KINGCON)
 $(TEMP_ASSETS_DIR)/%.png: assets/%.aseprite
 	$(ASEPRITE) --batch $< --save-as $@
 
-# ADF
-
-TITLE := PetMacAmiGameJam24
-ADF := $(TEMP_DIR)/adf/$(TITLE).adf
-ZIPPED_ADF := $(TEMP_DIR)/adf/$(TITLE).zip
-SHRINKLED_EXE := $(TEMP_DIR)/shrinkler/exe.fast.shrinkled
-
-.PHONY: adf
-adf: $(ZIPPED_ADF)
-
-$(ZIPPED_ADF): $(ADF)
-	zip -9 -j -v $@ $<
-
-$(ADF): $(SHRINKLED_EXE) adf/S/startup-sequence
-	mkdir -p $(dir $@)
-	xdftool $@ format "$(TITLE)" + boot install
-	xdftool $@ write adf/S S
-	xdftool $@ write $(SHRINKLED_EXE) $(TITLE)
-	xdftool $@ write $(OUT_DIR)/data
-	xdftool $@ list
-
-$(SHRINKLED_EXE): $(EXE)
-	mkdir -p $(dir $@)
-	Shrinkler -h -o -1 $(EXE) $@
-
 # DISTRIBUTION
 
-README := dist/ReadMe.txt
+TITLE := NorthAndSouthWars
 DIST_ZIP := $(TEMP_DIR)/dist/$(TITLE).zip
 BUTLER := external/butler-darwin-amd64/butler
 
@@ -139,9 +103,8 @@ BUTLER := external/butler-darwin-amd64/butler
 itch: $(DIST_ZIP)
 	$(BUTLER) push $< petmac/north-and-south-wars:dev
 
-$(DIST_ZIP): $(ADF) $(README)
-	mkdir -p $(dir $@)
-	zip -9 -j -v $@ $^
+$(DIST_ZIP):
+	ninja
 
 # TOOLS
 

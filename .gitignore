@@ -10,6 +10,9 @@
 # CMake
 /temp/
 
+# Ninja
+/.ninja_log
+
 # Obsidian
 /obsidian/.obsidian/
 

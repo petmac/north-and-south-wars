@@ -1,0 +1,30 @@
+out_dir = temp/game/main
+out_data_dir = $out_dir/data
+
+title = NorthAndSouthWars
+exe = $out_dir/a.exe
+shrinkled_exe = temp/shrinkler/exe.fast.shrinkled
+adf = temp/adf/$title.adf
+zip = temp/dist/$title.zip
+
+rule build_adf
+  command = xdftool $out format "$title" + boot install && xdftool $out write adf/S S && xdftool $out write $shrinkled_exe $title && xdftool $out write $out_data_dir && xdftool $out list
+
+rule cmake-build
+  command = cmake --build --preset amiga
+
+rule cmake-configure
+  command = cmake --preset amiga
+
+rule shrinkle
+  command = Shrinkler -h -o -9 $in $out
+
+rule zip
+  command = zip -9 -j -v $out $in
+
+build always: phony
+build temp/build.ninja: cmake-configure CMakeLists.txt CMakePresets.json
+build $exe: cmake-build | always
+build $shrinkled_exe: shrinkle $exe
+build $adf: build_adf $shrinkled_exe adf/S/startup-sequence
+build $zip: zip $adf dist/ReadMe.txt
