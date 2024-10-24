@@ -22,6 +22,3 @@
 # Rust
 /tools/target/
 /tools/Cargo.lock
-
-# Dynax packer
-/external/doynamite68k/lz

@@ -33,7 +33,7 @@ ASEPRITE := "$(HOME)/Library/Application Support/Steam/steamapps/common/Aseprite
 FREEIMAGE_PREFIX := $(shell brew --prefix freeimage)
 KINGCON := external/kingcon/build/kingcon
 
-LZ := external/doynamite68k/lz
+LZ := temp/lz/lz
 
 # Convert tileset image from TSX and .png to .bpl
 $(TEMP_ASSETS_DIR)/mission/tiles.bpl: $(TSX) $(TSX2BPL) assets/mission/tiles.png
@@ -121,4 +121,5 @@ $(KINGCON):
 
 # Doynax packer
 $(LZ): external/doynamite68k/lz.c
+	mkdir -p $(dir $@)
 	gcc -O2 $^ -o $@
