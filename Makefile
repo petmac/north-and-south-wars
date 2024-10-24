@@ -5,7 +5,6 @@ DATA_DIR := $(OUT_DIR)/data
 
 # TOP LEVEL
 
-BPL_ASSET_NAMES := small_font
 MAP := $(DATA_DIR)/mission/map.map
 MISSION_CHIP_ASSET_NAMES := \
 	arrows.BPL \
@@ -24,7 +23,7 @@ MISSION_CHIP_ASSET_NAMES := \
 .PHONY: all
 all: $(DATA_DIR)/mouse.SPR \
 	$(DATA_DIR)/palette.PAL \
-	$(foreach name,$(BPL_ASSET_NAMES),$(DATA_DIR)/$(name).BPL) \
+	$(DATA_DIR)/small_font.BPL \
 	$(MAP) \
 	$(foreach name,$(MISSION_CHIP_ASSET_NAMES),$(TEMP_ASSETS_DIR)/mission/$(name))
 
