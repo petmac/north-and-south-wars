@@ -16,6 +16,9 @@ rule cmake-build
 rule cmake-configure
   command = cmake --preset amiga
 
+rule make
+  command = make -j4
+
 rule shrinkle
   command = Shrinkler -h -o -9 $in $out
 
@@ -26,5 +29,6 @@ build always: phony
 build temp/build.ninja: cmake-configure CMakeLists.txt CMakePresets.json
 build $exe: cmake-build | always temp/build.ninja
 build $shrinkled_exe: shrinkle $exe
-build $adf: build_adf $shrinkled_exe adf/S/startup-sequence
+build $out_data_dir/mission.chip.lz: make | always
+build $adf: build_adf $shrinkled_exe adf/S/startup-sequence $out_data_dir/mission.chip.lz
 build $zip: zip $adf dist/ReadMe.txt

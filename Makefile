@@ -12,7 +12,6 @@ MAP := $(DATA_DIR)/mission/map.map
 
 .PHONY: all
 all: $(DATA_DIR)/mouse.SPR $(DATA_DIR)/palette.PAL $(foreach name,$(BPL_ASSET_NAMES),$(DATA_DIR)/$(name).BPL) $(MAP) $(DATA_DIR)/mission.chip.lz
-	ninja
 
 .PHONY: clean
 clean:
@@ -102,9 +101,6 @@ BUTLER := external/butler-darwin-amd64/butler
 .PHONY: itch
 itch: $(DIST_ZIP)
 	$(BUTLER) push $< petmac/north-and-south-wars:dev
-
-$(DIST_ZIP):
-	ninja
 
 # TOOLS
 

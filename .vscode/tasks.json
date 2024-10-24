@@ -7,7 +7,7 @@
       "label": "Amiga",
       "type": "shell",
       "windows": {
-        "command": "${command:amiga.bin-path}\\gnumake.exe",
+        "command": "ninja",
         "options": {
           "cwd": "${workspaceRoot}",
           "env": {
@@ -16,7 +16,7 @@
           }
         }
       },
-      "command": "make",
+      "command": "ninja",
       "options": {
         "cwd": "${workspaceRoot}",
         "env": {
@@ -24,7 +24,7 @@
           "TOOLCHAIN_PATH": "${command:amiga.bin-path}"
         }
       },
-      "args": ["-j4", "program=${config:amiga.program}"],
+      "args": [],
       "problemMatcher": [
         {
           "base": "$gcc",
