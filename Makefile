@@ -6,13 +6,17 @@ DATA_DIR := $(OUT_DIR)/data
 # TOP LEVEL
 
 EXE := $(OUT_DIR)/a.exe
-BPL_ASSET_NAMES := small_font
 MAP := $(DATA_DIR)/mission/map.map
 
 .SECONDARY:
 
 .PHONY: all
-all: $(EXE) $(DATA_DIR)/mouse.SPR $(DATA_DIR)/palette.PAL $(foreach name,$(BPL_ASSET_NAMES),$(DATA_DIR)/$(name).BPL) $(MAP) $(DATA_DIR)/mission.chip.lz
+all: $(EXE) \
+	$(DATA_DIR)/mouse.SPR \
+	$(DATA_DIR)/palette.PAL \
+	$(DATA_DIR)/small_font.BPL \
+	$(MAP) \
+	$(DATA_DIR)/mission.chip.lz
 
 .PHONY: clean
 clean:
