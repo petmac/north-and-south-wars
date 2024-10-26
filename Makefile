@@ -16,7 +16,9 @@ all: $(EXE) \
 	$(DATA_DIR)/palette.PAL \
 	$(DATA_DIR)/small_font.BPL \
 	$(MAP) \
-	$(DATA_DIR)/mission.chip.lz
+	$(DATA_DIR)/mission.chip.lz \
+	$(TEMP_ASSETS_DIR)/sounds/cancel.raw \
+	$(TEMP_ASSETS_DIR)/sounds/ok.raw
 
 .PHONY: clean
 clean:
@@ -106,6 +108,11 @@ $(TEMP_ASSETS_DIR)/%.SPR: $(TEMP_ASSETS_DIR)/%.png $(KINGCON)
 # Convert image from .aseprite to .png
 $(TEMP_ASSETS_DIR)/%.png: assets/%.aseprite
 	$(ASEPRITE) --batch $< --save-as $@
+
+# Convert sound from .flac to .raw
+$(TEMP_ASSETS_DIR)/%.raw: assets/%.flac
+	mkdir -p $(dir $@)
+	sox $< --type raw --encoding signed-integer --bits 8 --channels 1 --rate 11025 $@
 
 # ADF
 
