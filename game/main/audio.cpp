@@ -172,15 +172,14 @@ void audioChannelInterruptHandler(u16 channelIndex) {
   volatile Custom::AudChannel *const channel = &custom.aud[channelIndex];
 
   switch (*channel_state) {
-  case CS_STOPPED:
-    break;
   case CS_STARTING:
     *channel_state = CS_PLAYING;
     break;
   case CS_PLAYING:
-    *channel_state = CS_STOPPED;
-    channel->ac_vol = 0;
+  case CS_STOPPED:
     custom.dmacon = DMAF_AUD0 << channelIndex;
+    channel->ac_vol = 0;
+    *channel_state = CS_STOPPED;
     break;
   }
 }
