@@ -133,6 +133,10 @@ int main() {
   initChip();
   initFast(fast);
 
+  if (!audioChannelAlloc()) {
+    Exit(0);
+  }
+
   // Set up vertical blank interrupt handler
   fast.verticalBlankInterrupt.is_Node.ln_Type = NT_INTERRUPT;
   fast.verticalBlankInterrupt.is_Node.ln_Pri = -60;
@@ -173,6 +177,8 @@ int main() {
   }
 
   RemIntServer(INTB_VERTB, &fast.verticalBlankInterrupt);
+
+  audioChannelFree();
 
   // END
   FreeSystem();
