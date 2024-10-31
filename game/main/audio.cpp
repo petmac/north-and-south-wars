@@ -186,14 +186,14 @@ void audioChannelInterruptHandler(u16 channelIndex) {
 
 // Callbacks
 void play(Sound sound) {
-  const Waves &waves = chip.waves;
+  const MainChip &mainChip = chip.main;
 
   switch (sound) {
   case Sound::cancel:
-    play(waves.cancel);
+    play(mainChip.cancel);
     break;
   case Sound::ok:
-    play(waves.ok);
+    play(mainChip.ok);
     break;
   }
 }

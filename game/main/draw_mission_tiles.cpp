@@ -33,7 +33,7 @@ static void addDirtyTile(DirtyTileList &dirtyTiles, u16 column, u16 row) {
 template <u16 charCount>
 static void drawMissionText(Background &background, DirtyTileList &dirtyTiles,
                             const char (&text)[charCount]) {
-  drawText(background, chip.smallFont, 0, 0, text);
+  drawText(background, chip.main.smallFont, 0, 0, text);
 
   // Add tiles to the dirty tile list
   constexpr u16 tileCount = (charCount + 1) / 2;

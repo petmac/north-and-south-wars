@@ -21,7 +21,7 @@ static void drawLoading(Background &background, FrameFast &frameFast) {
   }
 
   clear(background);
-  drawText(background, chip.smallFont, x, centerY, "Loading");
+  drawText(background, chip.main.smallFont, x, centerY, "Loading");
   frameFast.state = FrameState::drawnLoading;
 }
 
@@ -33,7 +33,7 @@ static void drawError(Background &background, FrameFast &frameFast) {
   }
 
   clear(background);
-  drawText(background, chip.smallFont, x, centerY, "Error");
+  drawText(background, chip.main.smallFont, x, centerY, "Error");
   frameFast.state = FrameState::drawnError;
 }
 

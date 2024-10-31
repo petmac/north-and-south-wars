@@ -24,7 +24,7 @@ void drawIntro(Background &background, FrameFast &frameFast,
     const char *const line = introTextLines[frameFast.intro.linesDrawn];
     const char *const str = &line[frameFast.intro.charsDrawn];
 
-    drawText(background, chip.smallFont, frameFast.intro.charsDrawn,
+    drawText(background, chip.main.smallFont, frameFast.intro.charsDrawn,
              frameFast.intro.linesDrawn * 8, str);
 
     ++frameFast.intro.linesDrawn;
@@ -37,7 +37,7 @@ void drawIntro(Background &background, FrameFast &frameFast,
     const char ch = line[frameFast.intro.charsDrawn];
     const char str[2] = {ch, '\0'};
 
-    drawText(background, chip.smallFont, frameFast.intro.charsDrawn,
+    drawText(background, chip.main.smallFont, frameFast.intro.charsDrawn,
              frameFast.intro.linesDrawn * 8, str);
 
     ++frameFast.intro.charsDrawn;

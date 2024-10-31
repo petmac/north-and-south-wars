@@ -14,7 +14,7 @@ void drawCampaignMap(Background &background, FrameFast &frameFast,
   }
 
   clear(background);
-  drawText(background, chip.smallFont, 0, 0, "Campaign Map");
+  drawText(background, chip.main.smallFont, 0, 0, "Campaign Map");
 
   frameFast.state = FrameState::drawnCampaignMap;
 }

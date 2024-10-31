@@ -52,8 +52,8 @@ static void updateMousePointerPosition() {
   const u16 hStart = 128 + fast.mouseX;
   const u16 vStart = 44 + fast.mouseY;
   const u16 vStop = vStart + MousePointerSpriteImage::height;
-  chip.mousePointer.position = spritePosition(vStart, hStart);
-  chip.mousePointer.control = spriteControl(vStart, vStop, hStart);
+  chip.main.mousePointer.position = spritePosition(vStart, hStart);
+  chip.main.mousePointer.control = spriteControl(vStart, vStop, hStart);
 }
 
 static inline void acknowledgeInterrupt(u16 flag) {

@@ -24,7 +24,9 @@ struct MissionChip {
   MissionEncounterChip encounter;
 };
 
-struct Waves {
+struct MainChip {
+  MousePointerSpriteImage mousePointer;
+  SmallFont smallFont;
   Wave<2181> cancel;
   Wave<813> ok;
 };
@@ -32,10 +34,8 @@ struct Waves {
 struct Chip {
   FrameChip frames[2];
   u16 zeroes[2]; // Dummy sprite
-  MousePointerSpriteImage mousePointer;
-  SmallFont smallFont;
+  MainChip main;
   MissionChip mission;
-  Waves waves;
 };
 
 extern Chip chip;

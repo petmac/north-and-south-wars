@@ -50,11 +50,18 @@ template <typename T> static bool loadAndUnpack(T &dst, const char *path) {
 
 bool loadMap(Map &map) { return load(map, "data/mission/map.map"); }
 
+bool loadMainAssets() {
+  MainChip *const mainChip = &chip.main;
+
+  return load(mainChip->mousePointer, "data/mouse.SPR") &&
+         load(mainChip->smallFont, "data/small_font.BPL") &&
+         load(mainChip->cancel, "data/sounds/cancel.raw") &&
+         load(mainChip->ok, "data/sounds/ok.raw");
+}
+
 bool loadMissionAssets() {
   return loadAndUnpack(chip.mission, "data/mission.chip.lz");
 }
-
-bool loadMousePointer() { return load(chip.mousePointer, "data/mouse.SPR"); }
 
 bool loadPalette() {
   Palette palette;
@@ -68,12 +75,4 @@ bool loadPalette() {
   }
 
   return true;
-}
-
-bool loadSmallFont() { return load(chip.smallFont, "data/small_font.BPL"); }
-
-bool loadSounds() {
-  Waves *const waves = &chip.waves;
-  return load(waves->cancel, "data/sounds/cancel.raw") &&
-         load(waves->ok, "data/sounds/ok.raw");
 }

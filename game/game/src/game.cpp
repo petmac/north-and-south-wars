@@ -12,8 +12,7 @@ void initGame(Game &game) { game.state = GameState::loadingFontAndPalette; }
 void updateGame(Game &game, u16 mouseX, u16 mouseY) {
   switch (game.state) {
   case GameState::loadingFontAndPalette:
-    if (!loadMousePointer() || !loadPalette() || !loadSmallFont() ||
-        !loadSounds()) {
+    if (!loadMainAssets() || !loadPalette()) {
       game.state = GameState::error;
       return;
     }

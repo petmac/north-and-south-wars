@@ -14,7 +14,7 @@ void drawTitle(Background &background, FrameFast &frameFast,
   }
 
   clear(background);
-  drawText(background, chip.smallFont, 0, 0, "Title");
+  drawText(background, chip.main.smallFont, 0, 0, "Title");
 
   frameFast.state = FrameState::drawnTitle;
 }

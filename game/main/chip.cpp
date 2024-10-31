@@ -13,7 +13,8 @@ static void initFrameChip(FrameChip &frameChip) {
     copper.sprites[spriteIndex] =
         copperSetPointer(sprpt[spriteIndex], &chip.zeroes);
   }
-  copper.sprites[7] = copperSetPointer(sprpt[7], &chip.mousePointer.position);
+  copper.sprites[7] =
+      copperSetPointer(sprpt[7], &chip.main.mousePointer.position);
   copper.screenScan = screenScanDefault();
   copper.setPlanes = copSetPlanes(&background);
   for (u16 colorIndex = 0; colorIndex < 32; ++colorIndex) {
