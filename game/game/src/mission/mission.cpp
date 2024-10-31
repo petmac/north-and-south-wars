@@ -5,10 +5,12 @@
 #include "menu.h"
 #include "pathfinding.h"
 
+#include "game/callbacks.h"
 #include "game/mission/forces.h"
 #include "game/mission/mission.h"
 #include "game/mission/movement_cost.h" // maxCost
 #include "game/mission/unit_defs.h"
+#include "game/sounds.h"
 
 static TileCoords mouseTileCoords(u16 mouseX, u16 mouseY) {
   const u16 tileColumn = mouseX / tileWidth;
@@ -45,6 +47,7 @@ static void selectUnitUnderMouse(Mission &mission, u16 mouseX, u16 mouseY) {
     }
 
     // Change state to unit destination selection
+    play(Sound::ok);
     mission.state = MissionState::selectUnitDestination;
     mission.selectedUnitIndex = unitIndex;
 
@@ -57,10 +60,12 @@ static void selectUnitUnderMouse(Mission &mission, u16 mouseX, u16 mouseY) {
   }
 
   // Show "End Turn" menu
+  play(Sound::ok);
   mission.state = MissionState::confirmEndTurn;
 }
 
 static void cancelMove(Mission &mission) {
+  play(Sound::cancel);
   mission.state = MissionState::selectUnitDestination;
   // Move unit back
   MapUnit &selectedUnit = mission.map.units[mission.selectedUnitIndex];
@@ -85,6 +90,7 @@ static void selectTargetUnderMouse(Mission &mission, u16 mouseX, u16 mouseY) {
     }
 
     // Change state to close up of encounter
+    play(Sound::ok);
     mission.state = MissionState::encounter;
     mission.defendingUnitIndex = unitIndex;
     const MapUnit &attackingUnit = map.units[mission.selectedUnitIndex];
@@ -165,9 +171,11 @@ void missionMouseClicked(Mission &mission, u16 mouseX, u16 mouseY) {
     switch (menuButtonAtCoords(mouseX, mouseY, 1)) {
     case 0:
       // TODO Start opponent's turn
+      play(Sound::ok);
       mission.state = MissionState::resupply;
       break;
     default:
+      play(Sound::cancel);
       mission.state = MissionState::selectUnit;
       break;
     }
@@ -176,9 +184,11 @@ void missionMouseClicked(Mission &mission, u16 mouseX, u16 mouseY) {
     // Clicked somewhere other than the destination?
     const TileCoords mouseCoords = mouseTileCoords(mouseX, mouseY);
     if (mouseCoords != mission.unitDestination) {
+      play(Sound::cancel);
       mission.state = MissionState::selectUnit;
       break;
     }
+    play(Sound::ok);
     mission.state = MissionState::movingUnit;
   } break;
   case MissionState::movingUnit:
@@ -186,10 +196,12 @@ void missionMouseClicked(Mission &mission, u16 mouseX, u16 mouseY) {
   case MissionState::selectAttackOrWait:
     switch (menuButtonAtCoords(mouseX, mouseY, 2)) {
     case 0:
+      play(Sound::ok);
       mission.state = MissionState::selectTarget;
       break;
     case 1:
       // TODO Start opponent's turn
+      play(Sound::ok);
       mission.state = MissionState::resupply;
       break;
     default:
@@ -201,6 +213,7 @@ void missionMouseClicked(Mission &mission, u16 mouseX, u16 mouseY) {
     switch (menuButtonAtCoords(mouseX, mouseY, 1)) {
     case 0:
       // TODO Start opponent's turn
+      play(Sound::ok);
       mission.state = MissionState::resupply;
       break;
     default:
@@ -224,9 +237,11 @@ void missionMouseRightClicked(Mission &mission) {
   case MissionState::selectUnit:
     break;
   case MissionState::confirmEndTurn:
+    play(Sound::cancel);
     mission.state = MissionState::selectUnit;
     break;
   case MissionState::selectUnitDestination:
+    play(Sound::cancel);
     mission.state = MissionState::selectUnit;
     break;
   case MissionState::movingUnit:
@@ -236,6 +251,7 @@ void missionMouseRightClicked(Mission &mission) {
     cancelMove(mission);
     break;
   case MissionState::selectTarget:
+    play(Sound::cancel);
     mission.state = MissionState::selectAttackOrWait;
     break;
   case MissionState::encounter:

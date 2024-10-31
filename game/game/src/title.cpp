@@ -3,6 +3,7 @@
 #include "dev.h"
 
 #include "game/callbacks.h"
+#include "game/sounds.h"
 #include "game/title.h"
 
 void startTitle(Title &title) {}
@@ -15,4 +16,7 @@ void updateTitle(Title &title, Game &game) {
   }
 }
 
-void titleMouseClicked(Game &game) { loadCampaignMap(game); }
+void titleMouseClicked(Game &game) {
+  play(Sound::ok);
+  loadCampaignMap(game);
+}
