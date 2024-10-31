@@ -20,6 +20,7 @@ add_library(
     include/game/game.h
     include/game/intro.h
     include/game/screen.h
+    include/game/sounds.h
     include/game/title.h
     src/mission/encounter/damage.cpp
     src/mission/encounter/damage.h

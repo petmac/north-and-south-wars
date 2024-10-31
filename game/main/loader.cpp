@@ -71,3 +71,9 @@ bool loadPalette() {
 }
 
 bool loadSmallFont() { return load(chip.smallFont, "data/small_font.BPL"); }
+
+bool loadSounds() {
+  Waves *const waves = &chip.waves;
+  return load(waves->cancel, "data/sounds/cancel.raw") &&
+         load(waves->ok, "data/sounds/ok.raw");
+}

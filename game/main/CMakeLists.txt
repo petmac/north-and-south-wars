@@ -8,6 +8,9 @@ add_executable(
     assets/palette.h
     assets/small_font.h
     assets/sprite_images.h
+    assets/wave.h
+    audio.cpp
+    audio.h
     background.h
     blit.h
     chip.cpp

@@ -4,6 +4,7 @@
 
 #include "game/callbacks.h"
 #include "game/intro.h"
+#include "game/sounds.h"
 
 const char *const introTextLines[] = {
     // 0000000111111111122222222223333333333", //
@@ -80,4 +81,7 @@ void updateIntro(Intro &intro, Game &game) {
   }
 }
 
-void introMouseClicked(Game &game) { loadTitleScreen(game); }
+void introMouseClicked(Game &game) {
+  play(Sound::ok);
+  loadTitleScreen(game);
+}

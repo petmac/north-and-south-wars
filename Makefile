@@ -17,8 +17,8 @@ all: $(EXE) \
 	$(DATA_DIR)/small_font.BPL \
 	$(MAP) \
 	$(DATA_DIR)/mission.chip.lz \
-	$(TEMP_ASSETS_DIR)/sounds/cancel.raw \
-	$(TEMP_ASSETS_DIR)/sounds/ok.raw
+	$(DATA_DIR)/sounds/cancel.raw \
+	$(DATA_DIR)/sounds/ok.raw
 
 .PHONY: clean
 clean:

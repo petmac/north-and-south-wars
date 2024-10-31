@@ -1,3 +1,4 @@
+#include "audio.h"
 #include "chip.h"
 #include "draw.h"
 #include "fast.h"
@@ -55,13 +56,37 @@ static void updateMousePointerPosition() {
   chip.mousePointer.control = spriteControl(vStart, vStop, hStart);
 }
 
-static void acknowledgeInterrupt(u16 flag) {
+static inline void acknowledgeInterrupt(u16 flag) {
   // Acknowledge interrupt twice for A4000 bug
   custom.intreq = flag;
   custom.intreq = flag;
 }
 
 static void verticalBlankInterruptHandler() { updateMousePointerPosition(); }
+
+static void audioInterruptHandler() {
+  const u16 flags =
+      custom.intreqr & (INTF_AUD0 | INTF_AUD1 | INTF_AUD2 | INTF_AUD3);
+
+  if (flags & INTF_AUD0) {
+    KPrintF("Audio interrupt 0");
+    audioChannelInterruptHandler(0);
+  }
+  if (flags & INTF_AUD1) {
+    KPrintF("Audio interrupt 1");
+    audioChannelInterruptHandler(1);
+  }
+  if (flags & INTF_AUD2) {
+    KPrintF("Audio interrupt 2");
+    audioChannelInterruptHandler(2);
+  }
+  if (flags & INTF_AUD3) {
+    KPrintF("Audio interrupt 3");
+    audioChannelInterruptHandler(3);
+  }
+
+  acknowledgeInterrupt(flags);
+}
 
 static void runFrame() {
   // Get per-frame data
@@ -109,12 +134,27 @@ int main() {
   initFast(fast);
 
   // Set up vertical blank interrupt handler
-  fast.interrupt.is_Node.ln_Type = NT_INTERRUPT;
-  fast.interrupt.is_Node.ln_Pri = -60;
-  fast.interrupt.is_Node.ln_Name = const_cast<char *>("VERTB");
-  fast.interrupt.is_Code = &verticalBlankInterruptHandler;
+  fast.verticalBlankInterrupt.is_Node.ln_Type = NT_INTERRUPT;
+  fast.verticalBlankInterrupt.is_Node.ln_Pri = -60;
+  fast.verticalBlankInterrupt.is_Node.ln_Name = const_cast<char *>("VERTB");
+  fast.verticalBlankInterrupt.is_Code = &verticalBlankInterruptHandler;
+  AddIntServer(INTB_VERTB, &fast.verticalBlankInterrupt);
 
-  AddIntServer(INTB_VERTB, &fast.interrupt);
+  // Set up the audio interrupt handlers
+  Interrupt *prevAudioInterrupts[4] = {};
+  for (u16 audioChannelIndex = 0; audioChannelIndex < 4; ++audioChannelIndex) {
+    Interrupt *const interrupt = &fast.audioInterrupts[audioChannelIndex];
+
+    interrupt->is_Node.ln_Type = NT_INTERRUPT;
+    interrupt->is_Node.ln_Pri = 0;
+    interrupt->is_Node.ln_Name = const_cast<char *>("AUD");
+    interrupt->is_Code = &audioInterruptHandler;
+
+    prevAudioInterrupts[audioChannelIndex] =
+        SetIntVector(INTB_AUD0 + audioChannelIndex, interrupt);
+  }
+
+  custom.intena = INTF_SETCLR | INTF_AUD0 | INTF_AUD1 | INTF_AUD2 | INTF_AUD3;
 
   const u32 freeChipRAM = AvailMem(MEMF_CHIP | MEMF_LARGEST);
   const u32 freeFastRAM = AvailMem(MEMF_FAST | MEMF_LARGEST);
@@ -126,7 +166,13 @@ int main() {
     runFrame();
   }
 
-  RemIntServer(INTB_VERTB, &fast.interrupt);
+  // Restore interrupt handlers
+  for (u16 audioChannelIndex = 0; audioChannelIndex < 4; ++audioChannelIndex) {
+    SetIntVector(INTB_AUD0 + audioChannelIndex,
+                 prevAudioInterrupts[audioChannelIndex]);
+  }
+
+  RemIntServer(INTB_VERTB, &fast.verticalBlankInterrupt);
 
   // END
   FreeSystem();

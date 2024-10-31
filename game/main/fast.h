@@ -11,7 +11,8 @@ struct Fast {
   Game game;
   u8 backBufferIndex;
   FrameFast frames[2];
-  Interrupt interrupt;
+  Interrupt verticalBlankInterrupt;
+  Interrupt audioInterrupts[4];
 
   // Written during vertical blank interrupt
   u16 mouseX;
