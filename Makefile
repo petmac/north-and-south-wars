@@ -12,13 +12,10 @@ MAP := $(DATA_DIR)/mission/map.map
 
 .PHONY: all
 all: $(EXE) \
-	$(DATA_DIR)/mouse.SPR \
+	$(DATA_DIR)/main.chip.lz \
 	$(DATA_DIR)/palette.PAL \
-	$(DATA_DIR)/small_font.BPL \
 	$(MAP) \
-	$(DATA_DIR)/mission.chip.lz \
-	$(DATA_DIR)/sounds/cancel.raw \
-	$(DATA_DIR)/sounds/ok.raw
+	$(DATA_DIR)/mission.chip.lz
 
 .PHONY: clean
 clean:
@@ -69,6 +66,15 @@ $(DATA_DIR)/%: $(TEMP_ASSETS_DIR)/%
 # Pack file
 $(TEMP_ASSETS_DIR)/%.lz: $(TEMP_ASSETS_DIR)/% $(LZ)
 	$(LZ) -o $@ $<
+
+# Pack main data
+MAIN_CHIP_ASSET_NAMES := \
+	mouse.SPR \
+	small_font.BPL \
+	sounds/cancel.raw \
+	sounds/ok.raw
+$(TEMP_ASSETS_DIR)/main.chip: $(foreach name,$(MAIN_CHIP_ASSET_NAMES),$(TEMP_ASSETS_DIR)/$(name))
+	cat $^ >$@
 
 # Pack mission data
 MISSION_CHIP_ASSET_NAMES := \

@@ -50,14 +50,7 @@ template <typename T> static bool loadAndUnpack(T &dst, const char *path) {
 
 bool loadMap(Map &map) { return load(map, "data/mission/map.map"); }
 
-bool loadMainAssets() {
-  MainChip *const mainChip = &chip.main;
-
-  return load(mainChip->mousePointer, "data/mouse.SPR") &&
-         load(mainChip->smallFont, "data/small_font.BPL") &&
-         load(mainChip->cancel, "data/sounds/cancel.raw") &&
-         load(mainChip->ok, "data/sounds/ok.raw");
-}
+bool loadMainAssets() { return loadAndUnpack(chip.main, "data/main.chip.lz"); }
 
 bool loadMissionAssets() {
   return loadAndUnpack(chip.mission, "data/mission.chip.lz");
