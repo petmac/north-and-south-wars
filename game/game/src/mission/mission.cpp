@@ -190,6 +190,7 @@ void missionMouseClicked(Mission &mission, u16 mouseX, u16 mouseY) {
       break;
     }
     play(Sound::ok);
+    play(Sound::footsteps);
     mission.state = MissionState::movingUnit;
   } break;
   case MissionState::movingUnit:

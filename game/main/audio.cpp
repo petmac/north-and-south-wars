@@ -190,6 +190,9 @@ void play(Sound sound) {
   case Sound::cancel:
     play(chip.main.cancel);
     break;
+  case Sound::footsteps:
+    play(chip.mission.footsteps);
+    break;
   case Sound::ok:
     play(chip.main.ok);
     break;

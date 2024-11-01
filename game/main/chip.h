@@ -22,6 +22,7 @@ struct MissionChip {
   UnitBitmaps units;
   MenuBitmaps menu;
   MissionEncounterChip encounter;
+  Wave<5025> footsteps;
   Wave<1085> zoomIn;
   Wave<2630> zoomOut;
 };
