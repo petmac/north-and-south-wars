@@ -69,19 +69,15 @@ static void audioInterruptHandler() {
       custom.intreqr & (INTF_AUD0 | INTF_AUD1 | INTF_AUD2 | INTF_AUD3);
 
   if (flags & INTF_AUD0) {
-    KPrintF("Audio interrupt 0");
     audioChannelInterruptHandler(0);
   }
   if (flags & INTF_AUD1) {
-    KPrintF("Audio interrupt 1");
     audioChannelInterruptHandler(1);
   }
   if (flags & INTF_AUD2) {
-    KPrintF("Audio interrupt 2");
     audioChannelInterruptHandler(2);
   }
   if (flags & INTF_AUD3) {
-    KPrintF("Audio interrupt 3");
     audioChannelInterruptHandler(3);
   }
 
