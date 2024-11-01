@@ -186,14 +186,18 @@ void audioChannelInterruptHandler(u16 channelIndex) {
 
 // Callbacks
 void play(Sound sound) {
-  const MainChip &mainChip = chip.main;
-
   switch (sound) {
   case Sound::cancel:
-    play(mainChip.cancel);
+    play(chip.main.cancel);
     break;
   case Sound::ok:
-    play(mainChip.ok);
+    play(chip.main.ok);
+    break;
+  case Sound::zoomIn:
+    play(chip.mission.zoomIn);
+    break;
+  case Sound::zoomOut:
+    play(chip.mission.zoomOut);
     break;
   }
 }

@@ -40,9 +40,12 @@ template <typename T> static bool loadAndUnpack(T &dst, const char *path) {
   }
 
   void *const end = doynaxdepack(unpackBuffer, &dst);
-  if (end != (&dst + 1)) {
-    KPrintF("Unpacked data size does not match destination size");
-    return false;
+  const u32 unpackedDataSize =
+      static_cast<const u8 *>(end) - reinterpret_cast<const u8 *>(&dst);
+
+  if (unpackedDataSize != sizeof(dst)) {
+    KPrintF("Unpacked data size %ld does not match destination size %ld",
+            unpackedDataSize, sizeof(dst));
   }
 
   return true;

@@ -22,6 +22,8 @@ struct MissionChip {
   UnitBitmaps units;
   MenuBitmaps menu;
   MissionEncounterChip encounter;
+  Wave<1085> zoomIn;
+  Wave<2630> zoomOut;
 };
 
 struct MainChip {

@@ -5,4 +5,6 @@
 enum class Sound : u8 {
   cancel,
   ok,
+  zoomIn,
+  zoomOut,
 };

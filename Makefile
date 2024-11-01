@@ -87,7 +87,9 @@ MISSION_CHIP_ASSET_NAMES := \
 	encounter/bg_plain.BPL \
 	encounter/bg_road.BPL \
 	encounter/bg_woods.BPL \
-	encounter/units.BPL
+	encounter/units.BPL \
+	sounds/zoom_in.raw \
+	sounds/zoom_out.raw
 $(TEMP_ASSETS_DIR)/mission.chip: $(foreach name,$(MISSION_CHIP_ASSET_NAMES),$(TEMP_ASSETS_DIR)/mission/$(name))
 	cat $^ >$@
 

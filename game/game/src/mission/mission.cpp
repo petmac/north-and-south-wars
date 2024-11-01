@@ -91,6 +91,7 @@ static void selectTargetUnderMouse(Mission &mission, u16 mouseX, u16 mouseY) {
 
     // Change state to close up of encounter
     play(Sound::ok);
+    play(Sound::zoomIn);
     mission.state = MissionState::encounter;
     mission.defendingUnitIndex = unitIndex;
     const MapUnit &attackingUnit = map.units[mission.selectedUnitIndex];
@@ -266,5 +267,6 @@ void encounterFinished(Mission &mission) {
 
   // TODO Show some kind of death animation?
   // TODO Check each force for all dead units
+  play(Sound::zoomOut);
   mission.state = MissionState::selectUnit;
 }
