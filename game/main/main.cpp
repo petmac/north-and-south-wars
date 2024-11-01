@@ -11,7 +11,8 @@
 #include <hardware/dmabits.h>
 #include <hardware/intbits.h>
 #include <proto/dos.h>
-#include <proto/exec.h> // AddIntServer()
+#include <proto/exec.h>     // AddIntServer()
+#include <proto/graphics.h> // WaitBlit
 
 static Fast fast;
 
@@ -106,6 +107,7 @@ static void runFrame() {
   updateGame(fast.game, fast.mouseX, fast.mouseY);
 
   // Present back buffer
+  WaitBlit();
   WaitVbl();
   custom.cop1lc = reinterpret_cast<u32>(&frameChip.copper);
   custom.dmacon = DMAF_SETCLR | DMAF_RASTER | DMAF_COPPER | DMAF_SPRITE;
