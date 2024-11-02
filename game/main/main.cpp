@@ -106,13 +106,17 @@ static void runFrame() {
   // Update game while drawing finishes
   updateGame(fast.game, fast.mouseX, fast.mouseY);
 
-  // Present back buffer
+  // Wait for blitter to finish
   WaitBlit();
-  WaitVbl();
+
+  // Show back buffer at next vertical blank
   custom.cop1lc = reinterpret_cast<u32>(&frameChip.copper);
   custom.dmacon = DMAF_SETCLR | DMAF_RASTER | DMAF_COPPER | DMAF_SPRITE;
 
-  // Swap front and back buffers
+  // Wait for front buffer to finish being displayed
+  WaitVbl();
+
+  // Swap front and back buffer indices
   fast.backBufferIndex = 1 - fast.backBufferIndex;
 }
 
