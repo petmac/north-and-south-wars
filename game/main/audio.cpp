@@ -13,7 +13,8 @@
 // https://amigadev.elowar.com/read/ADCD_2.1/Hardware_Manual_guide/node00DE.html
 static constexpr u32 clock_constant_pal = 3546895;
 static constexpr u32 sample_rate = 11025;
-static constexpr u16 period = clock_constant_pal / sample_rate;
+static constexpr u16 period =
+    (clock_constant_pal + (sample_rate / 2)) / sample_rate;
 
 typedef enum ChannelState {
   CS_STOPPED,
