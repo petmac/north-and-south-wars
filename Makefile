@@ -13,6 +13,7 @@ MAP := $(DATA_DIR)/mission/map.map
 .PHONY: all
 all: $(EXE) \
 	$(DATA_DIR)/main.chip.lz \
+	$(DATA_DIR)/title.chip.lz \
 	$(DATA_DIR)/palette.PAL \
 	$(MAP) \
 	$(DATA_DIR)/mission.chip.lz
@@ -76,6 +77,12 @@ MAIN_CHIP_ASSET_NAMES := \
 $(TEMP_ASSETS_DIR)/main.chip: $(foreach name,$(MAIN_CHIP_ASSET_NAMES),$(TEMP_ASSETS_DIR)/$(name))
 	cat $^ >$@
 
+# Pack title data
+TITLE_CHIP_ASSET_NAMES := \
+	title/title.BPL
+$(TEMP_ASSETS_DIR)/title.chip: $(foreach name,$(TITLE_CHIP_ASSET_NAMES),$(TEMP_ASSETS_DIR)/$(name))
+	cat $^ >$@
+
 # Pack mission data
 MISSION_CHIP_ASSET_NAMES := \
 	arrows.BPL \
@@ -93,6 +100,11 @@ MISSION_CHIP_ASSET_NAMES := \
 	sounds/zoom_out.raw
 $(TEMP_ASSETS_DIR)/mission.chip: $(foreach name,$(MISSION_CHIP_ASSET_NAMES),$(TEMP_ASSETS_DIR)/mission/$(name))
 	cat $^ >$@
+
+# Convert title image from .png to .BPL
+$(TEMP_ASSETS_DIR)/title/title.BPL: $(TEMP_ASSETS_DIR)/title/title.png $(KINGCON)
+	mkdir -p $(dir $@)
+	$(KINGCON) $< $(basename $@) -Format=5 -Interleaved
 
 # Convert background image from .png to .BPL
 $(TEMP_ASSETS_DIR)/mission/encounter/bg_%.BPL: $(TEMP_ASSETS_DIR)/mission/encounter/bg_%.png $(KINGCON)
