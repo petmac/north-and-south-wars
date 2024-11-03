@@ -9,6 +9,7 @@ bool loadMap(Map &map);
 bool loadMainAssets();
 bool loadMissionAssets();
 bool loadPalette();
+bool loadTitleAssets();
 void play(Sound sound);
 
 // TODO Horrendous debugging hack

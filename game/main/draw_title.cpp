@@ -3,7 +3,6 @@
 #include "blit.h"
 #include "chip.h"
 #include "frame_fast.h"
-#include "text.h"
 
 #include "game/title.h"
 
@@ -13,8 +12,7 @@ void drawTitle(Background &background, FrameFast &frameFast,
     return;
   }
 
-  clear(background);
-  drawText(background, chip.main.smallFont, 0, 0, "Title");
+  blitFast(background, chip.title.bitmap, 0, 0);
 
   frameFast.state = FrameState::drawnTitle;
 }

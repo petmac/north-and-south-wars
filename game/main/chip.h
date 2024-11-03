@@ -8,6 +8,7 @@
 #include "assets/mission/unit_bitmaps.h"
 #include "assets/small_font.h"
 #include "assets/sprite_images.h"
+#include "assets/title/title_bitmap.h"
 #include "assets/wave.h"
 #include "frame_chip.h"
 
@@ -34,11 +35,18 @@ struct MainChip {
   Wave<813> ok;
 };
 
+struct TitleChip {
+  TitleBitmap bitmap;
+};
+
 struct Chip {
   FrameChip frames[2];
   u16 zeroes[2]; // Dummy sprite
   MainChip main;
-  MissionChip mission;
+  union {
+    TitleChip title;
+    MissionChip mission;
+  };
 };
 
 extern Chip chip;

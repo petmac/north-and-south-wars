@@ -72,3 +72,7 @@ bool loadPalette() {
 
   return true;
 }
+
+bool loadTitleAssets() {
+  return loadAndUnpack(chip.title, "data/title.chip.lz");
+}

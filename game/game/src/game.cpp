@@ -33,7 +33,7 @@ void updateGame(Game &game, u16 mouseX, u16 mouseY) {
     break;
 
   case GameState::loadingTitle:
-    if (false) {
+    if (!loadTitleAssets()) {
       game.state = GameState::error;
       return;
     }

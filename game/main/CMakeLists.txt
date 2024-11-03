@@ -5,6 +5,7 @@ add_executable(
     assets/mission/menu_bitmaps.h
     assets/mission/tileset.h
     assets/mission/unit_bitmaps.h
+    assets/title/title_bitmap.h
     assets/palette.h
     assets/small_font.h
     assets/sprite_images.h
