@@ -5,6 +5,7 @@ struct Game;
 
 void startCampaignMap(CampaignMap &campaignMap);
 void updateCampaignMap(CampaignMap &campaignMap, Game &game);
+void campaignMouseClicked(Game &game);
 
 // Callbacks
 void loadMission(Game &game);
