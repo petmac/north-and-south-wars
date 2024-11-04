@@ -32,10 +32,9 @@ const char *const introTextLines[] = {
     "politicians and corporations, in words",  //
     "and other art forms.",                    //
     "",                                        //
-    "An 'Advance Wars' style game is",         //
-    "appropriate commentary, as Nintendo",     //
-    "delayed the release of 'Advance Wars",    //
-    "1+2: Re-Boot Camp' following Russia's",   //
+    "In March 2022, Nintendo delayed the",     //
+    "release of 'Advance Wars 1+2: Re-Boot",   //
+    "Camp' following Russia's illegal",        //
     "invasion of Ukraine.",                    //
     "",                                        //
     "- Click left mouse button to continue -", //
