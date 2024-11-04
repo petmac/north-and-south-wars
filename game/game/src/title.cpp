@@ -11,7 +11,7 @@ void startTitle(Title &title) {}
 void updateTitle(Title &title, Game &game) {
   // Continue?
   if (dev) {
-    loadCampaignMap(game);
+    titleMouseClicked(game);
     return;
   }
 }
