@@ -46,7 +46,7 @@ void updateGame(Game &game, u16 mouseX, u16 mouseY) {
     break;
 
   case GameState::loadingCampaignMap:
-    if (false) {
+    if (!loadCampaignAssets()) {
       game.state = GameState::error;
       return;
     }

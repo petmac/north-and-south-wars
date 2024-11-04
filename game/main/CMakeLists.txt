@@ -1,5 +1,6 @@
 add_executable(
     a.elf
+    assets/campaign/campaign_bitmap.h
     assets/mission/encounter/bg.h
     assets/mission/arrows.h
     assets/mission/menu_bitmaps.h

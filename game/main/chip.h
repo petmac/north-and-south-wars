@@ -1,5 +1,6 @@
 #pragma once
 
+#include "assets/campaign/campaign_bitmap.h"
 #include "assets/mission/arrows.h"
 #include "assets/mission/encounter/bg.h"
 #include "assets/mission/encounter/units.h"
@@ -39,12 +40,17 @@ struct TitleChip {
   TitleBitmap bitmap;
 };
 
+struct CampaignChip {
+  CampaignBitmap bitmap;
+};
+
 struct Chip {
   FrameChip frames[2];
   u16 zeroes[2]; // Dummy sprite
   MainChip main;
   union {
     TitleChip title;
+    CampaignChip campaign;
     MissionChip mission;
   };
 };

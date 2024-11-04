@@ -51,6 +51,10 @@ template <typename T> static bool loadAndUnpack(T &dst, const char *path) {
   return true;
 }
 
+bool loadCampaignAssets() {
+  return loadAndUnpack(chip.campaign, "data/campaign.chip.lz");
+}
+
 bool loadMap(Map &map) { return load(map, "data/mission/map.map"); }
 
 bool loadMainAssets() { return loadAndUnpack(chip.main, "data/main.chip.lz"); }

@@ -13,7 +13,7 @@ void drawCampaignMap(Background &background, FrameFast &frameFast,
     return;
   }
 
-  clear(background);
+  blitFast(background, chip.campaign.bitmap, 0, 0);
   drawText(background, chip.main.smallFont, 0, 0, "Campaign Map");
 
   frameFast.state = FrameState::drawnCampaignMap;
