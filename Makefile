@@ -12,6 +12,7 @@ MAP := $(DATA_DIR)/mission/map.map
 
 .PHONY: all
 all: $(EXE) \
+	$(DATA_DIR)/campaign.chip.lz \
 	$(DATA_DIR)/main.chip.lz \
 	$(DATA_DIR)/title.chip.lz \
 	$(DATA_DIR)/palette.PAL \
@@ -83,6 +84,12 @@ TITLE_CHIP_ASSET_NAMES := \
 $(TEMP_ASSETS_DIR)/title.chip: $(foreach name,$(TITLE_CHIP_ASSET_NAMES),$(TEMP_ASSETS_DIR)/$(name))
 	cat $^ >$@
 
+# Pack campaign data
+CAMPAIGN_CHIP_ASSET_NAMES := \
+	campaign/campaign.BPL
+$(TEMP_ASSETS_DIR)/campaign.chip: $(foreach name,$(CAMPAIGN_CHIP_ASSET_NAMES),$(TEMP_ASSETS_DIR)/$(name))
+	cat $^ >$@
+
 # Pack mission data
 MISSION_CHIP_ASSET_NAMES := \
 	arrows.BPL \
@@ -103,6 +110,11 @@ $(TEMP_ASSETS_DIR)/mission.chip: $(foreach name,$(MISSION_CHIP_ASSET_NAMES),$(TE
 
 # Convert title image from .png to .BPL
 $(TEMP_ASSETS_DIR)/title/title.BPL: $(TEMP_ASSETS_DIR)/title/title.png $(KINGCON)
+	mkdir -p $(dir $@)
+	$(KINGCON) $< $(basename $@) -Format=5 -Interleaved
+
+# Convert campaign image from .png to .BPL
+$(TEMP_ASSETS_DIR)/campaign/campaign.BPL: $(TEMP_ASSETS_DIR)/campaign/campaign.png $(KINGCON)
 	mkdir -p $(dir $@)
 	$(KINGCON) $< $(basename $@) -Format=5 -Interleaved
 
