@@ -149,7 +149,7 @@ $(TEMP_ASSETS_DIR)/%.raw: assets/%.flac
 
 # ADF
 
-TITLE := PetMacAmiGameJam24
+TITLE := NorthAndSouthWars
 ADF := $(TEMP_DIR)/adf/$(TITLE).adf
 ZIPPED_ADF := $(TEMP_DIR)/adf/$(TITLE).zip
 SHRINKLED_EXE := $(TEMP_DIR)/shrinkler/exe.fast.shrinkled
