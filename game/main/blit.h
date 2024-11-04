@@ -44,18 +44,42 @@ void blitFast(InterleavedBitmap<dstWidth, dstHeight, depth> &dst,
   u16 *const bltdpt = &dst.rows[y].planes[0].words[xWords];
   constexpr u16 bltdmod = (dstWidthWords - srcWidthWords) * 2;
 
-  constexpr u16 bltsize = ((srcHeight * depth) << HSIZEBITS) | srcWidthWords;
+  constexpr u16 rowCount = srcHeight * depth;
 
-  WaitBlit();
-  custom.bltcon0 = bltcon0;
-  custom.bltcon1 = bltcon1;
-  custom.bltapt = bltapt;
-  custom.bltamod = bltamod;
-  custom.bltafwm = 0xffff;
-  custom.bltalwm = 0xffff;
-  custom.bltdpt = bltdpt;
-  custom.bltdmod = bltdmod;
-  custom.bltsize = bltsize;
+  if constexpr (rowCount > 1024) {
+    // Assume we can do it in 2 chunks -- one of 1024 rows and then the rest
+    constexpr u16 bltsize1 = srcWidthWords;
+    constexpr u16 bltsize2 =
+        (((rowCount - 1024) & VSIZEMASK) << HSIZEBITS) | srcWidthWords;
+
+    WaitBlit();
+    custom.bltcon0 = bltcon0;
+    custom.bltcon1 = bltcon1;
+    custom.bltapt = bltapt;
+    custom.bltamod = bltamod;
+    custom.bltafwm = 0xffff;
+    custom.bltalwm = 0xffff;
+    custom.bltdpt = bltdpt;
+    custom.bltdmod = bltdmod;
+    custom.bltsize = bltsize1;
+
+    WaitBlit();
+    custom.bltsize = bltsize2;
+  } else {
+    constexpr u16 bltsize =
+        ((rowCount & VSIZEMASK) << HSIZEBITS) | srcWidthWords;
+
+    WaitBlit();
+    custom.bltcon0 = bltcon0;
+    custom.bltcon1 = bltcon1;
+    custom.bltapt = bltapt;
+    custom.bltamod = bltamod;
+    custom.bltafwm = 0xffff;
+    custom.bltalwm = 0xffff;
+    custom.bltdpt = bltdpt;
+    custom.bltdmod = bltdmod;
+    custom.bltsize = bltsize;
+  }
 }
 
 template <u16 srcWidth, u16 srcHeight, u16 dstWidth, u16 dstHeight, u16 depth>
