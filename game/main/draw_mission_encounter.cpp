@@ -33,20 +33,15 @@ static const EncounterBackground &terrainBackground(Terrain terrain) {
   return defaultBackground;
 }
 
-static void drawBackgroundSlices(Background &dst,
-                                 const EncounterBackground &src, u16 xWords,
-                                 u16 firstSlice, u16 sliceAfterLast) {
-  for (u16 sliceIndex = firstSlice,
-           y = firstSlice * encounterBackgroundSliceHeight;
-       sliceIndex < sliceAfterLast;
-       ++sliceIndex, y += encounterBackgroundSliceHeight) {
-    blitFast(dst, src[sliceIndex], xWords, y);
-  }
-}
-
 static void drawBackground(Background &dst, const EncounterBackground &src,
                            u16 xWords) {
-  drawBackgroundSlices(dst, src, xWords, 0, encounterBackgroundSliceCount);
+  blitFast(dst, src, xWords, 0);
+}
+
+static void drawBackgroundPart(Background &dst, const EncounterBackground &src,
+                               u16 dstXWords, u16 partY, u16 partHeight) {
+  blitPartFast(dst, src, dstXWords, partY, 0, partY,
+               (encounterBackgroundWidth + 15) / 16, partHeight);
 }
 
 static void drawPeople(Background &background,
@@ -90,12 +85,12 @@ void drawMissionEncounter(Background &background, FrameFast &frameFast,
   switch (frameFast.state) {
   case FrameState::drawnMissionEncounter: {
     // Already drawn similar, so just overwrite the animating parts
-    constexpr u16 firstSlice = (encounterBackgroundSliceCount / 2) - 1;
-    constexpr u16 sliceAfterLast = firstSlice + 2;
-    drawBackgroundSlices(background, leftBackground, leftXWords, firstSlice,
-                         sliceAfterLast);
-    drawBackgroundSlices(background, rightBackground, rightXWords, firstSlice,
-                         sliceAfterLast);
+    constexpr u16 partY = 100;
+    constexpr u16 partHeight = 100;
+    drawBackgroundPart(background, leftBackground, leftXWords, partY,
+                       partHeight);
+    drawBackgroundPart(background, rightBackground, rightXWords, partY,
+                       partHeight);
   } break;
   default:
     // Draw the whole background

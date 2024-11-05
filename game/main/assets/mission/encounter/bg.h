@@ -6,16 +6,10 @@
 
 constexpr u16 encounterBackgroundWidth = 160;
 constexpr u16 encounterBackgroundHeight = 256;
-constexpr u16 encounterBackgroundSliceHeight = 32;
-constexpr u16 encounterBackgroundSliceCount =
-    encounterBackgroundHeight / encounterBackgroundSliceHeight;
-
-using EncounterBackgroundSlice =
-    InterleavedBitmap<encounterBackgroundWidth, encounterBackgroundSliceHeight,
-                      playfieldDepth>;
 
 using EncounterBackground =
-    EncounterBackgroundSlice[encounterBackgroundSliceCount];
+    InterleavedBitmap<encounterBackgroundWidth, encounterBackgroundHeight,
+                      playfieldDepth>;
 
 struct EncounterBackgrounds {
   EncounterBackground bridge;
