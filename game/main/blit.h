@@ -48,9 +48,9 @@ void blitFast(InterleavedBitmap<dstWidth, dstHeight, depth> &dst,
 
   if constexpr (rowCount > 1024) {
     // Assume we can do it in 2 chunks -- one of 1024 rows and then the rest
-    constexpr u16 bltsize1 = srcWidthWords;
-    constexpr u16 bltsize2 =
+    constexpr u16 bltsize1 =
         (((rowCount - 1024) & VSIZEMASK) << HSIZEBITS) | srcWidthWords;
+    constexpr u16 bltsize2 = srcWidthWords;
 
     WaitBlit();
     custom.bltcon0 = bltcon0;
