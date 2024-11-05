@@ -86,8 +86,8 @@ void drawMissionEncounter(Background &background, FrameFast &frameFast,
   switch (frameFast.state) {
   case FrameState::drawnMissionEncounter: {
     // Already drawn similar, so just overwrite the animating parts
-    constexpr u16 partY = 100;
     constexpr u16 partHeight = 100;
+    constexpr u16 partY = (encounterBackgroundHeight - partHeight) / 2;
     drawBackgroundPart(background, leftBackground, leftXWords, partY,
                        partHeight);
     drawBackgroundPart(background, rightBackground, rightXWords, partY,
