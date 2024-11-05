@@ -6,7 +6,7 @@
 
 #include "game/mission/mission.h" // Mission
 #include "game/mission/terrain.h" // Terrain
-#include "game/screen.h"          // screenWidth
+#include "game/screen.h"          // screenWidthInWords
 
 static const EncounterBackground &terrainBackground(Terrain terrain) {
   const EncounterBackgrounds &backgrounds = chip.mission.encounter.backgrounds;
@@ -40,8 +40,9 @@ static void drawBackground(Background &dst, const EncounterBackground &src,
 
 static void drawBackgroundPart(Background &dst, const EncounterBackground &src,
                                u16 dstXWords, u16 partY, u16 partHeight) {
-  blitPartFast(dst, src, dstXWords, partY, 0, partY,
-               (encounterBackgroundWidth + 15) / 16, partHeight);
+  constexpr u16 partWidthWords = (encounterBackgroundWidth + 15) / 16;
+  blitPartFast(dst, src, dstXWords, partY, 0, partY, partWidthWords,
+               partHeight);
 }
 
 static void drawPeople(Background &background,
