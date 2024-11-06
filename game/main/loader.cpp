@@ -18,14 +18,15 @@ template <typename T> static bool load(T &dst, const char *path) {
   u32 file = Open(path, MODE_OLDFILE);
   KPrintF("Open result = %ld", file);
   if (file == 0) {
-    KPrintF("Could not open file");
+    KPrintF("Error: Could not open file");
     return false;
   }
 
   const u32 bytesRead = Read(file, &dst, size);
   KPrintF("Read %ld bytes", bytesRead);
   if (bytesRead != size) {
-    KPrintF("Bytes read %ld does not match buffer size %ld", bytesRead, size);
+    KPrintF("Warning: Bytes read %ld does not match buffer size %ld", bytesRead,
+            size);
   }
 
   Close(file);
@@ -44,7 +45,7 @@ template <typename T> static bool loadAndUnpack(T &dst, const char *path) {
       static_cast<const u8 *>(end) - reinterpret_cast<const u8 *>(&dst);
 
   if (unpackedDataSize != sizeof(dst)) {
-    KPrintF("Unpacked data size %ld does not match destination size %ld",
+    KPrintF("Error: Unpacked data size %ld does not match destination size %ld",
             unpackedDataSize, sizeof(dst));
     return false;
   }
