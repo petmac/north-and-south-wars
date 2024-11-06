@@ -2,11 +2,13 @@
 
 #include "damage.h"
 
+#include "game/callbacks.h"
 #include "game/mission/encounter/encounter.h"
 #include "game/mission/forces.h"
 #include "game/mission/map.h"
 #include "game/mission/mission.h"
 #include "game/mission/tile.h"
+#include "game/sounds.h"
 
 static void initPeople(EncounterPerson people[maxEncounterPeoplePerSide],
                        u16 baseXWords, s16 xIncrementWords) {
@@ -54,6 +56,7 @@ void updateEncounter(Encounter &encounter, MapUnit &attackingUnit,
     }
     encounter.state = EncounterState::attackerAttacking;
     encounter.frameCounter = 0;
+    play(Sound::infantryAttack); // TODO Play correct sound
     break;
   case EncounterState::attackerAttacking:
     encounter.frameCounter += 1;
@@ -76,6 +79,7 @@ void updateEncounter(Encounter &encounter, MapUnit &attackingUnit,
     }
     encounter.state = EncounterState::defenderAttacking;
     encounter.frameCounter = 0;
+    play(Sound::infantryAttack); // TODO Play correct sound
     break;
   case EncounterState::defenderAttacking:
     encounter.frameCounter += 1;

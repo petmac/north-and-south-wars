@@ -5,6 +5,7 @@
 enum class Sound : u8 {
   cancel,
   footsteps,
+  infantryAttack,
   ok,
   zoomIn,
   zoomOut,
