@@ -194,6 +194,9 @@ void play(Sound sound) {
   case Sound::footsteps:
     play(chip.mission.footsteps);
     break;
+  case Sound::hurt:
+    play(chip.mission.hurt);
+    break;
   case Sound::infantryAttack:
     play(chip.mission.infantryAttack);
     break;

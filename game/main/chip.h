@@ -28,6 +28,7 @@ struct MissionChip {
   Wave<1086> zoomIn;
   Wave<2630> zoomOut;
   Wave<10164> infantryAttack;
+  Wave<8766> hurt;
 };
 
 struct MainChip {

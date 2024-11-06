@@ -8,7 +8,7 @@
 
 #include <proto/dos.h>
 
-static u8 unpackBuffer[20 * 1024];
+static u8 unpackBuffer[32 * 1024];
 
 template <typename T> static bool load(T &dst, const char *path) {
   constexpr u32 size = sizeof(T);

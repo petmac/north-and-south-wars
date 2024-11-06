@@ -105,7 +105,8 @@ MISSION_CHIP_ASSET_NAMES := \
 	sounds/footsteps.raw \
 	sounds/zoom_in.raw \
 	sounds/zoom_out.raw \
-	encounter/sounds/attack/infantry.raw
+	encounter/sounds/attack/infantry.raw \
+	encounter/sounds/hurt.raw
 $(TEMP_ASSETS_DIR)/mission.chip: $(foreach name,$(MISSION_CHIP_ASSET_NAMES),$(TEMP_ASSETS_DIR)/mission/$(name))
 	cat $^ >$@
 

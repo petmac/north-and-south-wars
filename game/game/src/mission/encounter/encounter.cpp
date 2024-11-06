@@ -32,7 +32,7 @@ static void takeDamage(MapUnit &defendingUnit, const MapUnit &attackingUnit,
   defendingUnit.health -= damage;
   const u16 peopleAfterDamage = peopleCountForHealth(defendingUnit.health);
   if (peopleAfterDamage < peopleBeforeDamage) {
-    play(Sound::cancel); // TODO Play correct sound
+    play(Sound::hurt);
   }
 }
 
