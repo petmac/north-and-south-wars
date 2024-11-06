@@ -28,7 +28,12 @@ static void takeDamage(MapUnit &defendingUnit, const MapUnit &attackingUnit,
   const u16 damage =
       computeDamage(attackingUnit.type, attackingUnit.health,
                     defendingUnit.type, defendingUnit.health, defenderTerrain);
+  const u16 peopleBeforeDamage = peopleCountForHealth(defendingUnit.health);
   defendingUnit.health -= damage;
+  const u16 peopleAfterDamage = peopleCountForHealth(defendingUnit.health);
+  if (peopleAfterDamage < peopleBeforeDamage) {
+    play(Sound::cancel); // TODO Play correct sound
+  }
 }
 
 u16 peopleCountForHealth(u16 health) { return (health + 1) / 2; }
