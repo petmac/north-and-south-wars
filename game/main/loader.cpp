@@ -46,6 +46,7 @@ template <typename T> static bool loadAndUnpack(T &dst, const char *path) {
   if (unpackedDataSize != sizeof(dst)) {
     KPrintF("Unpacked data size %ld does not match destination size %ld",
             unpackedDataSize, sizeof(dst));
+    return false;
   }
 
   return true;

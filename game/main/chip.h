@@ -24,16 +24,16 @@ struct MissionChip {
   UnitBitmaps units;
   MenuBitmaps menu;
   MissionEncounterChip encounter;
-  Wave<5025> footsteps;
-  Wave<1085> zoomIn;
+  Wave<5026> footsteps;
+  Wave<1086> zoomIn;
   Wave<2630> zoomOut;
 };
 
 struct MainChip {
   MousePointerSpriteImage mousePointer;
   SmallFont smallFont;
-  Wave<2181> cancel;
-  Wave<813> ok;
+  Wave<2182> cancel;
+  Wave<814> ok;
 };
 
 struct TitleChip {

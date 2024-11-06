@@ -146,6 +146,7 @@ $(TEMP_ASSETS_DIR)/%.png: assets/%.aseprite
 $(TEMP_ASSETS_DIR)/%.raw: assets/%.flac
 	mkdir -p $(dir $@)
 	sox $< --type raw --encoding signed-integer --bits 8 --channels 1 --rate 11025 $@
+	truncate -c -s %2 $@
 
 # ADF
 
