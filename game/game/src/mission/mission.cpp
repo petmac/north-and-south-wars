@@ -30,13 +30,8 @@ static void selectUnitUnderMouse(Mission &mission, u16 mouseX, u16 mouseY) {
   for (u16 unitIndex = 0; unitIndex < mission.map.unitCount; ++unitIndex) {
     const MapUnit &unit = mission.map.units[unitIndex];
 
-    // Is the unit dead?
+    // Is the unit dead? (empty tile)
     if (unit.health == 0) {
-      continue;
-    }
-
-    // Is the unit from the wrong force?
-    if (unit.force != Force::north) {
       continue;
     }
 
@@ -44,6 +39,12 @@ static void selectUnitUnderMouse(Mission &mission, u16 mouseX, u16 mouseY) {
     if ((unit.coords.column != mouseCoords.column) ||
         (unit.coords.row != mouseCoords.row)) {
       continue;
+    }
+
+    // Is the unit from the wrong force?
+    if (unit.force != Force::north) {
+      // Don't register the click
+      return;
     }
 
     // Change state to unit destination selection
