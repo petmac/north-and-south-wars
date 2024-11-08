@@ -68,6 +68,7 @@ struct MapUnit {
     force: Force,
     unit_type: UnitType,
     health: u8,
+    moved: u8,
 }
 
 struct Map {
@@ -99,6 +100,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         force: Force::North,
         unit_type: UnitType::Infantry,
         health: 0,
+        moved: 0,
     }; MAX_UNITS];
     let mut unit_count = 0;
 
@@ -127,6 +129,7 @@ fn main() -> Result<(), Box<dyn Error>> {
                         force,
                         unit_type,
                         health: DEFAULT_HEALTH,
+                        moved: 0,
                     };
                     units[unit_count] = map_unit;
                     unit_count += 1;
@@ -157,6 +160,7 @@ fn main() -> Result<(), Box<dyn Error>> {
             unit.force as u8,
             unit.unit_type as u8,
             unit.health,
+            unit.moved,
         ])?;
     }
 

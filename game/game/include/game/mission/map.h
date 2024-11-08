@@ -17,6 +17,7 @@ struct MapUnit {
   Force force;
   UnitType type;
   u8 health; // Dead when health is zero
+  u8 moved;
 };
 
 struct Map {
