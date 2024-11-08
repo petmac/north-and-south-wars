@@ -47,6 +47,12 @@ static void selectUnitUnderMouse(Mission &mission, u16 mouseX, u16 mouseY) {
       return;
     }
 
+    // Has the unit already moved?
+    if (unit.moved) {
+      // Don't register the click
+      return;
+    }
+
     // Change state to unit destination selection
     play(Sound::ok);
     mission.state = MissionState::selectUnitDestination;
@@ -65,6 +71,12 @@ static void selectUnitUnderMouse(Mission &mission, u16 mouseX, u16 mouseY) {
   mission.state = MissionState::confirmEndTurn;
 }
 
+static void waitSelected(Mission &mission) {
+  play(Sound::ok);
+  mission.map.units[mission.selectedUnitIndex].moved = true;
+  mission.state = MissionState::selectUnit;
+}
+
 static void cancelMove(Mission &mission) {
   play(Sound::cancel);
   mission.state = MissionState::selectUnitDestination;
@@ -76,7 +88,7 @@ static void cancelMove(Mission &mission) {
 static void selectTargetUnderMouse(Mission &mission, u16 mouseX, u16 mouseY) {
   // Which tile is the mouse over?
   const TileCoords mouseCoords = mouseTileCoords(mouseX, mouseY);
-  const Map &map = mission.map;
+  Map &map = mission.map;
 
   // Look for an attackable unit in the tile the mouse is over
   for (u16 attackableUnitIndex = 0;
@@ -95,7 +107,8 @@ static void selectTargetUnderMouse(Mission &mission, u16 mouseX, u16 mouseY) {
     play(Sound::zoomIn);
     mission.state = MissionState::encounter;
     mission.defendingUnitIndex = unitIndex;
-    const MapUnit &attackingUnit = map.units[mission.selectedUnitIndex];
+    MapUnit &attackingUnit = map.units[mission.selectedUnitIndex];
+    attackingUnit.moved = true;
     startEncounter(mission.encounter, attackingUnit);
     return;
   }
@@ -120,6 +133,9 @@ void updateMission(Mission &mission, u16 mouseX, u16 mouseY) {
     break;
   case MissionState::resupply:
     mission.state = MissionState::selectUnit;
+    for (u16 unitIndex = 0; unitIndex < mission.map.unitCount; ++unitIndex) {
+      mission.map.units[unitIndex].moved = false;
+    }
     break;
   case MissionState::selectUnit:
     break;
@@ -203,9 +219,7 @@ void missionMouseClicked(Mission &mission, u16 mouseX, u16 mouseY) {
       mission.state = MissionState::selectTarget;
       break;
     case 1:
-      // TODO Start opponent's turn
-      play(Sound::ok);
-      mission.state = MissionState::resupply;
+      waitSelected(mission);
       break;
     default:
       cancelMove(mission);
@@ -215,9 +229,7 @@ void missionMouseClicked(Mission &mission, u16 mouseX, u16 mouseY) {
   case MissionState::selectWait:
     switch (menuButtonAtCoords(mouseX, mouseY, 1)) {
     case 0:
-      // TODO Start opponent's turn
-      play(Sound::ok);
-      mission.state = MissionState::resupply;
+      waitSelected(mission);
       break;
     default:
       cancelMove(mission);
