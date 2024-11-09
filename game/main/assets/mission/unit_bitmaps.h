@@ -6,7 +6,7 @@
 #include "game/mission/forces.h"
 #include "game/mission/unit_types.h"
 
-constexpr u16 unitWidth = 16;
+constexpr u16 unitWidth = 32;
 constexpr u16 unitHeight = 16;
 
 using UnitBitmap =

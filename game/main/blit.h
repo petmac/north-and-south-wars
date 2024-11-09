@@ -156,3 +156,50 @@ void blitFast(InterleavedBitmap<dstWidth, dstHeight, depth> &dst,
   custom.bltdmod = bltdmod;
   custom.bltsize = bltsize;
 }
+
+template <u16 srcWidth, u16 srcHeight, u16 dstWidth, u16 dstHeight, u16 depth>
+void blitPartFast(
+    InterleavedBitmap<dstWidth, dstHeight, depth> &dst,
+    const MaskedInterleavedBitmap<srcWidth, srcHeight, depth> &src,
+    u16 dstXWords, u16 dstY, u16 srcXWords, u16 srcY, u16 partWidthWords,
+    u16 partHeight) {
+  constexpr u16 srcWidthWords = (srcWidth + 15) / 16;
+  constexpr u16 dstWidthWords = (dstWidth + 15) / 16;
+
+  constexpr u16 bltcon0 =
+      BC0F_SRCA | BC0F_SRCB | BC0F_SRCC | BC0F_DEST | ABC | ABNC | NABC | NANBC;
+  constexpr u16 bltcon1 = 0;
+
+  u16 *const bltapt =
+      const_cast<u16 *>(&src.rows[srcY].planes[0].maskWords[srcXWords]);
+  const u16 bltamod = (srcWidthWords + srcWidthWords - partWidthWords) * 2;
+
+  u16 *const bltbpt =
+      const_cast<u16 *>(&src.rows[srcY].planes[0].imageWords[srcXWords]);
+  const u16 bltbmod = bltamod;
+
+  u16 *const bltcpt = &dst.rows[dstY].planes[0].words[dstXWords];
+  const u16 bltcmod = (dstWidthWords - partWidthWords) * 2;
+
+  u16 *const bltdpt = bltcpt;
+  const u16 bltdmod = bltcmod;
+
+  const u16 rowCount = partHeight * depth;
+
+  const u16 bltsize = ((rowCount & VSIZEMASK) << HSIZEBITS) | partWidthWords;
+
+  WaitBlit();
+  custom.bltcon0 = bltcon0;
+  custom.bltcon1 = bltcon1;
+  custom.bltapt = bltapt;
+  custom.bltamod = bltamod;
+  custom.bltafwm = 0xffff;
+  custom.bltalwm = 0xffff;
+  custom.bltbpt = bltbpt;
+  custom.bltbmod = bltbmod;
+  custom.bltcpt = bltcpt;
+  custom.bltcmod = bltcmod;
+  custom.bltdpt = bltdpt;
+  custom.bltdmod = bltdmod;
+  custom.bltsize = bltsize;
+}

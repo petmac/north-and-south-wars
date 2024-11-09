@@ -88,12 +88,15 @@ static void drawBobOnTile(
 }
 
 static void drawUnit(Background &background, DirtyTileList &dirtyTiles,
-                     u16 column, u16 row, Force force, UnitType unit) {
+                     u16 column, u16 row, Force force, UnitType unit,
+                     u16 frameIndex) {
   const ForceBitmaps &forceBitmaps =
       chip.mission.units.forces[static_cast<u16>(force)];
   const UnitBitmap &src = forceBitmaps.units[static_cast<u16>(unit)];
 
-  drawBobOnTile(background, dirtyTiles, column, row, src);
+  blitPartFast(background, src, column, row * tileHeight, frameIndex, 0, 1,
+               unitHeight);
+  addDirtyTile(dirtyTiles, column, row);
 }
 
 static constexpr ArrowType computeArrowTip(const TileCoords &current,
@@ -250,6 +253,10 @@ void drawMissionTiles(Background &background, FrameFast &frameFast,
     break;
   }
 
+  // TODO What a terrible hack.
+  static u16 frameForAnimation = 0;
+  ++frameForAnimation;
+
   // Draw units
   for (u16 unitIndex = 0; unitIndex < map.unitCount; ++unitIndex) {
     const MapUnit &unit = map.units[unitIndex];
@@ -259,9 +266,14 @@ void drawMissionTiles(Background &background, FrameFast &frameFast,
       continue;
     }
 
+    // Animate units which haven't been moved
+    const u16 frameForAnimationAdjusted = frameForAnimation + (unitIndex * 2);
+    const u16 frameIndex =
+        (!unit.moved && (frameForAnimationAdjusted & 16)) ? 1 : 0;
+
     // Draw unit
     drawUnit(background, dirtyTiles, unit.coords.column, unit.coords.row,
-             unit.force, unit.type);
+             unit.force, unit.type, frameIndex);
   }
 
   // Draw state-specific stuff on top of units
