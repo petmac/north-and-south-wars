@@ -8,7 +8,7 @@
 void drawMission(Background &background, FrameFast &frameFast,
                  const Mission &mission) {
   switch (mission.state) {
-  case MissionState::encounter:
+  case MissionState::playerEncounter:
     drawMissionEncounter(background, frameFast, mission);
     break;
   default:

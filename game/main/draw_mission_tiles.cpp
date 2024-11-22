@@ -255,8 +255,8 @@ void drawMissionTiles(Background &background, FrameFast &frameFast,
   // Draw state-specific stuff under units
   DirtyTileList &dirtyTiles = frameFast.mission.dirtyTiles;
   switch (mission.state) {
-  case MissionState::selectAttackOrWait:
-  case MissionState::selectTarget:
+  case MissionState::playerSelectAttackOrWait:
+  case MissionState::playerSelectTarget:
     drawAttackableUnits(background, dirtyTiles, mission.attackable, map.units);
     break;
   default:
@@ -296,38 +296,38 @@ void drawMissionTiles(Background &background, FrameFast &frameFast,
   case MissionState::resupply:
     drawMissionText(background, dirtyTiles, "Resupply");
     break;
-  case MissionState::selectUnit:
+  case MissionState::playerSelectUnit:
     break;
-  case MissionState::confirmEndTurn: {
+  case MissionState::playerConfirmEndTurn: {
     const MenuButtonBitmapIndex buttons[] = {
         MenuButtonBitmapIndex::endTurn,
     };
     drawMenu(background, dirtyTiles, buttons);
   } break;
-  case MissionState::selectUnitDestination:
+  case MissionState::playerSelectUnitDestination:
     drawPath(background, dirtyTiles, mission.pathfinding,
              mission.unitDestination);
     break;
-  case MissionState::movingUnit:
+  case MissionState::movingPlayerUnit:
     drawMissionText(background, dirtyTiles, "Moving unit");
     break;
-  case MissionState::selectAttackOrWait: {
+  case MissionState::playerSelectAttackOrWait: {
     const MenuButtonBitmapIndex buttons[] = {
         MenuButtonBitmapIndex::attack,
         MenuButtonBitmapIndex::wait,
     };
     drawMenu(background, dirtyTiles, buttons);
   } break;
-  case MissionState::selectWait: {
+  case MissionState::playerSelectWait: {
     const MenuButtonBitmapIndex buttons[] = {
         MenuButtonBitmapIndex::wait,
     };
     drawMenu(background, dirtyTiles, buttons);
   } break;
-  case MissionState::selectTarget:
+  case MissionState::playerSelectTarget:
     drawMissionText(background, dirtyTiles, "Select target");
     break;
-  case MissionState::encounter:
+  case MissionState::playerEncounter:
     break;
   }
 }

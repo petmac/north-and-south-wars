@@ -9,14 +9,14 @@ enum class MissionState : u8 {
   intro,
   startOfTurn,
   resupply,
-  selectUnit,
-  confirmEndTurn,
-  selectUnitDestination,
-  movingUnit,
-  selectAttackOrWait,
-  selectWait,
-  selectTarget,
-  encounter,
+  playerSelectUnit,
+  playerConfirmEndTurn,
+  playerSelectUnitDestination,
+  movingPlayerUnit,
+  playerSelectAttackOrWait,
+  playerSelectWait,
+  playerSelectTarget,
+  playerEncounter,
 };
 
 struct Mission {
