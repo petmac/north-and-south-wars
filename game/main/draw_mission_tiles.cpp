@@ -294,7 +294,6 @@ void drawMissionTiles(Background &background, FrameFast &frameFast,
     drawMissionText(background, dirtyTiles, "Start of turn");
     break;
   case MissionState::resupply:
-    drawMissionText(background, dirtyTiles, "Resupply");
     break;
   case MissionState::playerSelectUnit:
     break;
@@ -309,7 +308,6 @@ void drawMissionTiles(Background &background, FrameFast &frameFast,
              mission.unitDestination);
     break;
   case MissionState::movingPlayerUnit:
-    drawMissionText(background, dirtyTiles, "Moving unit");
     break;
   case MissionState::playerSelectAttackOrWait: {
     const MenuButtonBitmapIndex buttons[] = {
