@@ -329,5 +329,9 @@ void drawMissionTiles(Background &background, FrameFast &frameFast,
     break;
   case MissionState::playerEncounter:
     break;
+  case MissionState::movingEnemyUnit:
+  case MissionState::enemyEncounter:
+    drawMissionText(background, dirtyTiles, "Enemy turn");
+    break;
   }
 }

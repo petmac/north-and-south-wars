@@ -17,6 +17,8 @@ enum class MissionState : u8 {
   playerSelectWait,
   playerSelectTarget,
   playerEncounter,
+  movingEnemyUnit,
+  enemyEncounter,
 };
 
 struct Mission {

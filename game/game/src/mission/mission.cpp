@@ -114,6 +114,35 @@ static void selectTargetUnderMouse(Mission &mission, u16 mouseX, u16 mouseY) {
   }
 }
 
+static bool anyUnitsAlive(const Map &map, Force force) {
+  for (u16 unitIndex = 0; unitIndex < map.unitCount; ++unitIndex) {
+    const MapUnit &unit = map.units[unitIndex];
+    if (unit.health == 0) {
+      continue;
+    }
+
+    if (unit.force != force) {
+      continue;
+    }
+
+    return true;
+  }
+
+  return false;
+}
+
+static void startMovingEnemyOrReturnToPlayerTurn(Mission &mission) {
+  // TODO Pick enemy to move
+  // TODO Start new day if all enemies have moved
+  if (true) {
+    mission.state = MissionState::startOfTurn;
+    return;
+  }
+
+  // TODO Do pathfinding
+  mission.state = MissionState::movingEnemyUnit;
+}
+
 void startMission(Mission &mission) {
   mission.state = MissionState::intro;
   for (u16 unitIndex = 0; unitIndex < mission.map.unitCount; ++unitIndex) {
@@ -173,6 +202,32 @@ void updateMission(Mission &mission, u16 mouseX, u16 mouseY) {
     MapUnit &defendingUnit = mission.map.units[mission.defendingUnitIndex];
     updateEncounter(mission.encounter, attackingUnit, defendingUnit, mission);
   } break;
+  case MissionState::movingEnemyUnit: {
+    // TODO Animate and move smoothly
+    mission.map.units[mission.selectedUnitIndex].coords =
+        mission.unitDestination;
+    // Can the enemy attack?
+    findAttackableUnits(mission.attackable, mission.selectedUnitIndex,
+                        mission.map);
+    if (mission.attackable.unitCount == 0) {
+      break;
+    }
+
+    // Change state to close up of encounter
+    // TODO Don't always attack
+    play(Sound::zoomIn);
+    mission.state = MissionState::enemyEncounter;
+    mission.defendingUnitIndex = mission.attackable.unitIndices[0];
+    MapUnit &attackingUnit = mission.map.units[mission.selectedUnitIndex];
+    attackingUnit.moved = true;
+    startEncounter(mission.encounter, attackingUnit);
+  } break;
+  case MissionState::enemyEncounter:
+    // TODO DRY, looks same as player encounter logic
+    MapUnit &attackingUnit = mission.map.units[mission.selectedUnitIndex];
+    MapUnit &defendingUnit = mission.map.units[mission.defendingUnitIndex];
+    updateEncounter(mission.encounter, attackingUnit, defendingUnit, mission);
+    break;
   }
 }
 
@@ -188,9 +243,9 @@ void missionMouseClicked(Mission &mission, u16 mouseX, u16 mouseY) {
   case MissionState::playerConfirmEndTurn:
     switch (menuButtonAtCoords(mouseX, mouseY, 1)) {
     case 0:
-      // TODO Start opponent's turn
+      // Start opponent's turn
       play(Sound::ok);
-      mission.state = MissionState::resupply;
+      startMovingEnemyOrReturnToPlayerTurn(mission);
       break;
     default:
       play(Sound::cancel);
@@ -240,6 +295,8 @@ void missionMouseClicked(Mission &mission, u16 mouseX, u16 mouseY) {
     selectTargetUnderMouse(mission, mouseX, mouseY);
     break;
   case MissionState::playerEncounter:
+  case MissionState::movingEnemyUnit:
+  case MissionState::enemyEncounter:
     break;
   }
 }
@@ -270,17 +327,50 @@ void missionMouseRightClicked(Mission &mission) {
     mission.state = MissionState::playerSelectAttackOrWait;
     break;
   case MissionState::playerEncounter:
+  case MissionState::movingEnemyUnit:
+  case MissionState::enemyEncounter:
     break;
   }
 }
 
 // Encounter callbacks
 void encounterFinished(Mission &mission) {
-  const MapUnit &attackingUnit = mission.map.units[mission.selectedUnitIndex];
-  const MapUnit &defendingUnit = mission.map.units[mission.defendingUnitIndex];
-
-  // TODO Show some kind of death animation?
-  // TODO Check each force for all dead units
   play(Sound::zoomOut);
-  mission.state = MissionState::playerSelectUnit;
+
+  const bool northAlive = anyUnitsAlive(mission.map, Force::north);
+  const bool southAlive = anyUnitsAlive(mission.map, Force::south);
+
+  if (northAlive) {
+    if (southAlive) {
+      switch (mission.state) {
+      case MissionState::playerEncounter:
+        // Still player turn
+        KPrintF("Both forces still have units, still player's turn");
+        mission.state = MissionState::playerSelectUnit;
+        break;
+      case MissionState::enemyEncounter:
+        // Still enemy turn
+        KPrintF("Both forces still have units, still enemy's turn");
+        startMovingEnemyOrReturnToPlayerTurn(mission);
+        break;
+      default:
+        // Neither force started the encounter, shouldn't happen
+        KPrintF("BUG: Neither force started the encounter, shouldn't happen");
+        break;
+      }
+    } else {
+      // Player has won
+      // TODO End the mission
+      KPrintF("TODO: Player has won, end the mission");
+    }
+  } else {
+    if (southAlive) {
+      // Player has lost
+      // TODO End the mission
+      KPrintF("TODO Player has lost, end the mission");
+    } else {
+      // Both sides died, shouldn't happen
+      KPrintF("BUG: Both sides died, shouldn't happen");
+    }
+  }
 }
