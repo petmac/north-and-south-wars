@@ -135,7 +135,7 @@ static void startMovingEnemyOrReturnToPlayerTurn(Mission &mission) {
   // TODO Pick enemy to move
   // TODO Start new day if all enemies have moved
   if (true) {
-    mission.state = MissionState::startOfTurn;
+    mission.state = MissionState::startOfDay;
     return;
   }
 
@@ -155,9 +155,9 @@ void startMission(Mission &mission) {
 void updateMission(Mission &mission, u16 mouseX, u16 mouseY, Game &game) {
   switch (mission.state) {
   case MissionState::intro:
-    mission.state = MissionState::startOfTurn;
+    mission.state = MissionState::startOfDay;
     break;
-  case MissionState::startOfTurn:
+  case MissionState::startOfDay:
     mission.state = MissionState::resupply;
     break;
   case MissionState::resupply:
@@ -236,7 +236,7 @@ void updateMission(Mission &mission, u16 mouseX, u16 mouseY, Game &game) {
 void missionMouseClicked(Mission &mission, u16 mouseX, u16 mouseY) {
   switch (mission.state) {
   case MissionState::intro:
-  case MissionState::startOfTurn:
+  case MissionState::startOfDay:
   case MissionState::resupply:
     break;
   case MissionState::playerSelectUnit:
@@ -306,7 +306,7 @@ void missionMouseClicked(Mission &mission, u16 mouseX, u16 mouseY) {
 void missionMouseRightClicked(Mission &mission) {
   switch (mission.state) {
   case MissionState::intro:
-  case MissionState::startOfTurn:
+  case MissionState::startOfDay:
   case MissionState::resupply:
   case MissionState::playerSelectUnit:
     break;

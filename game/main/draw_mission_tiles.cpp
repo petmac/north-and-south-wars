@@ -290,8 +290,8 @@ void drawMissionTiles(Background &background, FrameFast &frameFast,
   case MissionState::intro:
     drawMissionText(background, dirtyTiles, "Intro");
     break;
-  case MissionState::startOfTurn:
-    drawMissionText(background, dirtyTiles, "Start of turn");
+  case MissionState::startOfDay:
+    drawMissionText(background, dirtyTiles, "Start of day");
     break;
   case MissionState::resupply:
     break;

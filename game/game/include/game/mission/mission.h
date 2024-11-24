@@ -7,7 +7,7 @@
 
 enum class MissionState : u8 {
   intro,
-  startOfTurn,
+  startOfDay,
   resupply,
   playerSelectUnit,
   playerConfirmEndTurn,
