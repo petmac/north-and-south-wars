@@ -50,7 +50,6 @@ static void considerNeighbour(Pathfinding &pathfinding, const Map &map,
   }
 
   // Does the unit have enough movement points to move to this location?
-  // TODO Take unit and terrain into account
   const Cost costToNext = costToCurrent + movementCost;
   if (costToNext > unitDef.movementPoints) {
     return;
