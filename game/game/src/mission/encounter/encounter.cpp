@@ -52,7 +52,7 @@ void startEncounter(Encounter &encounter, const MapUnit &attackingUnit) {
 }
 
 void updateEncounter(Encounter &encounter, MapUnit &attackingUnit,
-                     MapUnit &defendingUnit, Mission &mission) {
+                     MapUnit &defendingUnit, Mission &mission, Game &game) {
   switch (encounter.state) {
   case EncounterState::wait:
     encounter.frameCounter += 1;
@@ -108,7 +108,7 @@ void updateEncounter(Encounter &encounter, MapUnit &attackingUnit,
     if (encounter.frameCounter < 50) {
       break;
     }
-    encounterFinished(mission);
+    encounterFinished(mission, game);
     break;
   }
 }

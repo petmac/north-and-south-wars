@@ -68,7 +68,7 @@ void updateGame(Game &game, u16 mouseX, u16 mouseY) {
     break;
 
   case GameState::playingMission:
-    updateMission(game.mission, mouseX, mouseY);
+    updateMission(game.mission, mouseX, mouseY, game);
     break;
 
   case GameState::error:
@@ -141,3 +141,7 @@ void loadCampaignMap(Game &game) { game.state = GameState::loadingCampaignMap; }
 
 // Campaign map callbacks
 void loadMission(Game &game) { game.state = GameState::loadingMission; }
+
+// Mission callbacks
+void missionWon(Game &game) { loadCampaignMap(game); }
+void missionLost(Game &game) { loadCampaignMap(game); }

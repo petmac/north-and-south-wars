@@ -152,7 +152,7 @@ void startMission(Mission &mission) {
   mission.selectedUnitIndex = 0;
 }
 
-void updateMission(Mission &mission, u16 mouseX, u16 mouseY) {
+void updateMission(Mission &mission, u16 mouseX, u16 mouseY, Game &game) {
   switch (mission.state) {
   case MissionState::intro:
     mission.state = MissionState::startOfTurn;
@@ -200,7 +200,8 @@ void updateMission(Mission &mission, u16 mouseX, u16 mouseY) {
   case MissionState::playerEncounter: {
     MapUnit &attackingUnit = mission.map.units[mission.selectedUnitIndex];
     MapUnit &defendingUnit = mission.map.units[mission.defendingUnitIndex];
-    updateEncounter(mission.encounter, attackingUnit, defendingUnit, mission);
+    updateEncounter(mission.encounter, attackingUnit, defendingUnit, mission,
+                    game);
   } break;
   case MissionState::movingEnemyUnit: {
     // TODO Animate and move smoothly
@@ -226,7 +227,8 @@ void updateMission(Mission &mission, u16 mouseX, u16 mouseY) {
     // TODO DRY, looks same as player encounter logic
     MapUnit &attackingUnit = mission.map.units[mission.selectedUnitIndex];
     MapUnit &defendingUnit = mission.map.units[mission.defendingUnitIndex];
-    updateEncounter(mission.encounter, attackingUnit, defendingUnit, mission);
+    updateEncounter(mission.encounter, attackingUnit, defendingUnit, mission,
+                    game);
     break;
   }
 }
@@ -334,7 +336,7 @@ void missionMouseRightClicked(Mission &mission) {
 }
 
 // Encounter callbacks
-void encounterFinished(Mission &mission) {
+void encounterFinished(Mission &mission, Game &game) {
   play(Sound::zoomOut);
 
   const bool northAlive = anyUnitsAlive(mission.map, Force::north);
@@ -360,14 +362,14 @@ void encounterFinished(Mission &mission) {
       }
     } else {
       // Player has won
-      // TODO End the mission
-      KPrintF("TODO: Player has won, end the mission");
+      missionWon(game);
+      return;
     }
   } else {
     if (southAlive) {
       // Player has lost
-      // TODO End the mission
-      KPrintF("TODO Player has lost, end the mission");
+      missionLost(game);
+      return;
     } else {
       // Both sides died, shouldn't happen
       KPrintF("BUG: Both sides died, shouldn't happen");
