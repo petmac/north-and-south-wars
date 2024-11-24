@@ -131,16 +131,95 @@ static bool anyUnitsAlive(const Map &map, Force force) {
   return false;
 }
 
+// Returns false if no movable units can be found
+static bool indexOfEnemyUnitToMove(u16 *const movableUnitIndex,
+                                   const Map &map) {
+  for (u16 unitIndex = 0; unitIndex < map.unitCount; ++unitIndex) {
+    const MapUnit &unit = map.units[unitIndex];
+    if (unit.health == 0) {
+      continue;
+    }
+
+    if (unit.force != Force::south) {
+      continue;
+    }
+
+    if (unit.moved) {
+      continue;
+    }
+
+    *movableUnitIndex = unitIndex;
+    return true;
+  }
+
+  return false;
+}
+
+static u16 manhattanDistance(const TileCoords &a, const TileCoords &b) {
+  const u16 horizontalDistance =
+      a.column < b.column ? b.column - a.column : a.column - b.column;
+  const u16 verticalDistance = a.row < b.row ? b.row - a.row : a.row - b.row;
+
+  return horizontalDistance + verticalDistance;
+}
+
+// Returns false if no player units can be found
+static bool indexOfNearestPlayerUnit(u16 *const playerUnitIndex, const Map &map,
+                                     const TileCoords &coords) {
+  bool found = false;
+  u16 nearestDistance = 0;
+
+  for (u16 unitIndex = 0; unitIndex < map.unitCount; ++unitIndex) {
+    const MapUnit &unit = map.units[unitIndex];
+    if (unit.health == 0) {
+      continue;
+    }
+
+    if (unit.force != Force::north) {
+      continue;
+    }
+
+    const u16 distance = manhattanDistance(unit.coords, coords);
+    if (!found || distance < nearestDistance) {
+      found = true;
+      nearestDistance = distance;
+      *playerUnitIndex = unitIndex;
+    }
+  }
+
+  return found;
+}
+
 static void startMovingEnemyOrReturnToPlayerTurn(Mission &mission) {
-  // TODO Pick enemy to move
-  // TODO Start new day if all enemies have moved
-  if (true) {
+  //  Start new day if all enemies have moved
+  u16 selectedUnitIndex = 0;
+  if (!indexOfEnemyUnitToMove(&selectedUnitIndex, mission.map)) {
+    KPrintF("Can't find enemy to move, starting next day");
     mission.state = MissionState::startOfDay;
     return;
   }
 
+  const MapUnit &selectedUnit = mission.map.units[selectedUnitIndex];
+
+  u16 nearestPlayerUnitIndex = 0;
+  if (!indexOfNearestPlayerUnit(&nearestPlayerUnitIndex, mission.map,
+                                selectedUnit.coords)) {
+    KPrintF("BUG: Can't find player to target, starting next day");
+    mission.state = MissionState::startOfDay;
+    return;
+  }
+
+  const MapUnit &nearestPlayerUnit = mission.map.units[nearestPlayerUnitIndex];
+  const TileCoords unitDestination = {
+      .column = static_cast<u8>(nearestPlayerUnit.coords.column + 1),
+      .row = nearestPlayerUnit.coords.row,
+  };
+
   // TODO Do pathfinding
   mission.state = MissionState::movingEnemyUnit;
+  mission.selectedUnitIndex = selectedUnitIndex;
+  mission.unitSource = selectedUnit.coords;
+  mission.unitDestination = unitDestination;
 }
 
 void startMission(Mission &mission) {
