@@ -290,6 +290,7 @@ void updateMission(Mission &mission, u16 mouseX, u16 mouseY, Game &game) {
     findAttackableUnits(mission.attackable, mission.selectedUnitIndex,
                         mission.map);
     if (mission.attackable.unitCount == 0) {
+      startMovingEnemyOrReturnToPlayerTurn(mission);
       break;
     }
 
