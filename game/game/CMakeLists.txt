@@ -3,6 +3,7 @@ add_library(
     OBJECT
     include/game/mission/encounter/encounter.h
     include/game/mission/attackable.h
+    include/game/mission/enemy_pathfinding.h
     include/game/mission/forces.h
     include/game/mission/map.h
     include/game/mission/menu.h
@@ -28,6 +29,8 @@ add_library(
     src/mission/encounter/encounter.h
     src/mission/attackable.cpp
     src/mission/attackable.h
+    src/mission/enemy_pathfinding.cpp
+    src/mission/enemy_pathfinding.h
     src/mission/menu.cpp
     src/mission/menu.h
     src/mission/mission.cpp

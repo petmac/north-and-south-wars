@@ -2,10 +2,12 @@
 
 #include "attackable.h"
 #include "encounter/encounter.h"
+#include "enemy_pathfinding.h"
 #include "menu.h"
 #include "player_pathfinding.h"
 
 #include "game/callbacks.h"
+#include "game/mission/enemy_pathfinding.h" // TODO Make this a private header?
 #include "game/mission/forces.h"
 #include "game/mission/mission.h"
 #include "game/mission/movement_cost.h" // maxCost
@@ -201,6 +203,7 @@ static void startMovingEnemyOrReturnToPlayerTurn(Mission &mission) {
 
   const MapUnit &selectedUnit = mission.map.units[selectedUnitIndex];
 
+  // Find the nearest player to attack
   u16 nearestPlayerUnitIndex = 0;
   if (!indexOfNearestPlayerUnit(&nearestPlayerUnitIndex, mission.map,
                                 selectedUnit.coords)) {
@@ -210,16 +213,18 @@ static void startMovingEnemyOrReturnToPlayerTurn(Mission &mission) {
   }
 
   const MapUnit &nearestPlayerUnit = mission.map.units[nearestPlayerUnitIndex];
-  const TileCoords unitDestination = {
-      .column = static_cast<u8>(nearestPlayerUnit.coords.column + 1),
-      .row = nearestPlayerUnit.coords.row,
-  };
 
-  // TODO Do pathfinding
+  // Do pathfinding
+  // TODO Is this too big for the stack?
+  EnemyPathfinding pathfinding;
+  findPath(pathfinding, mission.map, selectedUnit.coords,
+           nearestPlayerUnit.coords, unitDefForType(selectedUnit.type));
+
+  // Start moving the enemy unit
   mission.state = MissionState::movingEnemyUnit;
   mission.selectedUnitIndex = selectedUnitIndex;
   mission.unitSource = selectedUnit.coords;
-  mission.unitDestination = unitDestination;
+  mission.unitDestination = pathfinding.end;
 }
 
 void startMission(Mission &mission) {
@@ -286,6 +291,11 @@ void updateMission(Mission &mission, u16 mouseX, u16 mouseY, Game &game) {
     // TODO Animate and move smoothly
     mission.map.units[mission.selectedUnitIndex].coords =
         mission.unitDestination;
+
+    // The enemy can't move again
+    MapUnit *const enemyUnit = &mission.map.units[mission.selectedUnitIndex];
+    enemyUnit->moved = true;
+
     // Can the enemy attack?
     findAttackableUnits(mission.attackable, mission.selectedUnitIndex,
                         mission.map);
@@ -299,9 +309,7 @@ void updateMission(Mission &mission, u16 mouseX, u16 mouseY, Game &game) {
     play(Sound::zoomIn);
     mission.state = MissionState::enemyEncounter;
     mission.defendingUnitIndex = mission.attackable.unitIndices[0];
-    MapUnit &attackingUnit = mission.map.units[mission.selectedUnitIndex];
-    attackingUnit.moved = true;
-    startEncounter(mission.encounter, attackingUnit);
+    startEncounter(mission.encounter, *enemyUnit);
   } break;
   case MissionState::enemyEncounter:
     // TODO DRY, looks same as player encounter logic
