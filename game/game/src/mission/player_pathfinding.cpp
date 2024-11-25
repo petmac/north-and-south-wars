@@ -1,8 +1,8 @@
-#include "pathfinding.h"
+#include "player_pathfinding.h"
 
 #include "game/callbacks.h"             // KPrintF, TODO Remove
 #include "game/mission/movement_cost.h" // calculateMovementCost
-#include "game/mission/pathfinding.h"
+#include "game/mission/player_pathfinding.h"
 #include "game/mission/terrain.h"   // Terrain
 #include "game/mission/tile.h"      // TileIndex
 #include "game/mission/unit_defs.h" // UnitDef
@@ -36,7 +36,7 @@ static TileCoords pop(Frontier &frontier) {
   return frontier.locations[--frontier.count];
 }
 
-static void considerNeighbour(Pathfinding &pathfinding, const Map &map,
+static void considerNeighbour(PlayerPathfinding &pathfinding, const Map &map,
                               const TileCoords &current, u16 nextColumn,
                               u16 nextRow, Cost costToCurrent,
                               const UnitDef &unitDef) {
@@ -99,7 +99,7 @@ static void considerNeighbour(Pathfinding &pathfinding, const Map &map,
   pathfinding.cameFrom[nextRow][nextColumn] = current;
 }
 
-void findPaths(Pathfinding &pathfinding, const Map &map,
+void findPaths(PlayerPathfinding &pathfinding, const Map &map,
                const TileCoords &start, const UnitDef &unitDef) {
   // Clear data structure
   // TODO No need to clear the whole map, just the area around the start

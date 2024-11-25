@@ -3,7 +3,7 @@
 #include "attackable.h"
 #include "encounter/encounter.h"
 #include "map.h"
-#include "pathfinding.h"
+#include "player_pathfinding.h"
 
 enum class MissionState : u8 {
   intro,
@@ -25,7 +25,7 @@ struct Mission {
   Map map;
   MissionState state;
   u16 selectedUnitIndex;
-  Pathfinding pathfinding;
+  PlayerPathfinding playerPathfinding;
   TileCoords unitSource;
   TileCoords unitDestination;
   Attackable attackable;

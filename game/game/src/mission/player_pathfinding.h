@@ -1,9 +1,9 @@
 #pragma once
 
 struct Map;
-struct Pathfinding;
+struct PlayerPathfinding;
 struct TileCoords;
 struct UnitDef;
 
-void findPaths(Pathfinding &pathfinding, const Map &map,
+void findPaths(PlayerPathfinding &pathfinding, const Map &map,
                const TileCoords &start, const UnitDef &unitDef);

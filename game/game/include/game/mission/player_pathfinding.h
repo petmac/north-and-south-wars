@@ -15,7 +15,7 @@ struct Frontier {
   TileCoords locations[capacity];
 };
 
-struct Pathfinding {
+struct PlayerPathfinding {
   CameFrom cameFrom;
   CostSoFar costSoFar;
   Frontier frontier;

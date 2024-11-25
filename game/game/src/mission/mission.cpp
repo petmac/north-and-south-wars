@@ -3,7 +3,7 @@
 #include "attackable.h"
 #include "encounter/encounter.h"
 #include "menu.h"
-#include "pathfinding.h"
+#include "player_pathfinding.h"
 
 #include "game/callbacks.h"
 #include "game/mission/forces.h"
@@ -60,7 +60,7 @@ static void selectUnitUnderMouse(Mission &mission, u16 mouseX, u16 mouseY) {
 
     // Initialise pathfinding
     const UnitDef &unitDef = unitDefForType(unit.type);
-    findPaths(mission.pathfinding, mission.map, mouseCoords, unitDef);
+    findPaths(mission.playerPathfinding, mission.map, mouseCoords, unitDef);
     mission.unitSource = mouseCoords;
     mission.unitDestination = mouseCoords;
     return;
@@ -251,8 +251,8 @@ void updateMission(Mission &mission, u16 mouseX, u16 mouseY, Game &game) {
     break;
   case MissionState::playerSelectUnitDestination: {
     const TileCoords mouseCoords = mouseTileCoords(mouseX, mouseY);
-    if (mission.pathfinding.costSoFar[mouseCoords.row][mouseCoords.column] >=
-        maxCost) {
+    if (mission.playerPathfinding
+            .costSoFar[mouseCoords.row][mouseCoords.column] >= maxCost) {
       break;
     }
     mission.unitDestination = mouseCoords;

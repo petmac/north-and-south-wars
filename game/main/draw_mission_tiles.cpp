@@ -165,7 +165,8 @@ static constexpr ArrowType computeArrowTrunk(const TileCoords &prev,
 }
 
 static void drawPath(Background &background, DirtyTileList &dirtyTiles,
-                     const Pathfinding &pathfinding, const TileCoords &goal) {
+                     const PlayerPathfinding &pathfinding,
+                     const TileCoords &goal) {
   // Draw reachable tiles
   const ArrowBitmap &reachableBitmap =
       chip.mission.arrows.bitmaps[static_cast<u16>(ArrowType::reachable)];
@@ -304,7 +305,7 @@ void drawMissionTiles(Background &background, FrameFast &frameFast,
     drawMenu(background, dirtyTiles, buttons);
   } break;
   case MissionState::playerSelectUnitDestination:
-    drawPath(background, dirtyTiles, mission.pathfinding,
+    drawPath(background, dirtyTiles, mission.playerPathfinding,
              mission.unitDestination);
     break;
   case MissionState::movingPlayerUnit:

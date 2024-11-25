@@ -9,7 +9,7 @@ add_library(
     include/game/mission/mission.h
     include/game/mission/movement_cost.h
     include/game/mission/movement_types.h
-    include/game/mission/pathfinding.h
+    include/game/mission/player_pathfinding.h
     include/game/mission/terrain.h
     include/game/mission/tile_coords.h
     include/game/mission/tile.h
@@ -33,8 +33,8 @@ add_library(
     src/mission/mission.cpp
     src/mission/mission.h
     src/mission/movement_cost.cpp
-    src/mission/pathfinding.cpp
-    src/mission/pathfinding.h
+    src/mission/player_pathfinding.cpp
+    src/mission/player_pathfinding.h
     src/mission/tile.cpp
     src/mission/unit_defs.cpp
     src/campaign_map.cpp
