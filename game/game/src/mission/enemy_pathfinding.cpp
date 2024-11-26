@@ -148,11 +148,18 @@ void findPath(EnemyPathfinding &pathfinding, const Map &map,
   pathfinding.frontier.count = 0;
   insert(pathfinding.frontier, start, 0);
   pathfinding.end = start;
+  Cost endHeuristic = manhattanDistance(start, goal);
 
   while (pathfinding.frontier.count > 0) {
     // What's the current best location to explore?
     const TileCoords current = pop(pathfinding.frontier);
-    pathfinding.end = current;
+
+    // Is this the new end location?
+    const Cost currentHeuristic = manhattanDistance(current, goal);
+    if (currentHeuristic < endHeuristic) {
+      pathfinding.end = current;
+      endHeuristic = currentHeuristic;
+    }
 
     // Found the goal?
     if (current == goal) {
