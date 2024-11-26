@@ -84,7 +84,9 @@ static void considerNeighbour(PlayerPathfinding &pathfinding, const Map &map,
   // Not yet visited the next location?
   if (existingCost == maxCost) {
     // Add to the list of reachable locations
-    if (pathfinding.reachable.count < Frontier::capacity) {
+    if (pathfinding.reachable.count >= Frontier::capacity) {
+      KPrintF("Bug: Reachable list is full");
+    } else {
       pathfinding.reachable.locations[pathfinding.reachable.count++] = next;
     }
   }

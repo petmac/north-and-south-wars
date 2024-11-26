@@ -7,9 +7,7 @@ using Cost = u16;
 using CostSoFar = Cost[maxMapHeight][maxMapWidth];
 
 struct Frontier {
-  static constexpr u16 capacity =
-      maxMapWidth +
-      maxMapHeight; // TODO Should be computed using maximum movement distance
+  static constexpr u16 capacity = 6 * 6 * 2;
 
   u16 count;
   TileCoords locations[capacity];
