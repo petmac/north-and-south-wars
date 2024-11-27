@@ -5,6 +5,8 @@
 #include "draw_campaign_map.h"
 #include "draw_intro.h"
 #include "draw_mission.h"
+#include "draw_mission_lost.h"
+#include "draw_mission_won.h"
 #include "draw_title.h"
 #include "frame_fast.h"
 #include "text.h"
@@ -59,6 +61,12 @@ void drawGame(FrameChip &frameChip, FrameFast &frameFast, const Game &game) {
     break;
   case GameState::playingMission:
     drawMission(background, frameFast, game.mission);
+    break;
+  case GameState::missionLost:
+    drawMissionLost(background, frameFast, game.missionLost);
+    break;
+  case GameState::missionWon:
+    drawMissionWon(background, frameFast, game.missionWon);
     break;
   case GameState::error:
     drawError(background, frameFast);

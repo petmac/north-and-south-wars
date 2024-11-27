@@ -3,6 +3,8 @@
 #include "campaign_map.h"
 #include "intro.h"
 #include "mission/mission.h"
+#include "mission_lost.h"
+#include "mission_won.h"
 #include "title.h"
 
 #include "game/callbacks.h"
@@ -71,6 +73,14 @@ void updateGame(Game &game, u16 mouseX, u16 mouseY) {
     updateMission(game.mission, mouseX, mouseY, game);
     break;
 
+  case GameState::missionLost:
+    updateMissionLost(game.missionLost);
+    break;
+
+  case GameState::missionWon:
+    updateMissionWon(game.missionWon);
+    break;
+
   case GameState::error:
     break;
   }
@@ -107,6 +117,14 @@ void mouseClicked(Game &game, u16 mouseX, u16 mouseY) {
     missionMouseClicked(game.mission, mouseX, mouseY);
     break;
 
+  case GameState::missionLost:
+    missionLostMouseClicked(game);
+    break;
+
+  case GameState::missionWon:
+    missionWonMouseClicked(game);
+    break;
+
   case GameState::error:
     break;
   }
@@ -128,6 +146,8 @@ void mouseRightClicked(Game &game) {
     missionMouseRightClicked(game.mission);
     break;
 
+  case GameState::missionLost:
+  case GameState::missionWon:
   case GameState::error:
     break;
   }
@@ -137,11 +157,19 @@ void mouseRightClicked(Game &game) {
 void loadTitleScreen(Game &game) { game.state = GameState::loadingTitle; }
 
 // Title callbacks
+// Mission lost callbacks
+// Mission won callbacks
 void loadCampaignMap(Game &game) { game.state = GameState::loadingCampaignMap; }
 
 // Campaign map callbacks
 void loadMission(Game &game) { game.state = GameState::loadingMission; }
 
 // Mission callbacks
-void missionWon(Game &game) { loadCampaignMap(game); }
-void missionLost(Game &game) { loadCampaignMap(game); }
+void missionLost(Game &game) {
+  game.state = GameState::missionLost;
+  startMissionLost(game.missionLost);
+}
+void missionWon(Game &game) {
+  game.state = GameState::missionWon;
+  startMissionWon(game.missionWon);
+}

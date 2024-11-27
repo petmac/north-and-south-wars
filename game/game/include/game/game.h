@@ -3,6 +3,8 @@
 #include "campaign_map.h"
 #include "intro.h"
 #include "mission/mission.h"
+#include "mission_lost.h"
+#include "mission_won.h"
 #include "title.h"
 
 enum class GameState : u8 {
@@ -15,6 +17,8 @@ enum class GameState : u8 {
   campaignMap,
   loadingMission,
   playingMission,
+  missionLost,
+  missionWon,
   error,
 };
 
@@ -24,6 +28,8 @@ struct Game {
   Title title;
   CampaignMap campaignMap;
   Mission mission;
+  MissionLost missionLost;
+  MissionWon missionWon;
 };
 
 void initGame(Game &game);

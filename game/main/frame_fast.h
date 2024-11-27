@@ -12,6 +12,8 @@ enum class FrameState : u8 {
   drawnCampaignMap,
   drawnMissionTiles,
   drawnMissionEncounter,
+  drawnMissionLost,
+  drawnMissionWon,
   drawnError,
 };
 

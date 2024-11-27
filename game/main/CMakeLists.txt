@@ -24,8 +24,12 @@ add_executable(
     draw_intro.h
     draw_mission_encounter.cpp
     draw_mission_encounter.h
+    draw_mission_lost.cpp
+    draw_mission_lost.h
     draw_mission_tiles.cpp
     draw_mission_tiles.h
+    draw_mission_won.cpp
+    draw_mission_won.h
     draw_mission.cpp
     draw_mission.h
     draw_title.cpp

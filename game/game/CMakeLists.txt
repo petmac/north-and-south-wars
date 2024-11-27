@@ -20,6 +20,8 @@ add_library(
     include/game/campaign_map.h
     include/game/game.h
     include/game/intro.h
+    include/game/mission_lost.h
+    include/game/mission_won.h
     include/game/screen.h
     include/game/sounds.h
     include/game/title.h
@@ -46,6 +48,10 @@ add_library(
     src/game.cpp
     src/intro.cpp
     src/intro.h
+    src/mission_lost.cpp
+    src/mission_lost.h
+    src/mission_won.cpp
+    src/mission_won.h
     src/title.cpp
     src/title.h
     )

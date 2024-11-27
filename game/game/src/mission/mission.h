@@ -11,5 +11,5 @@ void missionMouseClicked(Mission &mission, u16 mouseX, u16 mouseY);
 void missionMouseRightClicked(Mission &mission);
 
 // Callbacks
-void missionWon(Game &game);
 void missionLost(Game &game);
+void missionWon(Game &game);
