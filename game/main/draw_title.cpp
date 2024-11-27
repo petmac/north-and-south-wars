@@ -7,7 +7,7 @@
 #include "game/title.h"
 
 void drawTitle(Background &background, FrameFast &frameFast,
-               const Title &title) {
+               const Title &) {
   if (frameFast.state == FrameState::drawnTitle) {
     return;
   }

@@ -8,7 +8,7 @@
 #include "game/campaign_map.h"
 
 void drawCampaignMap(Background &background, FrameFast &frameFast,
-                     const CampaignMap &campaignMap) {
+                     const CampaignMap &) {
   if (frameFast.state == FrameState::drawnCampaignMap) {
     return;
   }

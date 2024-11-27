@@ -6,9 +6,9 @@
 #include "game/campaign_map.h"
 #include "game/sounds.h"
 
-void startCampaignMap(CampaignMap &campaignMap) {}
+void startCampaignMap(CampaignMap &) {}
 
-void updateCampaignMap(CampaignMap &campaignMap, Game &game) {
+void updateCampaignMap(CampaignMap &, Game &game) {
   // Continue?
   if (dev) {
     campaignMouseClicked(game);

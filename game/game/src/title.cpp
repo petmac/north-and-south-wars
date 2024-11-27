@@ -6,9 +6,9 @@
 #include "game/sounds.h"
 #include "game/title.h"
 
-void startTitle(Title &title) {}
+void startTitle(Title &) {}
 
-void updateTitle(Title &title, Game &game) {
+void updateTitle(Title &, Game &game) {
   // Continue?
   if (dev) {
     titleMouseClicked(game);
