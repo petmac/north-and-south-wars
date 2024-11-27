@@ -35,4 +35,5 @@ struct FrameFast {
   FrameState state;
   IntroFrameState intro;
   MissionFrameState mission;
+  u16 encounterSequence;
 };

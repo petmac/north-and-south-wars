@@ -39,6 +39,7 @@ static void takeDamage(MapUnit &defendingUnit, const MapUnit &attackingUnit,
 u16 peopleCountForHealth(u16 health) { return (health + 1) / 2; }
 
 void startEncounter(Encounter &encounter, const MapUnit &attackingUnit) {
+  encounter.sequence++;
   encounter.state = EncounterState::wait;
   encounter.frameCounter = 0;
 

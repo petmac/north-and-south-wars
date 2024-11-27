@@ -20,6 +20,8 @@ struct EncounterPerson {
 };
 
 struct Encounter {
+  u16 sequence; // Hack to fix glitch when drawing an encounter followed another
+                // encounter
   EncounterState state;
   u16 frameCounter;
   EncounterPerson attackingPeople[maxEncounterPeoplePerSide];

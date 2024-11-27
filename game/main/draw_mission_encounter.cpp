@@ -83,8 +83,8 @@ void drawMissionEncounter(Background &background, FrameFast &frameFast,
       attackerIsOnLeft ? encounter.defendingPeople : encounter.attackingPeople;
 
   // Draw the background if needed.
-  switch (frameFast.state) {
-  case FrameState::drawnMissionEncounter: {
+  if ((frameFast.state == FrameState::drawnMissionEncounter) &&
+      (frameFast.encounterSequence == mission.encounter.sequence)) {
     // Already drawn similar, so just overwrite the animating parts
     constexpr u16 partHeight = 100;
     constexpr u16 partY = (encounterBackgroundHeight - partHeight) / 2;
@@ -92,13 +92,12 @@ void drawMissionEncounter(Background &background, FrameFast &frameFast,
                        partHeight);
     drawBackgroundPart(background, rightBackground, rightXWords, partY,
                        partHeight);
-  } break;
-  default:
+  } else {
     // Draw the whole background
     drawBackground(background, leftBackground, leftXWords);
     drawBackground(background, rightBackground, rightXWords);
     frameFast.state = FrameState::drawnMissionEncounter;
-    break;
+    frameFast.encounterSequence = mission.encounter.sequence;
   }
 
   // Draw the units
