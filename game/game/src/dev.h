@@ -1,3 +1,3 @@
 #pragma once
 
-constexpr bool dev = true;
+constexpr bool dev = false;
