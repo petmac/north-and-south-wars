@@ -6,7 +6,7 @@ enum class Sound : u8;
 struct Map;
 
 bool loadCampaignAssets();
-bool loadMap(Map &map);
+bool loadMap(Map &map, u16 missionIndex);
 bool loadMainAssets();
 bool loadMissionAssets();
 bool loadPalette();

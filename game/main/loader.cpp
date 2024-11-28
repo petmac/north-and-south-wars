@@ -57,7 +57,13 @@ bool loadCampaignAssets() {
   return loadAndUnpack(chip.campaign, "data/campaign.chip.lz");
 }
 
-bool loadMap(Map &map) { return load(map, "data/mission/map.map"); }
+bool loadMap(Map &map, u16 missionIndex) {
+  // I'm sorry, it's gross.
+  char path[] = "data/mission/X.map";
+  path[13] = '0' + missionIndex;
+
+  return load(map, path);
+}
 
 bool loadMainAssets() { return loadAndUnpack(chip.main, "data/main.chip.lz"); }
 

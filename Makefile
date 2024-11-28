@@ -6,7 +6,7 @@ DATA_DIR := $(OUT_DIR)/data
 # TOP LEVEL
 
 EXE := $(OUT_DIR)/a.exe
-MAP := $(DATA_DIR)/mission/map.map
+MAPS := $(foreach name,0,$(DATA_DIR)/mission/$(name).map)
 
 .SECONDARY:
 
@@ -16,7 +16,7 @@ all: $(EXE) \
 	$(DATA_DIR)/main.chip.lz \
 	$(DATA_DIR)/title.chip.lz \
 	$(DATA_DIR)/palette.PAL \
-	$(MAP) \
+	$(MAPS) \
 	$(DATA_DIR)/mission.chip.lz
 
 .PHONY: clean
@@ -37,7 +37,6 @@ $(TEMP_DIR)/build.ninja: CMakeLists.txt CMakePresets.json
 
 # DATA
 
-TMX := assets/mission/map.tmx
 TSX := assets/mission/tiles.tsx
 
 TMX2MAP := tools/target/release/tmx2map
@@ -56,7 +55,7 @@ $(TEMP_ASSETS_DIR)/mission/tiles.bpl: $(TSX) $(TSX2BPL) assets/mission/tiles.png
 	$(TSX2BPL) $< $@
 
 # Convert map from Tiled .tmx to .map
-$(MAP): $(TMX) $(TMX2MAP)
+$(TEMP_ASSETS_DIR)/mission/%.map: assets/mission/%.tmx $(TMX2MAP)
 	mkdir -p $(dir $@)
 	$(TMX2MAP) $< $@
 

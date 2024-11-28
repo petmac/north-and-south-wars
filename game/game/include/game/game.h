@@ -26,6 +26,7 @@ struct Game {
   GameState state;
   Intro intro;
   Title title;
+  u16 nextMission;
   CampaignMap campaignMap;
   Mission mission;
   MissionLost missionLost;

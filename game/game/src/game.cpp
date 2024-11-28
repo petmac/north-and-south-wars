@@ -9,7 +9,10 @@
 
 #include "game/callbacks.h"
 
-void initGame(Game &game) { game.state = GameState::loadingFontAndPalette; }
+void initGame(Game &game) {
+  game.state = GameState::loadingFontAndPalette;
+  game.nextMission = 0;
+}
 
 void updateGame(Game &game, u16 mouseX, u16 mouseY) {
   switch (game.state) {
@@ -61,7 +64,7 @@ void updateGame(Game &game, u16 mouseX, u16 mouseY) {
     break;
 
   case GameState::loadingMission:
-    if (!loadMap(game.mission.map) || !loadMissionAssets()) {
+    if (!loadMap(game.mission.map, game.nextMission) || !loadMissionAssets()) {
       game.state = GameState::error;
       return;
     }
