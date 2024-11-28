@@ -8,6 +8,7 @@
 #include "title.h"
 
 #include "game/callbacks.h"
+#include "game/missions.h"
 
 void initGame(Game &game) {
   game.state = GameState::loadingFontAndPalette;
@@ -179,7 +180,6 @@ void missionWon(Game &game) {
 // Mission won callbacks
 void missionWonFinished(Game &game) {
   const u16 nextMission = game.nextMission + 1;
-  constexpr u16 missionCount = 1;
   if (nextMission >= missionCount) {
     game.nextMission = 0;
     // TODO Load end sequence

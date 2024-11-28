@@ -1,6 +1,7 @@
 #pragma once
 
 #include "assets/campaign/campaign_bitmap.h"
+#include "assets/campaign/flag_bitmaps.h"
 #include "assets/mission/arrows.h"
 #include "assets/mission/encounter/bg.h"
 #include "assets/mission/encounter/units.h"
@@ -44,6 +45,7 @@ struct TitleChip {
 
 struct CampaignChip {
   CampaignBitmap bitmap;
+  FlagBitmaps flags;
 };
 
 struct Chip {

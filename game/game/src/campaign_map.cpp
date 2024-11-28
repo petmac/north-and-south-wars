@@ -6,14 +6,16 @@
 #include "game/campaign_map.h"
 #include "game/sounds.h"
 
-void startCampaignMap(CampaignMap &) {}
+void startCampaignMap(CampaignMap &campaignMap) { campaignMap.frameIndex = 0; }
 
-void updateCampaignMap(CampaignMap &, Game &game) {
+void updateCampaignMap(CampaignMap &campaignMap, Game &game) {
   // Continue?
   if (dev) {
     campaignMouseClicked(game);
     return;
   }
+
+  ++campaignMap.frameIndex;
 }
 
 void campaignMouseClicked(Game &game) {

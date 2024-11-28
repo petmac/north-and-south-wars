@@ -22,6 +22,7 @@ add_library(
     include/game/intro.h
     include/game/mission_lost.h
     include/game/mission_won.h
+    include/game/missions.h
     include/game/screen.h
     include/game/sounds.h
     include/game/title.h

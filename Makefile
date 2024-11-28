@@ -85,7 +85,8 @@ $(TEMP_ASSETS_DIR)/title.chip: $(foreach name,$(TITLE_CHIP_ASSET_NAMES),$(TEMP_A
 
 # Pack campaign data
 CAMPAIGN_CHIP_ASSET_NAMES := \
-	campaign/campaign.BPL
+	campaign/campaign.BPL \
+	campaign/flags.BPL
 $(TEMP_ASSETS_DIR)/campaign.chip: $(foreach name,$(CAMPAIGN_CHIP_ASSET_NAMES),$(TEMP_ASSETS_DIR)/$(name))
 	cat $^ >$@
 

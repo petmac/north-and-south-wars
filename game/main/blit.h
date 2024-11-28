@@ -98,11 +98,11 @@ void blitPartFast(InterleavedBitmap<dstWidth, dstHeight, depth> &dst,
   const u16 bltamod = (srcWidthWords - partWidthWords) * 2;
 
   u16 *const bltdpt = &dst.rows[dstY].planes[0].words[dstXWords];
-  constexpr u16 bltdmod = (dstWidthWords - srcWidthWords) * 2;
+  const u16 bltdmod = (dstWidthWords - partWidthWords) * 2;
 
   const u16 rowCount = partHeight * depth;
 
-  const u16 bltsize = ((rowCount & VSIZEMASK) << HSIZEBITS) | srcWidthWords;
+  const u16 bltsize = ((rowCount & VSIZEMASK) << HSIZEBITS) | partWidthWords;
 
   WaitBlit();
   custom.bltcon0 = bltcon0;
