@@ -39,7 +39,7 @@ void drawCampaignMap(Background &background, FrameFast &frameFast,
     break;
   }
 
-  const u16 flagFrameIndex = (campaignMap.frameIndex >> 2) % flagFrameCount;
+  const u16 flagFrameIndex = (campaignMap.frameIndex >> 3) % flagFrameCount;
 
   for (u16 flagIndex = 0; flagIndex < missionCount; ++flagIndex) {
     const FlagPos &flag = flags[flagIndex];
