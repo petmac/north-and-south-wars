@@ -161,7 +161,6 @@ void loadTitleScreen(Game &game) { game.state = GameState::loadingTitle; }
 
 // Title callbacks
 // Mission lost callbacks
-// Mission won callbacks
 void loadCampaignMap(Game &game) { game.state = GameState::loadingCampaignMap; }
 
 // Campaign map callbacks
@@ -175,4 +174,19 @@ void missionLost(Game &game) {
 void missionWon(Game &game) {
   game.state = GameState::missionWon;
   startMissionWon(game.missionWon);
+}
+
+// Mission won callbacks
+void missionWonFinished(Game &game) {
+  const u16 nextMission = game.nextMission + 1;
+  constexpr u16 missionCount = 1;
+  if (nextMission >= missionCount) {
+    game.nextMission = 0;
+    // TODO Load end sequence
+    loadTitleScreen(game);
+  } else {
+    // Proceed to the next mission
+    game.nextMission = nextMission;
+    loadCampaignMap(game);
+  }
 }

@@ -8,4 +8,4 @@ void updateMissionWon(MissionWon &missionWon);
 void missionWonMouseClicked(Game &game);
 
 // Callbacks
-void loadCampaignMap(Game &game);
+void missionWonFinished(Game &game);

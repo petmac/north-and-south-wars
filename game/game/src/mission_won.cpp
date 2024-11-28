@@ -10,5 +10,5 @@ void updateMissionWon(MissionWon &) {}
 
 void missionWonMouseClicked(Game &game) {
   play(Sound::ok);
-  loadCampaignMap(game);
+  missionWonFinished(game);
 }
