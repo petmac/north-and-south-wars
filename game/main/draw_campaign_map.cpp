@@ -51,10 +51,11 @@ void drawCampaignMap(Background &background, FrameFast &frameFast,
     break;
   }
 
-  const u16 flagFrameIndex = (campaignMap.frameIndex >> 3) % flagFrameCount;
-
   for (u16 flagIndex = 0; flagIndex < missionCount; ++flagIndex) {
     const FlagPos &flag = flags[flagIndex];
+    const u16 flagFrameIndex =
+        ((campaignMap.frameIndex + (flagIndex << 2)) >> 3) % flagFrameCount;
+
     blitFast(background, chip.campaign.flags[0][flagFrameIndex], flag.xWords,
              flag.y);
   }
