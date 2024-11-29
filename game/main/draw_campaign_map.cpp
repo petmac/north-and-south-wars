@@ -18,6 +18,18 @@ static constexpr FlagPos flags[missionCount] = {
       xWords : 14,
       y : 95,
     },
+    {
+      xWords : 15,
+      y : 120,
+    },
+    {
+      xWords : 14,
+      y : 143,
+    },
+    {
+      xWords : 13,
+      y : 160,
+    },
 };
 
 void drawCampaignMap(Background &background, FrameFast &frameFast,
