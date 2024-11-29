@@ -6,7 +6,7 @@ DATA_DIR := $(OUT_DIR)/data
 # TOP LEVEL
 
 EXE := $(OUT_DIR)/a.exe
-MAPS := $(foreach name,0,$(DATA_DIR)/mission/$(name).map)
+MAPS := $(foreach name,0 1 2 3,$(DATA_DIR)/mission/$(name).map)
 
 .SECONDARY:
 
