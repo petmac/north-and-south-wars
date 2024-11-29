@@ -14,6 +14,7 @@ enum class FrameState : u8 {
   drawnMissionEncounter,
   drawnMissionLost,
   drawnMissionWon,
+  drawnEndSequence,
   drawnError,
 };
 

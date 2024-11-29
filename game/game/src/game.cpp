@@ -1,6 +1,7 @@
 #include "game/game.h"
 
 #include "campaign_map.h"
+#include "end_sequence.h"
 #include "intro.h"
 #include "mission/mission.h"
 #include "mission_lost.h"
@@ -85,6 +86,10 @@ void updateGame(Game &game, u16 mouseX, u16 mouseY) {
     updateMissionWon(game.missionWon);
     break;
 
+  case GameState::endSequence:
+    updateEndSequence(game.endSequence);
+    break;
+
   case GameState::error:
     break;
   }
@@ -129,6 +134,10 @@ void mouseClicked(Game &game, u16 mouseX, u16 mouseY) {
     missionWonMouseClicked(game);
     break;
 
+  case GameState::endSequence:
+    endSequenceMouseClicked(game);
+    break;
+
   case GameState::error:
     break;
   }
@@ -152,6 +161,7 @@ void mouseRightClicked(Game &game) {
 
   case GameState::missionLost:
   case GameState::missionWon:
+  case GameState::endSequence:
   case GameState::error:
     break;
   }
@@ -182,11 +192,14 @@ void missionWonFinished(Game &game) {
   const u16 nextMission = game.nextMission + 1;
   if (nextMission >= missionCount) {
     game.nextMission = 0;
-    // TODO Load end sequence
-    loadTitleScreen(game);
+    game.state = GameState::endSequence;
+    startEndSequence(game.endSequence);
   } else {
     // Proceed to the next mission
     game.nextMission = nextMission;
     loadCampaignMap(game);
   }
 }
+
+// End sequence callbacks
+void endSequenceFinished(Game &game) { loadTitleScreen(game); }

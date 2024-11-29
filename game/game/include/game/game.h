@@ -1,6 +1,7 @@
 #pragma once
 
 #include "campaign_map.h"
+#include "end_sequence.h"
 #include "intro.h"
 #include "mission/mission.h"
 #include "mission_lost.h"
@@ -19,6 +20,7 @@ enum class GameState : u8 {
   playingMission,
   missionLost,
   missionWon,
+  endSequence,
   error,
 };
 
@@ -31,6 +33,7 @@ struct Game {
   Mission mission;
   MissionLost missionLost;
   MissionWon missionWon;
+  EndSequence endSequence;
 };
 
 void initGame(Game &game);

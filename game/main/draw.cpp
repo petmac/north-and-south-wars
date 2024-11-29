@@ -3,6 +3,7 @@
 #include "blit.h"
 #include "chip.h"
 #include "draw_campaign_map.h"
+#include "draw_end_sequence.h"
 #include "draw_intro.h"
 #include "draw_mission.h"
 #include "draw_mission_lost.h"
@@ -67,6 +68,9 @@ void drawGame(FrameChip &frameChip, FrameFast &frameFast, const Game &game) {
     break;
   case GameState::missionWon:
     drawMissionWon(background, frameFast, game.missionWon);
+    break;
+  case GameState::endSequence:
+    drawEndSequence(background, frameFast, game.endSequence);
     break;
   case GameState::error:
     drawError(background, frameFast);

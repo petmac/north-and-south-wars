@@ -18,6 +18,7 @@ add_library(
     include/game/mission/unit_types.h
     include/game/callbacks.h
     include/game/campaign_map.h
+    include/game/end_sequence.h
     include/game/game.h
     include/game/intro.h
     include/game/mission_lost.h
@@ -46,6 +47,8 @@ add_library(
     src/campaign_map.cpp
     src/campaign_map.h
     src/dev.h
+    src/end_sequence.cpp
+    src/end_sequence.h
     src/game.cpp
     src/intro.cpp
     src/intro.h
