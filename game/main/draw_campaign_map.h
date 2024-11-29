@@ -6,4 +6,4 @@ struct CampaignMap;
 struct FrameFast;
 
 void drawCampaignMap(Background &background, FrameFast &frameFast,
-                     const CampaignMap &campaignMap);
+                     const CampaignMap &campaignMap, u16 nextMission);

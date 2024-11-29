@@ -33,7 +33,7 @@ static constexpr FlagPos flags[missionCount] = {
 };
 
 void drawCampaignMap(Background &background, FrameFast &frameFast,
-                     const CampaignMap &campaignMap) {
+                     const CampaignMap &campaignMap, u16 nextMission) {
   switch (frameFast.state) {
   case FrameState::drawnCampaignMap:
     // Restore background under flags
@@ -56,7 +56,12 @@ void drawCampaignMap(Background &background, FrameFast &frameFast,
     const u16 flagFrameIndex =
         ((campaignMap.frameIndex + (flagIndex << 2)) >> 3) % flagFrameCount;
 
-    blitFast(background, chip.campaign.flags[0][flagFrameIndex], flag.xWords,
-             flag.y);
+    const Force force = flagIndex < nextMission ? Force::north : Force::south;
+
+    if ((flagIndex != nextMission) || (campaignMap.frameIndex & (1 << 4))) {
+      blitFast(background,
+               chip.campaign.flags[static_cast<u16>(force)][flagFrameIndex],
+               flag.xWords, flag.y);
+    }
   }
 }

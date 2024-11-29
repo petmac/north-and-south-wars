@@ -57,7 +57,7 @@ void drawGame(FrameChip &frameChip, FrameFast &frameFast, const Game &game) {
     drawTitle(background, frameFast, game.title);
     break;
   case GameState::campaignMap:
-    drawCampaignMap(background, frameFast, game.campaignMap);
+    drawCampaignMap(background, frameFast, game.campaignMap, game.nextMission);
     break;
   case GameState::playingMission:
     drawMission(background, frameFast, game.mission);
